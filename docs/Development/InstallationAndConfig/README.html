@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>安装并配置 Qomicex.Core | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="安装并配置 Qomicex.Core | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/InstallationAndConfig/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="安装并配置-qomicexcore">安装并配置 Qomicex.Core</h1>
+
+<p>[[toc]]</p>
+<h2 id="从-nuget-安装">从 NuGet 安装</h2>
+<p>您可以方便地从 NuGet 上搜索并下载 Qomicex.Core 的软件包。</p>
+<h3 id="visual-studio-包管理器">Visual Studio 包管理器</h3>
+<p>在 Visual Studio 的包管理器中搜索 <code>Qomicex.Core</code> 并将其添加到您的项目中。</p>
+<h3 id="net-cli">.NET CLI</h3>
+<p>要通过 .NET CLI 来安装 Qomicex.Core，您只需要将终端切换到包含 .csproj 文件的项目目录，并在终端中执行：</p>
+<pre><code class="lang-bash">dotnet add package Qomicex.Core --version 1.0.0
+</code></pre>
+<h3 id="packagereference">PackageReference</h3>
+<p>您只需在项目的 <strong>[项目名].csproj</strong> 文件中添加：</p>
+<pre><code class="lang-xml">&lt;PackageReference Include=&quot;Qomicex.Core&quot; Version=&quot;1.0.0&quot; /&gt;
+</code></pre>
+<p>::: tip
+其中，<strong>1.0.0</strong> 为 Qomicex.Core 的版本号，您可以将其替换为其他的版本号，
+所有的发行版本都可以在 <a href="https://www.nuget.org/packages/Qomicex.Core">Qomicex.Core - Nuget</a> 中查看。
+:::</p>
+<h2 id="从源码引用">从源码引用</h2>
+<p>另外一种使用 Qomicex.Core 的方法是直接添加代码仓库到您的项目引用。</p>
+<p>::: info
+在执行下面的命令前，您可能需要先安装 <a href="https://git-scm.com/">Git CLI</a>
+:::</p>
+<h3 id="克隆-qomicexavalonia-仓库">克隆 Qomicex.Avalonia 仓库</h3>
+<p>使用命令行切换到项目解决方案的根目录，并在命令行中执行下面的代码来完成仓库的克隆：</p>
+<pre><code class="lang-bash">git clone https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia.git
+</code></pre>
+<h3 id="使用-git-submodule子模块的方式拉取-qomicexcore">使用 Git Submodule（子模块）的方式拉取 Qomicex.Core</h3>
+<p>::: tip
+Git Submodule 是一个非常实用的功能，在这里我们只展示了其最基本的用例。
+在 <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">Git 官方文档</a> 中您可以查看到更多的使用案例。
+:::</p>
+<p>使用命令行切换到项目解决方案的根目录，并在命令行中执行下面的代码来完成仓库的克隆：</p>
+<pre><code class="lang-bash">git submodule add https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia.git
+</code></pre>
+<h3 id="添加对-qomicexcore-的引用">添加对 Qomicex.Core 的引用</h3>
+<p>接下来，在 Visual Studio 的 <strong>解决方案资源管理器</strong> 视图中，右键点击位于树状图顶层的解决方案名称。
+并选择 <strong>“添加”-“现有项目”</strong>，并在文件浏览窗口中找到刚刚克隆的 Qomicex.Avalonia 项目文件夹中的 <strong>Qomicex.Core.csproj</strong>。</p>
+<p>接着，在 <strong>解决方案资源管理器</strong> 找到您需要引用 Qomicex.Core 的项目，并右键单击，选择 <strong>“添加”-“项目引用”</strong>。
+最后在弹出窗口中勾选 Qomicex.Core 即可完成对其的引用。</p>
+<h2 id="使用前配置">使用前配置</h2>
+<h3 id="修改默认连接数">修改默认连接数</h3>
+<p>在使用 Qomicex.Core 之前，您需要在程序的入口点（通常是 <strong>App.xaml.cs</strong> 或 <strong>Program.cs</strong>）
+中添加一些代码来初始化 Qomicex.Core 的相关服务。</p>
+<p>由于 .NET 运行时默认的最大连接数限制，在使用 Qomicex.Core 下载模块时可能会遭遇性能瓶颈。
+因此，您需要在入口处添加下面的代码来修改默认的最大连接数：</p>
+<pre><code class="lang-csharp">using System.Net;
+
+ServicePointManager.DefaultConnectionLimit = 512;
+</code></pre>
+<h3 id="初始化下载服务">初始化下载服务</h3>
+<p>在初始化下载服务时您可以选择自定义请求时所使用的 User Agent（默认为 &quot;QomicexCore&quot;）。</p>
+<pre><code class="lang-csharp">// 可选：配置下载服务
+HttpClientHelper.Ua = &quot;MyCustomUserAgent&quot;;
+</code></pre>
+<h3 id="配置微软登录验证器">配置微软登录验证器</h3>
+<p>关于 Azure Active Directory 应用具体的注册方法请参考 Microsoft 官方文档。</p>
+<p>::: tip
+在配置微软验证器前，您需要在 Azure 注册您的应用，并对其进行正确的配置。
+在您完成配置之后，您会获得一串 Client ID。</p>
+<p>相关资料：</p>
+<ul>
+<li><a href="https://azure.microsoft.com/zh-cn/">Azure 官网</a></li>
+<li><a href="https://learn.microsoft.com/zh-cn/azure/active-directory/develop/scenario-desktop-acquire-token-device-code-flow?tabs=dotnet">设备代码流</a></li>
+</ul>
+<p>:::</p>
+<p>::: warning
+CLIENT ID 为敏感的个人凭据，请妥善保存 CLIENT ID 并不要将其泄露给其他人。
+:::</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+MicrosoftAuthenticator.Configure(new MicrosoftAuthenticatorAPISettings
+{
+    ClientId = &quot;[YOUR CLIENT ID]&quot;,
+    TenentId = &quot;consumers&quot;,
+    Scopes = new[] { &quot;XboxLive.signin&quot;, &quot;offline_access&quot;, &quot;openid&quot;, &quot;profile&quot;, &quot;email&quot; }
+});
+</code></pre>
+<p>在取得 Client ID 后，将 <strong>[YOUR CLIENT ID]</strong> 替换为您的 Client ID。</p>
+<h3 id="配置-curseforge-api-服务可选">配置 CurseForge API 服务（可选）</h3>
+<p>该服务为可选项目，如果您没有使用任何 CurseForge 相关服务，您可以忽略这个步骤。</p>
+<p>::: tip
+在使用 CurseForge 相关服务前，您需要准备 CurseForge 官方下发的 API KEY。
+如果您还没有，请前往 <a href="https://support.curseforge.com/en/support/solutions/articles/9000208346-about-the-curseforge-api-and-how-to-apply-for-a-key">申请页面 - CurseForge</a>
+来获得您的 API KEY。
+:::</p>
+<p>::: warning
+API KEY 为敏感的个人凭据，请妥善保存 API KEY 并不要将其泄露给其他人。
+:::</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Resources.Expansion.CurseForge;
+
+CurseForgeAPIHelper.SetApiKey(&quot;[YOUR API KEY]&quot;);
+</code></pre>
+<p>将 <strong>[YOUR API KEY]</strong> 替换为您从 CurseForge 官方获取的 API KEY。</p>
+<h2 id="项目配置">项目配置</h2>
+<h3 id="应用程序清单文件">应用程序清单文件</h3>
+<p>为了确保 Qomicex.Core 能够正常运行，您需要确保应用程序清单文件（app.manifest）包含以下配置：</p>
+<pre><code class="lang-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;assembly manifestVersion=&quot;1.0&quot; xmlns=&quot;urn:schemas-microsoft-com:asm.v1&quot;&gt;
+  &lt;assemblyIdentity version=&quot;1.0.0.0&quot; name=&quot;MyMinecraftLauncher&quot;/&gt;
+  &lt;trustInfo xmlns=&quot;urn:schemas-microsoft-com:asm.v2&quot;&gt;
+    &lt;security&gt;
+      &lt;requestedPrivileges xmlns=&quot;urn:schemas-microsoft-com:asm.v3&quot;&gt;
+        &lt;requestedExecutionLevel level=&quot;requireAdministrator&quot; uiAccess=&quot;false&quot; /&gt;
+      &lt;/requestedPrivileges&gt;
+    &lt;/security&gt;
+  &lt;/trustInfo&gt;
+  &lt;compatibility xmlns=&quot;urn:schemas-microsoft-com:compatibility.v1&quot;&gt;
+    &lt;application&gt;
+      &lt;supportedOS Id=&quot;{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}&quot;/&gt;
+    &lt;/application&gt;
+  &lt;/compatibility&gt;
+&lt;/assembly&gt;
+</code></pre>
+<h3 id="构建配置">构建配置</h3>
+<p>建议您在项目属性中进行以下配置：</p>
+<ol>
+<li><strong>目标平台</strong>：选择 &quot;Any CPU&quot; 并取消勾选 &quot;Prefer 32-bit&quot;</li>
+<li><strong>目标框架</strong>：选择 &quot;.NET 8.0&quot; 或更高版本</li>
+<li><strong>输出类型</strong>：选择 &quot;Windows 应用程序&quot;（如果是 GUI 应用）或 &quot;控制台应用程序&quot;（如果是命令行工具）</li>
+</ol>
+<h2 id="测试配置">测试配置</h2>
+<p>为了确保您的应用程序能够正常工作，建议您在开发过程中进行以下测试：</p>
+<ol>
+<li>测试网络连接</li>
+<li>测试资源下载功能</li>
+<li>测试游戏启动功能</li>
+<li>测试不同版本的 Minecraft 兼容性</li>
+<li>测试不同操作系统的兼容性</li>
+</ol>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="无法找到-qomicexcore-命名空间">无法找到 Qomicex.Core 命名空间</h3>
+<p>确保您已经正确安装了 Qomicex.Core NuGet 包，并且项目引用已正确添加。</p>
+<h3 id="程序崩溃或无法启动">程序崩溃或无法启动</h3>
+<p>检查以下几个方面：</p>
+<ol>
+<li>确保您的应用程序具有足够的权限</li>
+<li>确保您的网络连接正常</li>
+<li>检查应用程序日志文件以获取详细错误信息</li>
+<li>尝试以管理员身份运行应用程序</li>
+</ol>
+<h3 id="资源下载失败">资源下载失败</h3>
+<p>检查以下几个方面：</p>
+<ol>
+<li>确保您的网络连接正常</li>
+<li>尝试使用不同的资源源</li>
+<li>检查防火墙或安全软件是否阻止了下载请求</li>
+<li>尝试调整下载超时时间</li>
+</ol>
+<h3 id="游戏启动失败">游戏启动失败</h3>
+<p>检查以下几个方面：</p>
+<ol>
+<li>确保您已经正确安装了 Java</li>
+<li>检查 Java 路径是否正确</li>
+<li>检查游戏资源是否完整</li>
+<li>尝试调整内存分配</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/InstallationAndConfig/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

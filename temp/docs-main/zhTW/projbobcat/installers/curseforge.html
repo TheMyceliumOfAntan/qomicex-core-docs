@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>CurseForge 整合包安裝器 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="CurseForge 整合包安裝器 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhTW/projbobcat/installers/curseforge.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="curseforge-整合包安裝器">CurseForge 整合包安裝器</h1>
+
+<p>[[toc]]</p>
+<p>::: tip</p>
+<p>請注意, ProjBobcat 僅實現了 CurseForge 整合包的自動化安裝流程, 您仍然需要自己實現 CurseForge 整合包的搜尋、下載、儲存流程.</p>
+<p>:::</p>
+<h2 id="實用資源">實用資源</h2>
+<ul>
+<li><a href="https://www.curseforge.com/">CurseForge 官方網站</a></li>
+<li><a href="https://docs.curseforge.com/">CurseForge API</a></li>
+</ul>
+<h2 id="初始化安裝器">初始化安裝器</h2>
+<p>初始化 CurseForge 安裝器的方式非常簡單：</p>
+<pre><code class="lang-c#">
+var curseForgeInstaller = new CurseForgeInstaller
+{
+    GameId = &quot;[CUSTOM_INSTALL_GAME_ID]&quot;,
+    ModPackPath = &quot;[PATH_TO_YOUR_MODPACK]&quot;,
+    RootPath = &quot;[GAME_ROOT_PATH]&quot;
+};
+
+</code></pre>
+<p>在上述程式碼塊中, 請將這些引數按照您的實際情況替換：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">專案</th>
+<th style="text-align: center;">說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">[GAME_ROOT_PATH]</td>
+<td style="text-align: center;">遊戲根目錄, 通常為 .minecraft 資料夾的路徑</td>
+</tr>
+<tr>
+<td style="text-align: center;">[CUSTOM_INSTALL_GAME_ID]</td>
+<td style="text-align: center;">可選項, 自定義即將要安裝的遊戲的名稱</td>
+</tr>
+<tr>
+<td style="text-align: center;">[PATH_TO_YOUR_MODPACK]</td>
+<td style="text-align: center;">CurseForge 整合包所在的路徑</td>
+</tr>
+</tbody>
+</table>
+<h2 id="開始安裝">開始安裝</h2>
+<p>在您完成安裝器的初始化後, 您只需要呼叫 CurseForge 安裝器的安裝方法來完成安裝.</p>
+<p>在非同步上下文中, 使用 <strong>InstallTaskAsync</strong> 來完成安裝：</p>
+<pre><code class="lang-c#">
+await curseForgeInstaller.InstallTaskAsync();
+
+</code></pre>
+<p>在同步上下文中, 使用 <strong>Install</strong> 來完成安裝：</p>
+<pre><code class="lang-c#">
+curseForgeInstaller.Install();
+
+</code></pre>
+<h2 id="報告安裝進度">報告安裝進度</h2>
+<p>在某些情況下, CurseForge 安裝器可能會需要數分鐘的時間來完成安裝.
+因此, 您可能需要實時向用戶彙報安裝器目前的進度.
+為此, CurseForge 安裝器提供了 <strong>StageChangedEventDelegate</strong> 事件來幫助您實現任務彙報.
+您只需要簡單地在 <strong>開始安裝之前</strong> 註冊下面的事件：</p>
+<pre><code class="lang-c#">
+curseForgeInstaller.StageChangedEventDelegate += (_, args) =&gt; {
+    ReportProgress(args.Progress, args.CurrentStage);
+};
+
+</code></pre>
+<p>其中,  <strong>args.Progress</strong> 指示了安裝器當前的百分比進度. <strong>args.CurrentStage</strong> 則是安裝器當前進度的文字描述.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhTW/projbobcat/installers/curseforge.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

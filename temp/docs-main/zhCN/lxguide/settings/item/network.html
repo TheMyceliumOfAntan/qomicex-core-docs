@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>网络设置 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="网络设置 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/lxguide/settings/item/network.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="网络设置">网络设置</h1>
+
+<p>[[toc]]</p>
+<h2 id="基础网络设置">基础网络设置</h2>
+<p><strong>资源下载服务器</strong>: <code>选择框</code> | 默认: Bangbang93的下载服务器</p>
+<p>:::info</p>
+<p>可选项: Bangbang93的下载服务器(BMCLAPI)，Mojang官方服务器。<br>如果您身处中国大陆地区，使用Bangbang93的下载服务器或许更好。仅在Bangbang93的下载服务器不可用或过于缓慢时使用Mojang官方服务器。(Bangbang93的下载服务器可能会因为线路过于拥挤而出现短暂的不可用状况。虽然貌似与我们关系不大，但是: 这个下载源是公益且免费的，如果您有能力且希望这个公益下载源可以变得更好，您可以通过爱发电平台向发起人进行赞助。<a href="https://bmclapidoc.bangbang93.com/#">赞助BMCLAPI</a>)</p>
+<p>:::</p>
+<p>:::warning</p>
+<p>从2024年2月20日起的LauncherX移除了对mcbbs下载源的支持.</p>
+<p>:::</p>
+<p><strong>下载线程数量</strong>: <code>拖动条(整数)</code> | 默认: 160? | 单位: 个</p>
+<p>:::info</p>
+<p>控制下载或补全游戏资源时同时进行下载的线程数量。一般而言，宽带带宽越大，此时线程数量越多，整体下载速度越快、效率越高。 请注意，倘若选择了Mojang下载服务器，受制于API限制，不建议您选择大于5的线程数量，以避免大规模的下载失败。与此同时，实际下载速度受上游网络影响: 假如服务器方面出现拥堵，则整体下载速度同样会被拖慢.</p>
+<p>因此，请酌情选择线程数量.</p>
+<p>:::</p>
+<p><strong>自动决定下载方式</strong>: <code>开关</code> | 默认: 开</p>
+<p>:::info</p>
+<p>启用此项目来让LauncherX决定何时启用大文件分片下载.</p>
+<p>:::</p>
+<p><strong>使用大文件分片下载</strong>: <code>开关</code> | 默认: 开 | 条件性开关</p>
+<p>:::info</p>
+<p>当上一个开关为启用状态时，此开关启用，并不允许切换其状态.</p>
+<p>大文件分片下载可以在下载较大的游戏文件时将文件分成几部分进行多线程下载，从而最大化地利用网络资源，提升下载效率.</p>
+<p>:::</p>
+<p><strong>分片数量</strong>: <code>选择框</code> | 默认: 16</p>
+<p>:::info</p>
+<p>可用的数量有: 1，2，4，8，16，32，64，128</p>
+<p>使用分片下载时，对单一文件分片的数量。可以理解为这个文件在下载时会被分成多少份，所有分片下载完成后会合并成预期的目标文件。</p>
+<p>此选项需要根据电脑性能酌情选择，因为无论是开启多线程下载还是下载完成后在后台合并都需要消耗本地硬件资源。(不过对于现代计算机来说，这些消耗貌似不足一提。)</p>
+<p>:::</p>
+<h2 id="网络连接测试">网络连接测试</h2>
+<p>:::tip</p>
+<p>通过网络连接测试，您可以更好地了解您当前的网络状况，包括延迟，服务器状态等一些基础信息。同时也能帮您排除一些简单故障。</p>
+<p>:::</p>
+<p><strong>启动</strong>: <code>按钮</code> 点击以启动网络测试.</p>
+<p>关于网络测试的结果，参见: <a href="/zhCN/lxguide/settings/special/check-network">专题: 检测网络</a></p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/lxguide/settings/item/network.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,2 +1,2 @@
 
-{"items":[{"name":"Introduction","href":"introduction.html","topicHref":"introduction.html"},{"name":"Getting Started","href":"getting-started.html","topicHref":"getting-started.html"}],"pdf":true}
+{"items":[{"name":"Docs","href":"docs/Development/README.html","tocHref":"docs/toc.html","topicHref":"docs/Development/README.html"},{"name":"API","href":"api/Qomicex.Core.html","tocHref":"api/toc.html","topicHref":"api/Qomicex.Core.html","topicUid":"Qomicex.Core"}],"pdf":true}

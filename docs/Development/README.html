@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Qomicex.Core 开发教程 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Qomicex.Core 开发教程 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="qomicexcore-开发教程">Qomicex.Core 开发教程</h1>
+
+<h2 id="概述">概述</h2>
+<p>欢迎来到 Qomicex.Core 开发教程！本教程将帮助您了解 Qomicex.Core 的架构设计、核心功能和开发流程，为您快速上手开发基于 Qomicex.Core 的 Minecraft 启动器或相关工具提供指导。</p>
+<h2 id="项目简介">项目简介</h2>
+<p>Qomicex.Core 是一个功能强大的 Minecraft 启动器核心库，提供了完整的启动流程管理、游戏资源管理、账户认证、Mod 管理等功能。它采用模块化设计，具有高度的可扩展性和可定制性，适用于各种规模的 Minecraft 相关应用开发。</p>
+<h2 id="主要特性">主要特性</h2>
+<ul>
+<li><strong>完整的启动流程管理</strong>：从游戏安装到启动的完整流程</li>
+<li><strong>灵活的账户认证系统</strong>：支持多种认证方式，包括 Microsoft、Yggdrasil 等</li>
+<li><strong>全面的资源管理</strong>：游戏版本下载、Mod 管理、资源包管理等</li>
+<li><strong>强大的 Mod 支持</strong>：支持 Forge、Fabric、Quilt 等多种 Mod 加载器</li>
+<li><strong>跨平台兼容</strong>：支持 Windows、Linux 和 macOS 系统</li>
+<li><strong>模块化设计</strong>：高度模块化的架构，易于扩展和定制</li>
+<li><strong>异步编程</strong>：大量使用异步 API，提供良好的用户体验</li>
+</ul>
+<h2 id="目录">目录</h2>
+<p>[[toc]]</p>
+<h2 id="在我们开始之前">在我们开始之前</h2>
+<p>在开始使用 Qomicex.Core 之前，您需要对开发环境和项目配置有一定的了解。请先阅读 <a href="BeforeWeStart/README.html">在我们开始之前</a> 章节，确保您的开发环境已正确配置。</p>
+<h2 id="安装并配置-qomicexcore">安装并配置 Qomicex.Core</h2>
+<p>在配置好开发环境后，您需要安装并配置 Qomicex.Core 库。请阅读 <a href="InstallationAndConfig/README.html">安装并配置 Qomicex.Core</a> 章节，了解如何安装和配置 Qomicex.Core。</p>
+<h2 id="验证模型">验证模型</h2>
+<p>Qomicex.Core 提供了多种 Minecraft 验证模型，包括离线验证、Yggdrasil 验证和 Microsoft 验证。请阅读 <a href="Authenticators/README.html">验证模型</a> 章节，了解如何使用这些验证模型。</p>
+<h2 id="安装器">安装器</h2>
+<p>Qomicex.Core 提供了多种 Mod 加载器的安装器，包括 Forge、Fabric、Quilt、LiteLoader 和 OptiFine。请阅读 <a href="Installers/README.html">安装器</a> 章节，了解如何使用这些安装器。</p>
+<h2 id="资源补全器">资源补全器</h2>
+<p>资源补全器负责下载和管理 Minecraft 游戏所需的各种资源文件。请阅读 <a href="ResourceCompleter/README.html">资源补全器</a> 章节，了解如何使用资源补全器。</p>
+<h2 id="快速开始">快速开始</h2>
+<h3 id="环境要求">环境要求</h3>
+<ul>
+<li>.NET 8.0 或更高版本</li>
+<li>Visual Studio 2022 或其他兼容的 IDE</li>
+<li>Git 版本控制工具</li>
+</ul>
+<h3 id="创建第一个项目">创建第一个项目</h3>
+<pre><code class="lang-bash"># 创建项目
+dotnet new console -n QomicexDemo
+cd QomicexDemo
+
+# 添加 NuGet 源（如果需要）
+dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org
+
+# 添加 Qomicex.Core 依赖
+dotnet add package Qomicex.Core
+</code></pre>
+<h3 id="编写简单的启动器">编写简单的启动器</h3>
+<pre><code class="lang-csharp">using Qomicex.Core;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+using Qomicex.Core.Modules.Helpers.Resources;
+using Qomicex.Core.Modules.Launcher;
+using System;
+using System.Threading.Tasks;
+
+namespace QomicexDemo
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            Console.WriteLine(&quot;Qomicex.Core 启动器示例&quot;);
+
+            try
+            {
+                // 1. 初始化核心组件
+                var gameResourceHelper = new GameResourceHelper();
+                var microsoftAuth = new Microsoft();
+
+                // 2. 获取游戏版本列表
+                Console.WriteLine(&quot;获取游戏版本列表...&quot;);
+                var versions = await gameResourceHelper.GetMinecraftListAsync(1);
+                Console.WriteLine($&quot;可用版本数: {versions.Count}&quot;);
+
+                // 3. 打印最新版本
+                var latestVersion = versions.Find(v =&gt; v.Type == &quot;release&quot;);
+                Console.WriteLine($&quot;最新正式版: {latestVersion?.Id}&quot;);
+
+                // 4. 启动游戏（简化示例）
+                var launcher = new Qomicex.Core.Modules.Launcher.Launcher();
+                var launchParams = new LauncherParam
+                {
+                    GameDir = @&quot;C:\Users\YourName\.minecraft&quot;,
+                    Version = latestVersion?.Id,
+                    JavaPath = &quot;java&quot;,
+                    MaxMemory = 4096,
+                    Username = &quot;Player&quot;
+                };
+
+                Console.WriteLine(&quot;正在启动游戏...&quot;);
+                var result = await launcher.StartGameAsync(launchParams);
+                Console.WriteLine(&quot;游戏启动状态: &quot; + result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($&quot;发生错误: {ex.Message}&quot;);
+            }
+
+            Console.WriteLine(&quot;按任意键继续...&quot;);
+            Console.ReadKey();
+        }
+    }
+}
+</code></pre>
+<h2 id="架构设计">架构设计</h2>
+<h3 id="核心架构">核心架构</h3>
+<p>Qomicex.Core 采用三层架构设计：</p>
+<ol>
+<li><strong>基础层</strong>：包含通用工具、数据模块、日志分析等基础功能</li>
+<li><strong>核心服务层</strong>：提供游戏资源管理、账户认证、启动器核心功能</li>
+<li><strong>业务逻辑层</strong>：处理游戏启动流程、Mod 管理等复杂业务逻辑</li>
+</ol>
+<h3 id="模块架构">模块架构</h3>
+<p>Qomicex.Core 采用模块化设计，每个功能模块独立实现，提供清晰的接口：</p>
+<ul>
+<li><strong>数据模块</strong>：定义核心数据结构和配置</li>
+<li><strong>工具模块</strong>：提供通用的工具方法和功能</li>
+<li><strong>账户模块</strong>：处理用户认证和账户管理</li>
+<li><strong>资源模块</strong>：管理游戏资源、Mod、资源包等</li>
+<li><strong>启动器模块</strong>：负责游戏启动流程管理</li>
+</ul>
+<h2 id="核心功能开发">核心功能开发</h2>
+<h3 id="1-游戏版本管理">1. 游戏版本管理</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Resources;
+
+var resourceHelper = new GameResourceHelper();
+
+// 获取版本列表
+var versions = await resourceHelper.GetMinecraftListAsync(1);
+
+// 根据版本ID获取详细信息
+var versionInfo = await resourceHelper.GetMinecraftVersionManifest(1);
+
+// 下载游戏资源
+var downloader = new ResourceDownloader();
+await downloader.DownloadGameResourcesAsync(&quot;1.20.1&quot;, @&quot;C:\Game\.minecraft&quot;);
+</code></pre>
+<h3 id="2-账户认证">2. 账户认证</h3>
+<h4 id="microsoft-账户认证">Microsoft 账户认证</h4>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+var microsoftAuth = new Microsoft();
+
+// 获取授权 URL
+var authUrl = microsoftAuth.GetAuthorizationUrl();
+Console.WriteLine($&quot;请访问以下 URL 进行授权: {authUrl}&quot;);
+
+// 获取用户输入的授权码
+Console.Write(&quot;请输入授权码: &quot;);
+var code = Console.ReadLine();
+
+try
+{
+    var authResult = await microsoftAuth.AuthorizeAsync(code);
+    Console.WriteLine($&quot;访问令牌: {authResult.AccessToken}&quot;);
+    Console.WriteLine($&quot;刷新令牌: {authResult.RefreshToken}&quot;);
+    Console.WriteLine($&quot;过期时间: {authResult.ExpiresIn} 秒&quot;);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;授权失败: {ex.Message}&quot;);
+}
+</code></pre>
+<h4 id="yggdrasil-认证">Yggdrasil 认证</h4>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Yggdrasil;
+
+var yggdrasilAuth = new Yggdrasil();
+
+// 登录
+var loginResult = await yggdrasilAuth.LoginAsync(&quot;username&quot;, &quot;password&quot;);
+
+// 验证访问令牌
+var isValid = await yggdrasilAuth.ValidateAsync(loginResult.AccessToken);
+
+// 刷新访问令牌
+var refreshResult = await yggdrasilAuth.RefreshAsync(
+    loginResult.AccessToken,
+    loginResult.ClientToken
+);
+</code></pre>
+<h3 id="3-mod-管理">3. Mod 管理</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Resources.Expansion.CurseForge;
+
+var curseForgeMods = new Mods(&quot;your-api-key&quot;);
+
+// 搜索 Mod
+var searchResults = await curseForgeMods.SearchAsync(&quot;sodium&quot;, &quot;1.20.1&quot;);
+
+// 获取 Mod 详情
+var modDetails = await curseForgeMods.GetModDetailsAsync(&quot;sodium&quot;);
+
+// 下载 Mod
+await curseForgeMods.DownloadModAsync(&quot;sodium&quot;, &quot;0.4.14&quot;, @&quot;C:\Game\.minecraft\mods\sodium.jar&quot;);
+</code></pre>
+<h3 id="4-游戏启动">4. 游戏启动</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Launcher;
+
+var launcher = new Launcher();
+
+var launchParams = new LauncherParam
+{
+    GameDir = @&quot;C:\Game\.minecraft&quot;,
+    Version = &quot;1.20.1&quot;,
+    JavaPath = @&quot;C:\Program Files\Java\jre-17\bin\javaw.exe&quot;,
+    MaxMemory = 4096,
+    MinMemory = 1024,
+    WindowWidth = 1280,
+    WindowHeight = 720,
+    Fullscreen = false,
+    Server = null,
+    Username = &quot;Player&quot;,
+    AuthenticationToken = &quot;your-auth-token&quot;
+};
+
+// 启动游戏
+var result = await launcher.StartGameAsync(launchParams);
+
+if (result)
+{
+    Console.WriteLine(&quot;游戏启动成功！&quot;);
+}
+else
+{
+    Console.WriteLine(&quot;游戏启动失败！&quot;);
+}
+</code></pre>
+<h2 id="高级主题">高级主题</h2>
+<h3 id="自定义资源源">自定义资源源</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Resources;
+
+// 创建自定义资源源
+var customSource = new ResourceSource
+{
+    Name = &quot;My Custom Source&quot;,
+    BaseUrl = &quot;https://my-custom-mirror.com/&quot;,
+    GameManifestUrl = &quot;https://my-custom-mirror.com/game_manifest.json&quot;,
+    LibraryUrl = &quot;https://my-custom-mirror.com/libraries/&quot;,
+    AssetUrl = &quot;https://my-custom-mirror.com/assets/&quot;,
+    VersionUrl = &quot;https://my-custom-mirror.com/versions/&quot;
+};
+
+// 使用自定义资源源获取版本列表
+var resourceHelper = new GameResourceHelper(customSource);
+var versions = await resourceHelper.GetMinecraftListAsync();
+</code></pre>
+<h3 id="扩展-mod-支持">扩展 Mod 支持</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+public class MyCustomModLoaderInstaller : InstallerBase
+{
+    public override Task&lt;bool&gt; InstallAsync(
+        string versionId,
+        string inheritsFromJson,
+        string? para1,
+        string? para2,
+        string? para3,
+        string? para4
+    )
+    {
+        // 实现自定义 Mod 加载器的安装逻辑
+        return Task.FromResult(true);
+    }
+}
+
+// 使用自定义安装器
+var customInstaller = new MyCustomModLoaderInstaller();
+await customInstaller.InstallAsync(
+    &quot;1.20.1-mycustomloader-1.0&quot;,
+    null,
+    &quot;1.0&quot;,
+    &quot;1.20.1&quot;,
+    null,
+    null
+);
+</code></pre>
+<h3 id="自定义启动参数">自定义启动参数</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Launcher;
+
+var launchParams = new LauncherParam
+{
+    GameDir = @&quot;C:\Game\.minecraft&quot;,
+    Version = &quot;1.20.1&quot;,
+    JavaPath = @&quot;C:\Program Files\Java\jre-17\bin\javaw.exe&quot;,
+    MaxMemory = 4096,
+    MinMemory = 1024,
+    // 自定义 JVM 参数
+    JvmArgs = new List&lt;string&gt;
+    {
+        &quot;-XX:+UseG1GC&quot;,
+        &quot;-XX:G1HeapRegionSize=4M&quot;,
+        &quot;-XX:+UnlockExperimentalVMOptions&quot;,
+        &quot;-XX:+UseCompressedOops&quot;
+    },
+    // 自定义游戏参数
+    GameArgs = new List&lt;string&gt;
+    {
+        &quot;--fullscreen&quot;,
+        &quot;--server&quot;, &quot;mc.hypixel.net&quot;,
+        &quot;--port&quot;, &quot;25565&quot;
+    }
+};
+</code></pre>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="1-游戏启动失败">1. 游戏启动失败</h3>
+<p><strong>问题</strong>：游戏无法正常启动，提示找不到 Java 路径。</p>
+<p><strong>解决方案</strong>：</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers;
+
+var javaHelper = new JavaHelper();
+
+// 搜索系统中的 Java
+var javaLocations = await javaHelper.SearchForJavaAsync();
+
+if (javaLocations.Any())
+{
+    var firstJava = javaLocations.First();
+
+    var launchParams = new LauncherParam
+    {
+        JavaPath = firstJava.Path,
+        // 其他参数...
+    };
+}
+else
+{
+    Console.WriteLine(&quot;未找到 Java 运行时，请确保已安装 Java。&quot;);
+}
+</code></pre>
+<h3 id="2-资源下载失败">2. 资源下载失败</h3>
+<p><strong>问题</strong>：游戏资源或 Mod 无法下载，网络连接失败。</p>
+<p><strong>解决方案</strong>：</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Resources;
+
+var downloader = new ResourceDownloader();
+downloader.MaxRetries = 3; // 增加重试次数
+downloader.Timeout = TimeSpan.FromMinutes(5); // 增加超时时间
+
+try
+{
+    await downloader.DownloadGameResourcesAsync(&quot;1.20.1&quot;, @&quot;C:\Game\.minecraft&quot;);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;下载失败: {ex.Message}&quot;);
+    Console.WriteLine(&quot;请检查网络连接或尝试使用其他资源源。&quot;);
+}
+</code></pre>
+<h2 id="性能优化">性能优化</h2>
+<h3 id="1-资源缓存策略">1. 资源缓存策略</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Resources;
+
+// 配置资源缓存
+var cacheOptions = new ResourceCacheOptions
+{
+    MaxCacheSize = 10 * 1024 * 1024 * 1024, // 10GB
+    CacheExpiration = TimeSpan.FromDays(7), // 缓存过期时间
+    UseDiskCache = true, // 启用磁盘缓存
+    CacheLocation = @&quot;C:\Game\.minecraft\cache&quot; // 缓存位置
+};
+
+var resourceHelper = new GameResourceHelper(cacheOptions);
+
+// 使用缓存获取版本信息
+var versions = await resourceHelper.GetMinecraftListAsync(1);
+</code></pre>
+<h3 id="2-并发下载优化">2. 并发下载优化</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Downloader;
+
+var downloader = new Downloader
+{
+    MaxConcurrentDownloads = 8, // 并发下载数
+    ChunkSize = 4 * 1024 * 1024, // 分块大小
+    RetryCount = 3 // 重试次数
+};
+
+var downloadTasks = new List&lt;Task&gt;
+{
+    downloader.DownloadAsync(&quot;http://example.com/file1.jar&quot;, &quot;file1.jar&quot;),
+    downloader.DownloadAsync(&quot;http://example.com/file2.jar&quot;, &quot;file2.jar&quot;),
+    downloader.DownloadAsync(&quot;http://example.com/file3.jar&quot;, &quot;file3.jar&quot;)
+};
+
+await Task.WhenAll(downloadTasks);
+</code></pre>
+<h2 id="贡献指南">贡献指南</h2>
+<p>我们欢迎开发者为 Qomicex.Core 项目做出贡献！以下是贡献步骤：</p>
+<ol>
+<li><strong>Fork 项目</strong>：在 GitHub 上 Fork 项目到自己的仓库</li>
+<li><strong>克隆项目</strong>：克隆自己的仓库到本地</li>
+<li><strong>创建分支</strong>：创建一个新的分支用于开发</li>
+<li><strong>开发功能</strong>：实现新功能或修复 bug</li>
+<li><strong>编写测试</strong>：为新功能编写测试代码</li>
+<li><strong>提交修改</strong>：提交修改到本地仓库</li>
+<li><strong>创建 PR</strong>：在 GitHub 上创建 Pull Request</li>
+<li><strong>等待审核</strong>：等待项目维护者审核您的 PR</li>
+</ol>
+<h2 id="许可证">许可证</h2>
+<p>Qomicex.Core 项目采用 MIT 许可证，允许您自由地使用、修改和分发项目代码。详细信息请查看项目根目录下的 LICENSE 文件。</p>
+<h2 id="联系方式">联系方式</h2>
+<ul>
+<li><strong>项目仓库</strong>：https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia</li>
+<li><strong>问题反馈</strong>：https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/issues</li>
+<li><strong>讨论交流</strong>：https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/discussions</li>
+</ul>
+<h2 id="其他资源">其他资源</h2>
+<ul>
+<li><strong>API 文档</strong>：http://localhost:8083/api/</li>
+<li><strong>示例代码</strong>：https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/tree/main/Examples</li>
+<li><strong>变更日志</strong>：https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/CHANGELOG.md</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

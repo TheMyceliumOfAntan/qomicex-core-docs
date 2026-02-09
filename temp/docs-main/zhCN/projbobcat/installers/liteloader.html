@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>LiteLoader 安装器 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="LiteLoader 安装器 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/projbobcat/installers/liteloader.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="liteloader-安装器">LiteLoader 安装器</h1>
+
+<p>[[toc]]</p>
+<p>::: tip</p>
+<p>请注意，ProjBobcat 仅实现了 LiteLoader 自动化安装流程，您仍然需要自己实现 LiteLoader 安装包的搜索、下载、保存流程。</p>
+<p>:::</p>
+<p>::: warning</p>
+<p>LiteLoader 作为早期 MineCraft 的模组系统，已经长期缺乏维护和后续支持。
+因此，我们可能会在后续的版本中移除对 LiteLoader 安装的支持。</p>
+<p>:::</p>
+<h2 id="实用资源">实用资源</h2>
+<ul>
+<li><a href="https://dl.liteloader.com/versions/versions.json">LiteLoader Versions API</a></li>
+<li><a href="https://bmclapidoc.bangbang93.com/">BMCLAPI 开发文档</a></li>
+</ul>
+<h2 id="获取-liteloader-download-version-model">获取 LiteLoader Download Version Model</h2>
+<p>由于 ProjBobcat 的 LiteLoader 安装器要求您在初始化安装器时提供来自 LiteLoader 的下载信息。
+因此，我们将在这里简要描述如何根据指定的 MineCraft 版本来获取该信息。</p>
+<p>::: info</p>
+<p>在该示例中，我们将使用 MineCraft 1.7.10 来向您展示如何获取。</p>
+<p>:::</p>
+<p>::: warning</p>
+<p>由于 LiteLoader 官方没有提供公开的 API 文档。因此，在本流程中，我们需要使用第三方的镜像源来完成数据的获取。
+在这里，我们使用 <a href="https://bmclapidoc.bangbang93.com/">BMCLAPI</a> 来获取相关的版本信息。</p>
+<p>:::</p>
+<p>首先，您需要向 <a href="https://bmclapi2.bangbang93.com/liteloader/list?mcversion=1.7.10">https://bmclapi2.bangbang93.com/liteloader/list?mcversion=[MC_VERSION]</a> 发送一个 <strong>HTTP GET</strong> 请求。
+将 <code>[MC_VERSION]</code> 替换为您想要安装的 MineCraft 版本。在这里，我们将使用 1.7.10。</p>
+<p>您将看到类似下面的返回内容：</p>
+<pre><code class="lang-json">{
+  &quot;_id&quot;: &quot;59685511433f993503c1c879&quot;,
+  &quot;mcversion&quot;: &quot;1.7.10&quot;,
+  &quot;build&quot;: {
+    &quot;tweakClass&quot;: &quot;com.mumfrey.liteloader.launch.LiteLoaderTweaker&quot;,
+    &quot;libraries&quot;: [...],
+    &quot;stream&quot;: &quot;RELEASE&quot;,
+    &quot;file&quot;: &quot;liteloader-1.7.10.jar&quot;,
+    &quot;version&quot;: &quot;1.7.10_04&quot;,
+    &quot;md5&quot;: &quot;63ada46e033d0cb6782bada09ad5ca4e&quot;,
+    &quot;timestamp&quot;: &quot;1414368553&quot;,
+    &quot;srcJar&quot;: &quot;liteloader-1.7.10_04-mcpnames-sources.jar&quot;,
+    &quot;mcpJar&quot;: &quot;liteloader-1.7.10_04-mcpnames.jar&quot;
+  },
+  &quot;hash&quot;: &quot;63ada46e033d0cb6782bada09ad5ca4e&quot;,
+  &quot;type&quot;: &quot;RELEASE&quot;,
+  &quot;version&quot;: &quot;1.7.10_04&quot;,
+  &quot;__v&quot;: 0
+}
+</code></pre>
+<p>BMCLAPI 将返回一个 JSON 对象，将该对象反序列化为 ProjBobcat 类型即是我们需要的 <code>LiteLoaderDownloadVersionModel</code>。</p>
+<h4 id="将-json-返回转换为-projbobcat-类型">将 JSON 返回转换为 ProjBobcat 类型</h4>
+<p>如果您在您的项目中使用 <a href="https://www.newtonsoft.com/json">JSON.NET</a>（Newtonsoft.JSON）。
+您可以使用类似下面的代码来将您获取到的服务器响应转换为对应的 ProjBobcat 类型：</p>
+<pre><code class="lang-c#">// 从 BMCLAPI 请求数据（示例，非实际代码）
+...
+var responseJson = await res.Content.ReadAsStringAsync();
+
+// 将 JSON 响应转换为 ProjBobcat 类型 // [!code focus]
+var versionModel = JsonConvert.DeserializeObject&lt;LiteLoaderDownloadVersionModel&gt;(responseJson); // [!code focus]
+</code></pre>
+<p>此处，<strong>versionModel</strong> 即是 Fabric 安装器所需要的 <code>LiteLoaderDownloadVersionMode</code>。</p>
+<h2 id="获取-rawversionmodel">获取 RawVersionModel</h2>
+<p>在初始化 LiteLoader 安装器时，安装器需要使用 LiteLoader 对应的 MineCraft 游戏版本的原始 JSON 内容。
+即 <code>[ROOT_PATH]/versions/[MC_VERSION]/[MC_VERSION].json</code> 文件的内容。</p>
+<p>如果您已经安装了 LiteLoader 对应的原版游戏，您可以通过下面的代码获取到 <code>RawVersionModel</code>：</p>
+<pre><code class="lang-c#">// 获取版本 JSON 文件所在的路径
+var jsonPath = GamePathHelper.GetGameJsonPath(rP，id);
+
+// 读取该文件的内容
+var jsonContent = await File.ReadAllTextAsync(jsonPath);
+
+// 将 JSON 内容转换为 RawVersionModel
+var baseVersionModel = JsonConvert.DeserializeObject&lt;RawVersionModel&gt;(jsonContent);
+</code></pre>
+<p>此处，<strong>baseVersionModel</strong> 即是 LiteLoader 安装器所需要的 <code>RawVersionModel</code>。</p>
+<h2 id="初始化安装器">初始化安装器</h2>
+<p>初始化 LiteLoader 安装器的方式非常简单。
+您需要使用到在先前步骤中取得的 <code>versionModel</code> 和 <code>baseVersionModel</code> 来初始化安装器：</p>
+<pre><code class="lang-c#">var liteLoaderInstaller = new LiteLoaderInstaller
+{
+    InheritVersion = baseVersionModel,
+    InheritsFrom = &quot;[MC_VERSION_OR_GAME_ID]&quot;,
+    RootPath = &quot;[GAME_ROOT_PATH]&quot;,
+    VersionModel = versionModel,
+    CustomId = &quot;[CUSTOM_INSTALL_GAME_ID]&quot;
+};
+</code></pre>
+<p>在上述代码块中，请将这些参数按照您的实际情况替换：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">项目</th>
+<th style="text-align: center;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">[GAME_ROOT_PATH]</td>
+<td style="text-align: center;">游戏根目录，通常为 .minecraft 文件夹的路径</td>
+</tr>
+<tr>
+<td style="text-align: center;">[CUSTOM_INSTALL_GAME_ID]</td>
+<td style="text-align: center;">可选项，自定义即将要安装的游戏的名称</td>
+</tr>
+<tr>
+<td style="text-align: center;">[MC_VERSION_OR_GAME_ID]</td>
+<td style="text-align: center;">Forge 继承的 MineCraft 原版游戏版本，通常为游戏版本。例如：1.19.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">[VERSION_LOCATOR_INST]</td>
+<td style="text-align: center;">游戏版本定位器实例，即初始化游戏核心时的 <strong>VersionLocator</strong> 属性</td>
+</tr>
+</tbody>
+</table>
+<h2 id="开始安装">开始安装</h2>
+<p>在您完成安装器的初始化后，您只需要调用 LiteLoader 安装器的安装方法来完成安装。</p>
+<p>在异步上下文中，使用 <strong>InstallTaskAsync</strong> 来完成安装：</p>
+<pre><code class="lang-c#">await liteLoaderInstaller.InstallTaskAsync();
+</code></pre>
+<p>在同步上下文中，使用 <strong>Install</strong> 来完成安装：</p>
+<pre><code class="lang-c#">liteLoaderInstaller.Install();
+</code></pre>
+<h2 id="报告安装进度">报告安装进度</h2>
+<p>在某些情况下，LiteLoader 安装器可能会需要数分钟的时间来完成安装。
+因此，您可能需要实时向用户汇报安装器目前的进度。
+为此，LiteLoader 安装器提供了 <strong>StageChangedEventDelegate</strong> 事件来帮助您实现任务汇报。
+您只需要简单地在 <strong>开始安装之前</strong> 注册下面的事件：</p>
+<pre><code class="lang-c#">liteLoaderInstaller.StageChangedEventDelegate += (_，args) =&gt; {
+    ReportProgress(args.Progress，args.CurrentStage);
+};
+</code></pre>
+<p>其中， <strong>args.Progress</strong> 指示了安装器当前的百分比进度。<strong>args.CurrentStage</strong> 则是安装器当前进度的文字描述。</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/projbobcat/installers/liteloader.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

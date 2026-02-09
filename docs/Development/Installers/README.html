@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>安装器 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="安装器 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/Installers/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="安装器">安装器</h1>
+
+<p>在 Qomicex.Core 中，我们已经为开发者实现了您在 Minecraft 开发过程中可能遇到的大部分模组基础设施。</p>
+<h2 id="支持列表">支持列表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">项目名称</th>
+<th style="text-align: center;">支持状态</th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Forge （旧版）</td>
+<td style="text-align: center;">受支持</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: center;">Forge （新版）</td>
+<td style="text-align: center;">受支持</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: center;">LiteLoader</td>
+<td style="text-align: center;">受支持</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: center;">Fabric</td>
+<td style="text-align: center;">受支持</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: center;">Optifine</td>
+<td style="text-align: center;">受支持</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: center;">Quilt</td>
+<td style="text-align: center;">受支持</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: center;">CurseForge 整合包</td>
+<td style="text-align: center;">受支持</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<p>[[toc]]</p>
+<h2 id="通用安装接口">通用安装接口</h2>
+<p>所有的安装器都实现了相同的接口，这使得在代码中切换不同的安装器变得非常简单。</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+public interface IInstaller
+{
+    // 获取安装器信息
+    InstallerInfo GetInstallerInfo();
+
+    // 安装 Mod 加载器
+    Task&lt;InstallResult&gt; InstallAsync(string versionId, string inheritsFromJson, string para1, string para2, string para3, string para4);
+
+    // 验证安装
+    Task&lt;ValidationResult&gt; ValidateAsync(string versionId, string gameDirectory);
+
+    // 获取支持的版本
+    Task&lt;IEnumerable&lt;VersionInfo&gt;&gt; GetSupportedVersionsAsync(string gameVersion);
+}
+</code></pre>
+<h2 id="安装器基类">安装器基类</h2>
+<p>所有的安装器都继承自 InstallerBase 类，它提供了通用的安装功能。</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+public abstract class InstallerBase : IInstaller
+{
+    // 通用下载方法
+    protected async Task&lt;string&gt; DownloadFileAsync(string url, string destinationPath);
+
+    // 通用文件操作方法
+    protected void ExtractArchive(string archivePath, string destinationPath);
+
+    // 通用配置文件处理方法
+    protected string MergeVersionJson(string mainVersionJson, string mergedVersionJson, string? defaultVersionId);
+
+    // 通用依赖检查方法
+    protected async Task&lt;bool&gt; CheckDependenciesAsync(string versionId);
+}
+</code></pre>
+<h2 id="forge-安装器">Forge 安装器</h2>
+<h3 id="使用方法">使用方法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+// 创建 Forge 安装器实例
+var forgeInstaller = new ForgeInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+try
+{
+    // 安装 Forge
+    var result = await forgeInstaller.InstallAsync(
+        &quot;1.20.1-forge-47.1.3&quot;, // 版本 ID
+        null, // 继承版本 JSON（可选）
+        &quot;1.20.1&quot;, // 游戏版本
+        &quot;47.1.3&quot;, // Forge 版本
+        null, // 额外参数 1
+        null // 额外参数 2
+    );
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;Forge 安装成功！&quot;);
+        Console.WriteLine($&quot;安装路径: {result.InstallPath}&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;安装失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;安装过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h3 id="高级用法">高级用法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+var forgeInstaller = new ForgeInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+// 检查 Forge 版本是否与游戏版本兼容
+var compatible = await forgeInstaller.CheckCompatibilityAsync(&quot;1.20.1&quot;, &quot;47.1.3&quot;);
+if (compatible)
+    Console.WriteLine(&quot;版本兼容&quot;);
+
+// 获取支持的 Forge 版本
+var supportedVersions = await forgeInstaller.GetSupportedVersionsAsync(&quot;1.20.1&quot;);
+foreach (var version in supportedVersions)
+{
+    Console.WriteLine($&quot;版本: {version.Version}&quot;);
+    Console.WriteLine($&quot;类型: {version.Type}&quot;);
+    Console.WriteLine($&quot;下载链接: {version.DownloadUrl}&quot;);
+}
+</code></pre>
+<h2 id="fabric-安装器">Fabric 安装器</h2>
+<h3 id="使用方法-1">使用方法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+// 创建 Fabric 安装器实例
+var fabricInstaller = new FabricInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+try
+{
+    // 安装 Fabric
+    var result = await fabricInstaller.InstallAsync(
+        &quot;1.20.1-fabric-0.14.24&quot;, // 版本 ID
+        null, // 继承版本 JSON（可选）
+        &quot;1.20.1&quot;, // 游戏版本
+        &quot;0.14.24&quot;, // Fabric 版本
+        null, // 额外参数 1
+        null // 额外参数 2
+    );
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;Fabric 安装成功！&quot;);
+        Console.WriteLine($&quot;安装路径: {result.InstallPath}&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;安装失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;安装过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h3 id="高级用法-1">高级用法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+var fabricInstaller = new FabricInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+// 获取支持的 Fabric 版本
+var supportedVersions = await fabricInstaller.GetSupportedVersionsAsync(&quot;1.20.1&quot;);
+foreach (var version in supportedVersions)
+{
+    Console.WriteLine($&quot;版本: {version.Version}&quot;);
+    Console.WriteLine($&quot;类型: {version.Type}&quot;);
+    Console.WriteLine($&quot;下载链接: {version.DownloadUrl}&quot;);
+}
+
+// 验证 Fabric 安装
+var validationResult = await fabricInstaller.ValidateAsync(&quot;1.20.1-fabric-0.14.24&quot;, @&quot;C:\Games\.minecraft&quot;);
+if (validationResult.IsValid)
+    Console.WriteLine(&quot;Fabric 安装验证成功！&quot;);
+else
+    Console.WriteLine($&quot;验证失败: {validationResult.ErrorMessage}&quot;);
+</code></pre>
+<h2 id="quilt-安装器">Quilt 安装器</h2>
+<h3 id="使用方法-2">使用方法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+// 创建 Quilt 安装器实例
+var quiltInstaller = new QuiltInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+try
+{
+    // 安装 Quilt
+    var result = await quiltInstaller.InstallAsync(
+        &quot;1.20.1-quilt-0.18.10&quot;, // 版本 ID
+        null, // 继承版本 JSON（可选）
+        &quot;1.20.1&quot;, // 游戏版本
+        &quot;0.18.10&quot;, // Quilt 版本
+        null, // 额外参数 1
+        null // 额外参数 2
+    );
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;Quilt 安装成功！&quot;);
+        Console.WriteLine($&quot;安装路径: {result.InstallPath}&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;安装失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;安装过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h2 id="liteloader-安装器">LiteLoader 安装器</h2>
+<h3 id="使用方法-3">使用方法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+// 创建 LiteLoader 安装器实例
+var liteLoaderInstaller = new LiteloaderInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+try
+{
+    // 安装 LiteLoader
+    var result = await liteLoaderInstaller.InstallAsync(
+        &quot;1.12.2-liteloader-1.12.2-SNAPSHOT&quot;, // 版本 ID
+        null, // 继承版本 JSON（可选）
+        &quot;1.12.2&quot;, // 游戏版本
+        null, // LiteLoader 版本（自动获取）
+        null, // 额外参数 1
+        null // 额外参数 2
+    );
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;LiteLoader 安装成功！&quot;);
+        Console.WriteLine($&quot;安装路径: {result.InstallPath}&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;安装失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;安装过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h2 id="optifine-安装器">OptiFine 安装器</h2>
+<h3 id="使用方法-4">使用方法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+// 创建 OptiFine 安装器实例
+var optifineInstaller = new OptiFineInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+try
+{
+    // 安装 OptiFine
+    var result = await optifineInstaller.InstallAsync(
+        &quot;1.20.1-optifine-HD_U_I5&quot;, // 版本 ID
+        null, // 继承版本 JSON（可选）
+        &quot;1.20.1&quot;, // 游戏版本
+        &quot;HD_U_I5&quot;, // OptiFine 版本
+        null, // 额外参数 1
+        null // 额外参数 2
+    );
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;OptiFine 安装成功！&quot;);
+        Console.WriteLine($&quot;安装路径: {result.InstallPath}&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;安装失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;安装过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h2 id="curseforge-整合包安装器">CurseForge 整合包安装器</h2>
+<h3 id="使用方法-5">使用方法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+// 创建 CurseForge 整合包安装器实例
+var modpackInstaller = new CurseForgeModPackInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+try
+{
+    // 安装 CurseForge 整合包
+    var result = await modpackInstaller.InstallAsync(
+        &quot;my-modpack&quot;, // 版本 ID
+        null, // 继承版本 JSON（可选）
+        &quot;curseforge-modpack-id&quot;, // CurseForge 整合包 ID
+        &quot;1.0.0&quot;, // 整合包版本
+        null, // 额外参数 1
+        null // 额外参数 2
+    );
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;CurseForge 整合包安装成功！&quot;);
+        Console.WriteLine($&quot;安装路径: {result.InstallPath}&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;安装失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;安装过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h2 id="安装结果">安装结果</h2>
+<p>所有的安装器都会返回一个统一的安装结果对象：</p>
+<pre><code class="lang-csharp">public class InstallResult
+{
+    public bool IsSuccess { get; set; }
+    public string InstallPath { get; set; }
+    public string ErrorMessage { get; set; }
+    public string Log { get; set; }
+}
+</code></pre>
+<h2 id="验证安装">验证安装</h2>
+<p>在安装完成后，您可以使用 ValidateAsync 方法来验证安装是否成功：</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+var installer = new FabricInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+var validationResult = await installer.ValidateAsync(&quot;1.20.1-fabric-0.14.24&quot;, @&quot;C:\Games\.minecraft&quot;);
+
+if (validationResult.IsValid)
+{
+    Console.WriteLine(&quot;安装验证成功！&quot;);
+}
+else
+{
+    Console.WriteLine($&quot;验证失败: {validationResult.ErrorMessage}&quot;);
+
+    // 列出所有验证问题
+    foreach (var issue in validationResult.Issues)
+    {
+        Console.WriteLine($&quot;问题: {issue.Description} ({issue.Severity})&quot;);
+    }
+}
+</code></pre>
+<h2 id="安装过程监控">安装过程监控</h2>
+<p>您可以通过安装事件来监控安装过程：</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+var installer = new ForgeInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;);
+
+// 安装进度事件
+installer.ProgressChanged += (sender, args) =&gt;
+{
+    Console.WriteLine($&quot;安装进度: {args.ProgressPercentage}%&quot;);
+    Console.WriteLine($&quot;当前任务: {args.CurrentTask}&quot;);
+    Console.WriteLine($&quot;已下载: {args.DownloadedSize} / {args.TotalSize}&quot;);
+};
+
+// 下载完成事件
+installer.DownloadCompleted += (sender, args) =&gt;
+{
+    Console.WriteLine(&quot;下载完成！&quot;);
+};
+
+// 提取完成事件
+installer.ExtractionCompleted += (sender, args) =&gt;
+{
+    Console.WriteLine(&quot;文件提取完成！&quot;);
+};
+
+// 配置完成事件
+installer.ConfigurationCompleted += (sender, args) =&gt;
+{
+    Console.WriteLine(&quot;配置完成！&quot;);
+};
+
+try
+{
+    var result = await installer.InstallAsync(...);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;安装过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h2 id="安装优化">安装优化</h2>
+<h3 id="多线程下载">多线程下载</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+// 配置下载选项
+var downloadOptions = new DownloadOptions
+{
+    MaxConcurrentDownloads = 8, // 最大并发下载数
+    ChunkSize = 4 * 1024 * 1024, // 分块大小
+    RetryCount = 3, // 重试次数
+    Timeout = TimeSpan.FromSeconds(30) // 超时时间
+};
+
+var installer = new ForgeInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;, downloadOptions);
+</code></pre>
+<h3 id="缓存配置">缓存配置</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
+
+// 配置缓存选项
+var cacheOptions = new CacheOptions
+{
+    EnableCache = true, // 启用缓存
+    CacheLocation = @&quot;C:\Games\.minecraft\cache&quot;, // 缓存位置
+    CacheDuration = TimeSpan.FromDays(7), // 缓存有效期
+    MaxCacheSize = 10 * 1024 * 1024 * 1024 // 最大缓存大小（10GB）
+};
+
+var installer = new FabricInstaller((int)DownloadSource.Official, @&quot;C:\Games\.minecraft&quot;, cacheOptions);
+</code></pre>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="安装失败">安装失败</h3>
+<p>如果安装失败，可以检查以下几个方面：</p>
+<ol>
+<li>网络连接是否正常</li>
+<li>游戏目录是否有写入权限</li>
+<li>下载源是否可用</li>
+<li>磁盘空间是否充足</li>
+<li>安装文件是否完整</li>
+</ol>
+<h3 id="依赖检查失败">依赖检查失败</h3>
+<p>如果依赖检查失败，可以检查：</p>
+<ol>
+<li>是否缺少必要的依赖库</li>
+<li>依赖库的版本是否匹配</li>
+<li>依赖库是否已正确安装</li>
+</ol>
+<h3 id="配置文件错误">配置文件错误</h3>
+<p>如果配置文件错误，可以检查：</p>
+<ol>
+<li>配置文件是否已正确生成</li>
+<li>配置文件中的路径是否正确</li>
+<li>配置文件是否有语法错误</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/Installers/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

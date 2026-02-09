@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>针对 Linux 系统的特殊设置 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="针对 Linux 系统的特殊设置 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/lxguide/startup/perOsSetup/linux.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="针对-linux-系统的特殊设置">针对 Linux 系统的特殊设置</h1>
+
+<p>[[toc]]</p>
+<h2 id="对于基于-arm64-架构的-linux-发行版">对于基于 ARM64 架构的 Linux 发行版</h2>
+<p>::: warning</p>
+<p>由于 Mojang 官方还并未正式支持 ARM64 版本的 Linux 游戏。
+因此，在使用 LauncherX 之前，您需要手动下载并安装 JRE 运行时。</p>
+<p>:::</p>
+<h3 id="下载并安装-jre-运行时">下载并安装 JRE 运行时</h3>
+<p>在这里我们将使用 <a href="https://www.azul.com/downloads/#zulu">Azul JDK</a> 来演示 JRE 的安装。</p>
+<p>在 <a href="https://www.azul.com/downloads/#zulu">Azul JDK 官方网站</a> 中，稍微下拉一点即可看到 JDK 版本筛选框：</p>
+<p><img src="/img/lxguide/perOsSetup/azul-website.png" alt="azul-website"></p>
+<p>在 <strong>Operating System</strong> 处选择 <strong>Linux</strong>，在 <strong>Architecture</strong> 处选择 <strong>ARM 64-bit</strong>
+即可获取到所有可用的 JDK 版本。</p>
+<p>在右侧的 <strong>Download</strong> 按钮中选择 <code>.tar.gz</code> 格式的 JDK 运行时，下载后将其解压到任意一处本地文件夹。
+随后在 LauncherX 中选择 <strong>手动添加</strong>，并选择 JDK 文件夹 <strong>bin/</strong> 目录下的 <strong>java</strong> 可执行文件即可。</p>
+<p>有关于JRE的选择，参见:   <a href="/zhCN/lxguide/others/adjust-ram-gc-ja">配置内存和GC、JavaAgent</a></p>
+<h2 id="如果您无法启动">如果您无法启动</h2>
+<p>您需要尝试做出以下操作：</p>
+<ul>
+<li>打开新的终端，或者使用刚才出现的终端</li>
+<li>在其中键入 <code>export LC_CTYPE=en_US.UTF-8</code>，执行</li>
+<li>（如果有必要的话，上述步骤可以使用管理员权限[sudo]）</li>
+<li>再次尝试运行。如果失败，尝试重新登录。</li>
+<li>如果再次失败，请务必依照 <a href="/zhCN/lxguide/report-issue">这里的方法</a> 向我们反馈。</li>
+</ul>
+<p>:::tip 这个问题可能已经在正式发布的稳定版中解决了.</p>
+<p>:::</p>
+<h2 id="其他建议">其他建议</h2>
+<p>若您需要其他更加详细的配置，或者纯小白用户，建议阅读：<a href="/zhCN/lxguide/startup/others/Linux-Guide">Linux配置指南</a></p>
+<ul>
+<li>专项：Linux需要其他平台一样的UI外观！如何移除掉丑陋的标题栏并保持窗口按钮：<a href="/zhCN/lxguide/settings/special/linux-as-others">Linux：干掉标题栏，还我一致感 | 日冕知识库</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/lxguide/startup/perOsSetup/linux.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

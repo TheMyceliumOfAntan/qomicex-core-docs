@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>验证模型 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="验证模型 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/Authenticators/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="验证模型">验证模型</h1>
+
+<p>在 Qomicex.Core 中，我们已经为开发者实现了您在 Minecraft 开发过程中可能遇到的所有的验证情形。</p>
+<h2 id="支持列表">支持列表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">模型名称</th>
+<th style="text-align: center;">适用情形</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">OfflineAuthenticator</td>
+<td style="text-align: center;">离线验证模型</td>
+</tr>
+<tr>
+<td style="text-align: center;">YggdrasilAuthenticator</td>
+<td style="text-align: center;">适用于旧版本的登录模型</td>
+</tr>
+<tr>
+<td style="text-align: center;">MicrosoftAuthenticator</td>
+<td style="text-align: center;">新版的微软验证模型</td>
+</tr>
+</tbody>
+</table>
+<p>[[toc]]</p>
+<h2 id="offlineauthenticator离线验证模型">OfflineAuthenticator（离线验证模型）</h2>
+<h3 id="概述">概述</h3>
+<p>离线验证模型是 Qomicex.Core 提供的最简单的验证方式，它不需要任何网络连接或用户凭证。使用该模型可以快速启动游戏，但只能进行单人游戏或局域网游戏。</p>
+<h3 id="使用方法">使用方法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Offline;
+
+// 创建离线验证器实例
+var authenticator = new OfflineAuthenticator
+{
+    Username = &quot;Player&quot; // 自定义玩家名称
+};
+
+try
+{
+    // 执行验证
+    var result = await authenticator.AuthenticateAsync();
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;离线验证成功！&quot;);
+        Console.WriteLine($&quot;玩家名称: {result.PlayerName}&quot;);
+        Console.WriteLine($&quot;UUID: {result.UUID}&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;验证失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;验证过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h3 id="特点">特点</h3>
+<ul>
+<li>不需要网络连接</li>
+<li>不需要用户凭证</li>
+<li>验证过程非常快速</li>
+<li>支持自定义玩家名称</li>
+<li>可以快速启动游戏</li>
+<li>适用于开发和测试环境</li>
+</ul>
+<h2 id="yggdrasilauthenticator旧版登录模型">YggdrasilAuthenticator（旧版登录模型）</h2>
+<h3 id="概述-1">概述</h3>
+<p>Yggdrasil 验证模型是 Mojang 官方提供的验证方式，适用于使用 Mojang 账号登录的用户。该验证模型需要网络连接，并使用用户名和密码进行验证。</p>
+<h3 id="使用方法-1">使用方法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Yggdrasil;
+
+// 创建 Yggdrasil 验证器实例
+var authenticator = new YggdrasilAuthenticator
+{
+    Username = &quot;your-email@example.com&quot;, // 您的 Mojang 账号
+    Password = &quot;your-password&quot; // 您的密码
+};
+
+try
+{
+    // 执行验证
+    var result = await authenticator.AuthenticateAsync();
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;Yggdrasil 验证成功！&quot;);
+        Console.WriteLine($&quot;玩家名称: {result.PlayerName}&quot;);
+        Console.WriteLine($&quot;UUID: {result.UUID}&quot;);
+        Console.WriteLine($&quot;访问令牌: {result.AccessToken}&quot;);
+        Console.WriteLine($&quot;客户端令牌: {result.ClientToken}&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;验证失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;验证过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h3 id="特点-1">特点</h3>
+<ul>
+<li>支持 Mojang 账号登录</li>
+<li>需要网络连接</li>
+<li>支持离线模式（通过访问令牌）</li>
+<li>支持刷新访问令牌</li>
+<li>支持验证访问令牌有效性</li>
+</ul>
+<h3 id="高级功能">高级功能</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Yggdrasil;
+
+// 创建验证器实例
+var authenticator = new YggdrasilAuthenticator
+{
+    Username = &quot;your-email@example.com&quot;,
+    Password = &quot;your-password&quot;
+};
+
+// 验证
+var result = await authenticator.AuthenticateAsync();
+
+if (result.IsSuccess)
+{
+    // 验证访问令牌
+    var validateResult = await authenticator.ValidateTokenAsync(result.AccessToken, result.ClientToken);
+    Console.WriteLine($&quot;访问令牌有效: {validateResult.IsSuccess}&quot;);
+
+    // 刷新访问令牌
+    var refreshResult = await authenticator.RefreshTokenAsync(result.AccessToken, result.ClientToken);
+    if (refreshResult.IsSuccess)
+    {
+        Console.WriteLine($&quot;刷新访问令牌成功！&quot;);
+        Console.WriteLine($&quot;新访问令牌: {refreshResult.AccessToken}&quot;);
+    }
+
+    // 失效访问令牌
+    var invalidateResult = await authenticator.InvalidateTokenAsync(result.AccessToken, result.ClientToken);
+    Console.WriteLine($&quot;失效访问令牌成功: {invalidateResult.IsSuccess}&quot;);
+}
+</code></pre>
+<h2 id="microsoftauthenticator新版微软验证模型">MicrosoftAuthenticator（新版微软验证模型）</h2>
+<h3 id="概述-2">概述</h3>
+<p>Microsoft 验证模型是 Mojang 官方推荐的验证方式，适用于使用 Microsoft 账号登录的用户。该验证模型需要网络连接，并使用 Microsoft 账号进行验证。</p>
+<h3 id="配置">配置</h3>
+<p>在使用 Microsoft 验证模型之前，您需要先配置您的应用程序：</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+// 配置微软验证器
+MicrosoftAuthenticator.Configure(new MicrosoftAuthenticatorAPISettings
+{
+    ClientId = &quot;your-client-id&quot;,
+    TenentId = &quot;consumers&quot;,
+    Scopes = new[] { &quot;XboxLive.signin&quot;, &quot;offline_access&quot;, &quot;openid&quot;, &quot;profile&quot;, &quot;email&quot; }
+});
+</code></pre>
+<h3 id="使用方法-2">使用方法</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+// 创建微软验证器实例
+var authenticator = new MicrosoftAuthenticator();
+
+try
+{
+    // 获取授权 URL
+    var authUrl = authenticator.GetAuthorizationUrl();
+    Console.WriteLine($&quot;请访问以下 URL 进行授权: {authUrl}&quot;);
+
+    // 获取用户输入的授权码
+    Console.Write(&quot;请输入授权码: &quot;);
+    var code = Console.ReadLine();
+
+    // 执行验证
+    var result = await authenticator.AuthorizeAsync(code);
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;Microsoft 验证成功！&quot;);
+        Console.WriteLine($&quot;玩家名称: {result.PlayerName}&quot;);
+        Console.WriteLine($&quot;UUID: {result.UUID}&quot;);
+        Console.WriteLine($&quot;访问令牌: {result.AccessToken}&quot;);
+        Console.WriteLine($&quot;刷新令牌: {result.RefreshToken}&quot;);
+        Console.WriteLine($&quot;过期时间: {result.ExpiresIn} 秒&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;验证失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;验证过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h3 id="特点-2">特点</h3>
+<ul>
+<li>支持 Microsoft 账号登录</li>
+<li>需要网络连接</li>
+<li>支持多因素认证</li>
+<li>支持刷新访问令牌</li>
+<li>支持设备代码流（Device Code Flow）</li>
+</ul>
+<h3 id="设备代码流device-code-flow">设备代码流（Device Code Flow）</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+var authenticator = new MicrosoftAuthenticator();
+
+try
+{
+    // 启动设备代码流
+    var deviceCode = await authenticator.StartDeviceCodeFlowAsync();
+
+    Console.WriteLine($&quot;请访问: {deviceCode.VerificationUri}&quot;);
+    Console.WriteLine($&quot;输入代码: {deviceCode.UserCode}&quot;);
+    Console.WriteLine($&quot;过期时间: {deviceCode.ExpiresIn} 秒&quot;);
+    Console.WriteLine($&quot;轮询间隔: {deviceCode.Interval} 秒&quot;);
+
+    // 等待用户授权
+    var result = await authenticator.WaitForDeviceCodeFlowCompletionAsync(deviceCode);
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine(&quot;Microsoft 验证成功！&quot;);
+        Console.WriteLine($&quot;玩家名称: {result.PlayerName}&quot;);
+        Console.WriteLine($&quot;UUID: {result.UUID}&quot;);
+        Console.WriteLine($&quot;访问令牌: {result.AccessToken}&quot;);
+        Console.WriteLine($&quot;刷新令牌: {result.RefreshToken}&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;验证失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;验证过程中发生错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h2 id="验证结果处理">验证结果处理</h2>
+<h3 id="通用验证结果">通用验证结果</h3>
+<p>所有验证器都会返回一个通用的验证结果对象：</p>
+<pre><code class="lang-csharp">public class AuthenticationResult
+{
+    public bool IsSuccess { get; set; }
+    public string PlayerName { get; set; }
+    public string UUID { get; set; }
+    public string AccessToken { get; set; }
+    public string ClientToken { get; set; }
+    public string RefreshToken { get; set; }
+    public int ExpiresIn { get; set; }
+    public string ErrorMessage { get; set; }
+}
+</code></pre>
+<h3 id="错误处理">错误处理</h3>
+<p>在使用验证器时，您需要处理可能的错误：</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+
+try
+{
+    var result = await authenticator.AuthenticateAsync();
+
+    if (result.IsSuccess)
+    {
+        // 验证成功，处理结果
+    }
+    else
+    {
+        // 验证失败，显示错误信息
+        Console.WriteLine($&quot;验证失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (AuthenticationException ex)
+{
+    // 处理认证相关异常
+    Console.WriteLine($&quot;认证异常: {ex.Message}&quot;);
+}
+catch (NetworkException ex)
+{
+    // 处理网络异常
+    Console.WriteLine($&quot;网络异常: {ex.Message}&quot;);
+}
+catch (Exception ex)
+{
+    // 处理其他异常
+    Console.WriteLine($&quot;其他异常: {ex.Message}&quot;);
+}
+</code></pre>
+<h2 id="最佳实践">最佳实践</h2>
+<h3 id="安全存储凭证">安全存储凭证</h3>
+<p>在实际应用中，您应该妥善存储用户的凭证信息：</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using System.Security.Cryptography;
+using System.Text;
+
+// 加密凭证信息
+public static string Encrypt(string text, string key)
+{
+    // 使用 AES 加密算法
+    using var aes = Aes.Create();
+    aes.Key = Encoding.UTF8.GetBytes(key.PadRight(32).Substring(0, 32));
+    aes.IV = Encoding.UTF8.GetBytes(key.PadRight(16).Substring(0, 16));
+
+    using var encryptor = aes.CreateEncryptor();
+    var bytes = Encoding.UTF8.GetBytes(text);
+    var encrypted = encryptor.TransformFinalBlock(bytes, 0, bytes.Length);
+
+    return Convert.ToBase64String(encrypted);
+}
+
+// 解密凭证信息
+public static string Decrypt(string encryptedText, string key)
+{
+    using var aes = Aes.Create();
+    aes.Key = Encoding.UTF8.GetBytes(key.PadRight(32).Substring(0, 32));
+    aes.IV = Encoding.UTF8.GetBytes(key.PadRight(16).Substring(0, 16));
+
+    using var decryptor = aes.CreateDecryptor();
+    var bytes = Convert.FromBase64String(encryptedText);
+    var decrypted = decryptor.TransformFinalBlock(bytes, 0, bytes.Length);
+
+    return Encoding.UTF8.GetString(decrypted);
+}
+
+// 使用示例
+var encryptedPassword = Encrypt(&quot;your-password&quot;, &quot;your-secret-key&quot;);
+// 存储 encryptedPassword
+
+var decryptedPassword = Decrypt(encryptedPassword, &quot;your-secret-key&quot;);
+// 使用 decryptedPassword 进行验证
+</code></pre>
+<h3 id="会话管理">会话管理</h3>
+<p>您应该正确管理用户的会话：</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+
+// 保存会话信息
+public static void SaveSession(AuthenticationResult result)
+{
+    var session = new
+    {
+        PlayerName = result.PlayerName,
+        UUID = result.UUID,
+        AccessToken = result.AccessToken,
+        ClientToken = result.ClientToken,
+        RefreshToken = result.RefreshToken,
+        ExpiresAt = DateTime.Now.AddSeconds(result.ExpiresIn)
+    };
+
+    var json = JsonConvert.SerializeObject(session);
+    File.WriteAllText(&quot;session.json&quot;, json);
+}
+
+// 加载会话信息
+public static AuthenticationResult LoadSession()
+{
+    if (!File.Exists(&quot;session.json&quot;))
+        return null;
+
+    var json = File.ReadAllText(&quot;session.json&quot;);
+    var session = JsonConvert.DeserializeObject&lt;dynamic&gt;(json);
+
+    // 检查会话是否过期
+    var expiresAt = DateTime.Parse(session.ExpiresAt.ToString());
+    if (expiresAt &lt; DateTime.Now)
+    {
+        File.Delete(&quot;session.json&quot;);
+        return null;
+    }
+
+    return new AuthenticationResult
+    {
+        IsSuccess = true,
+        PlayerName = session.PlayerName,
+        UUID = session.UUID,
+        AccessToken = session.AccessToken,
+        ClientToken = session.ClientToken,
+        RefreshToken = session.RefreshToken,
+        ExpiresIn = (int)(expiresAt - DateTime.Now).TotalSeconds
+    };
+}
+
+// 使用示例
+var existingSession = LoadSession();
+if (existingSession != null)
+{
+    Console.WriteLine($&quot;已登录用户: {existingSession.PlayerName}&quot;);
+}
+else
+{
+    // 显示登录界面
+    var result = await authenticator.AuthenticateAsync();
+    SaveSession(result);
+}
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/Authenticators/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

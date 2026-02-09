@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Linux中LauncherX的配置指南 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Linux中LauncherX的配置指南 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/lxguide/startup/others/Linux-Guide.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="linux中launcherx的配置指南">Linux中LauncherX的配置指南</h1>
+
+<p>LauncherX是一款新生的MC启动器<br>
+当它正式发布时，就成为了Linux上为数不多能愉快使用的MC启动器<br>
+不过别慌，本文章就是为了讲解如何配置LauncherX而生<br>
+接下来，让我们开始配置吧！</p>
+<h2 id="如何下载">如何下载？</h2>
+<p>先更新系统
+然后前往<a href="https://corona.studio/lx">Corona Studios</a>官方网址下载<br>
+下载完的文件应该叫&quot;net9.0-linux.linux-x64.zip&quot;<br>
+解压，你会获得一个名为“LauncherX.Avalonia&quot;的文件</p>
+<h2 id="如何打开">如何打开？</h2>
+<p>将LauncherX.Avalonia文件移动到你想要放置的地方<br>
+这里我建议放在/home下的一个不经常修改文件的文件夹，以便后面的工作易于进行，至于是什么嘛，猜去吧<br>
+然后在文件管理器中右键选择打开命令行，或者打开命令行并cd到lx的文件所在目录<br>
+输入：</p>
+<pre><code class="lang-bash">./LauncherX.Avalonia
+</code></pre>
+<blockquote>
+<p>认为每次都要这么启动很麻烦？那快点往下看吧</p>
+</blockquote>
+<p>当你看到如下页面时，说明你成功运行了LauncherX<br>
+<img src="/img/lxguide/perOsSetup/start-page.png" alt="欢迎界面"></p>
+<h2 id="如何配置">如何配置？</h2>
+<p>接下来，配置你需要的外观，登录你需要登录的账户，未登录不可进入</p>
+<blockquote>
+<p>:red_circle:<strong>请注意: 目前Linux稳定版有一个右键点击账户就会闪退的Bug，内测版已经修复，但截止于2025.06.09前稳定版暂未修复</strong></p>
+</blockquote>
+<p>接下来就是要玩MC最重要的部分了：<br>
+配置JVM运行环境<br>
+在你登录好账户后，LauncherX会显示一个配置界面：
+<img src="/img/lxguide/perOsSetup/choose-java-page.png" alt="配置文件"></p>
+<p>这里有两种下载Java并配置的方法</p>
+<p><strong>如果安装了Java，且LauncherX检测到了你的Java，那么可以跳过</strong></p>
+<h3 id="一使用包管理器安装">一.使用包管理器安装</h3>
+<pre><code class="lang-bash">sudo pacman -Sy jdk-openjdk //Arch系，Pacman会为你配置好一切
+sudo dnf install java-latest-openjdk.x86_64 //RPM系，需要配置环境变量
+sudo apt install openjdk-21-jdk //Deb系，需要较新系统，较老的请使用第二种方法
+</code></pre>
+<blockquote>
+<p>这里我建议用较新版Java，如果想要游玩老版本MC，或想要稳定，请选择其他Jdk包
+如若无法使用上面的命令下载，请使用第二种方法</p>
+</blockquote>
+<p>RPM系和DEB系下载完后请看这里：<br>
+<strong>配置Java环境变量：</strong><br>
+将下面的环境变量加入.bashrc或.zshrc等shell配置文件</p>
+<pre><code class="lang-bashrc">export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+export PATH=$JAVA_HOME/bin:$PATH
+export JAVA_TOOL_OPTIONS=&quot;-Dfile.encoding=UTF-8&quot;
+</code></pre>
+<blockquote>
+<p>其中java-21-openjdk可修改为自己安装的JDK版本</p>
+</blockquote>
+<p>然后重启电脑或在终端中运行：</p>
+<pre><code class="lang-bash">source ~/.bashrc //bash用户运行这个
+source ~/.zshrc //zsh用户运行这个
+</code></pre>
+<h3 id="二使用launcherx下载">二.使用LauncherX下载</h3>
+<p>在全局游戏设置界面，点击下载Java，选择你需要的版本，点击下载<br>
+LauncherX会用最快的速度为你下载并配置好Java<br>
+当你配置完JVM运行环境时，选择是否遥测之后，如果显示出如下界面，那你就就把基本准备工作做完了<br>
+<img src="/img/lxguide/perOsSetup/launcherx-main-page.png" alt="主页"></p>
+<blockquote>
+<p>Tips点不掉吗？重启启动器就消失了</p>
+</blockquote>
+<h2 id="现在就可以下载游戏啦">现在就可以下载游戏啦</h2>
+<blockquote>
+<p>若在下载阶段出现问题，任务中心报错
+那么点击设置，选择网络，将多重源补全关闭，将mojang官方服务器更换为TapXapi</p>
+</blockquote>
+<p><strong>刚才说的工作马上就来</strong></p>
+<h2 id="创建desktop文件按需">创建.desktop文件（按需）</h2>
+<p>创建LauncherX.desktop文件，使用Kate或Vim等文本编辑软件编辑该文件，并把下面对应的部分粘贴进文件<br>
+（文件中的路径需要填写自己的LauncherX所在路径和图片文件所在路径）<br>
+LauncherX启动器图标在<a href="/img/lxguide/perOsSetup/launcherx.png">这里</a>，请自行下载（如不需要请将下面的Desktop中的Icon留空）<br>
+<strong>悠闲的Intel显卡和AMD显卡用户：</strong></p>
+<pre><code class="lang-Desktop">[Desktop Entry]
+Name=LaucherX
+Version=1.0
+Exec=/LauncherX所在路径/LauncherX.Avalonia
+Icon=/LauncherX的启动器图标所在路径/启动器图标文件
+Type=Application
+Terminal=false
+Categories=Minecraft;Application;
+</code></pre>
+<p><strong>被万恶的NVIDIA显卡毒害的用户（NVIDIA Fuck YOU！！）：</strong></p>
+<pre><code class="lang-Desktop">[Desktop Entry]
+Name=LaucherX
+Version=1.0
+__NV_PRIME_RENDER_OFFLOAD=1
+__GLX_VENDOR_LIBRARY_NAME=nvidia
+Exec=/LauncherX所在路径/LauncherX.Avalonia
+Icon=/LauncherX的启动器图标所在路径/启动器图标文件
+Type=Application
+Terminal=false
+Categories=Minecraft;Application;
+</code></pre>
+<p>保存，然后在文件管理器中右键选择打开命令行，或者打开命令行并cd到desktop文件的所在目录，然后输入：</p>
+<pre><code class="lang-bash">sudo mv LauncherX.desktop /usr/share/applications
+</code></pre>
+<blockquote>
+<p><strong>温馨提醒：LauncherX在Linux系统下是手动覆盖更新的，请每次更新都放在同一个文件夹，不然会导致Desktop文件失效</strong></p>
+</blockquote>
+<p>这样，你就可以通过应用程序菜单进行打开LauncherX的操作了
+<strong>到这里，你的LauncherX启动器已经可以正常使用了</strong></p>
+<h2 id="在wayland中使用launcherx并需要使用输入法">在wayland中使用LauncherX，并需要使用输入法？</h2>
+<p>如果配置了全局环境变量，请略过<br>
+创建完<strong>LauncherX.desktop</strong>文件后，在其中的Exec行加入</p>
+<pre><code class="lang-Desktop">env XMODIFIERS=@im=fcitx //fcitx用户
+env XMODIFIERS=@im=ibus //ibus用户
+</code></pre>
+<blockquote>
+<p>请务必加空格后再复制</p>
+</blockquote>
+<h2 id="使用aur安装launcherxarch-linux用户可选">使用AUR安装LauncherX（Arch Linux用户可选）</h2>
+<p>除了手动安装，你也可以选择AUR仓库进行安装</p>
+<pre><code class="lang-bash">paru -Sy launcherx-bin
+</code></pre>
+<p>（不过我本人并不建议使用AUR包，更新比官方更新稍慢，不易修复已知Bug）</p>
+<h2 id="结语">结语</h2>
+<p>我个人觉得在Linux发行版中使用LauncherX十分容易<br>
+所以，愉快的去游戏吧！</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/lxguide/startup/others/Linux-Guide.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

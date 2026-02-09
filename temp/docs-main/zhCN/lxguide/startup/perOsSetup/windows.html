@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>针对 Windows 系统的特殊设置 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="针对 Windows 系统的特殊设置 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/lxguide/startup/perOsSetup/windows.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="针对-windows-系统的特殊设置">针对 Windows 系统的特殊设置</h1>
+
+<p>::: warning</p>
+<p>请注意， LauncherX  <strong>不支持</strong> Windows7以下版本的操作系统，以及任意一个版本的Windows S。</p>
+<p>对Windows7的支持可能<strong>随时终止</strong>. 如果您使用Windows7, 请尽早升级, 或阅读<a href="/zhCN/lxguide/startup/others/win7">Windows7 安装指南</a>...</p>
+<p>:::</p>
+<p>目前，您不需要进行任何额外配置即可使用 LauncherX 启动器的全部功能。</p>
+<p>…但是您可能会遇到一些意外，如图所示：</p>
+<p><img src="/img/lxguide/perOsSetup/windows-exception.png" alt="exception"></p>
+<p>类似于这样的弹窗——会要求您先在Microsoft Store下载安装“供任务执行的程序”，或者由 SmartScreen 弹出的“警示安全风险”的提示弹窗：</p>
+<p>请将其关闭，并且执行以下步骤（或者, 对于SmartScreen的弹窗提示, 点击“更多选项”, 然后点击“继续运行”，跳过后续步骤并再次尝试启动 LauncherX）：</p>
+<ol>
+<li>右键单击您的 LauncherX 可执行文件</li>
+<li>点击<code>“属性”</code></li>
+<li>找到如图中标记出的勾选框并将其勾选: （图片中借用<code>Everything</code>刚从网上下载时的“属性”窗口为示范。）<img src="./../../../../public/img/lxguide/perOsSetup/checkbox.png" alt="checkbox.png"></li>
+<li>点击<code>“应用”</code>，然后关闭<code>“属性”</code>窗口。</li>
+<li>尝试启动 LauncherX 。如果仍然无法工作，请<a href="/zhCN/guide/contact">与我们取得联系</a></li>
+</ol>
+<p>::: warning</p>
+<p>如果在尝试启动 LauncherX 时候出现了来自其他安全类软件的警告，那么您需要允许 LauncherX 运行以使用 LauncherX 。若您对 LauncherX 持有怀疑，可以前往<a href="https://www.virustotal.com">VirusTotal</a>这种权威的线上沙盒并将您下载的 LauncherX 副本上传检测。</p>
+<p>:::</p>
+<h3 id="对于windows7">对于Windows7</h3>
+<p>我们预计将在Windows10被微软结束支持后，原则上不再为新功能在Windows7的可用性作担保；同样的，在此发生的一年后，原则上不再为新功能在Windows8/8.1上的可用性作担保。但是理论上，只要系统框架允许，LauncherX将一直能在Windows7及更高版本的Windows中可用，只是可能不能完全按照预期工作，以及可能需要安装额外的支持性软件和运行时。</p>
+<p>比如我们在测试过程中发现，LauncherX若需要在Windows10以前的系统上运行，可能需要自行安装一些支持库, 以及某个或某些<strong>特定的Windows更新包</strong> (KB3118401)。</p>
+<ul>
+<li>Windows7：<a href="/zhCN/lxguide/startup/others/win7">查看环境安装引导</a></li>
+<li>Windows8/8.1：<a href="https://www.microsoft.com/en-us/download/details.aspx?id=51109">Download Update for Windows 8.1 for x64-based Systems (KB3118401) from Official Microsoft Download Center</a></li>
+</ul>
+<p>再次声明：LauncherX仅支持64位操作系统，因而在上方的链接里，所指向的均为适用于64位操作系统的更新安装包。</p>
+<p>安装后，如果有必要的话，请尝试重启电脑以让更新内容完全生效。</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/lxguide/startup/perOsSetup/windows.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

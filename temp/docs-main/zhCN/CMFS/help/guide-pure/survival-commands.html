@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>命令 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="命令 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/CMFS/help/guide-pure/survival-commands.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<p><code>@useFixer</code></p>
+<h1 id="命令">命令</h1>
+<p>这里列出了一些有助于游戏或属于本服特色的命令。</p>
+<p>:::warning 没有进行分类</p>
+<p>有空再说</p>
+<p>:::</p>
+<ul>
+<li><code>/compass</code>: 打开一个类似HUD的指南针【来自：purpur】</li>
+<li><code>/logoff</code>: 登出当前子服</li>
+<li><code>/coi</code>: 查询方块操作记录（切换，相当于<code>/co i</code>）</li>
+<li><code>/avalon</code>: 前往主世界（幻想乡）</li>
+<li><code>/legacy</code>: 前往旧梦地</li>
+<li><code>/clear-my-trip &lt;? | yes&gt;</code>: 清除两个世界之间的跨越记录。附加yes表示确认清除。</li>
+<li><code>/where &lt;~player&gt;</code>: 查询一个玩家当前所在的维度。对方也将收到被你查询的通知。</li>
+<li><code>/age &lt;? | all&gt;</code>: 查询日龄。第一个参数留空以查询自己的日龄，使用all查询排行榜前十名。使用此命令有25秒冷却时间。</li>
+<li><code>/sos &amp; /sos-solved</code>: 呼救。这将广播你的坐标和所处纬度。使用<code>/sos-solved</code>取消呼救。</li>
+<li><code>/disable-my-protect</code>: 在新手保护期期间使用此命令以提前关闭自己的新手保护。</li>
+<li><code>/setchatcolor &lt;? | ~colorHexCode&gt;</code>: 为自己的聊天文字设置颜色。留空则重置为默认。示例：<code>/setchatcolor &lt;#39c5bb&gt;</code></li>
+<li><code>/report</code>: 将触发内置举报功能，下一条消息将作为举报内容发送到服务端。发送<code>.//</code>将取消此次举报。</li>
+<li><code>/joke</code>: 随机一条笑话。</li>
+<li><code>/random-info</code>: 随机一条Tips。</li>
+<li><code>/date &amp; /date-info</code>: 查询日期的命令。后者会提供更完善的内容。</li>
+<li><code>/tell &lt;~player&gt; &lt;~text&gt;</code>: 说悄悄话，第一个参数是你要说给谁听（必须在线），第二个参数开始是你的悄悄话内容。请注意，悄悄话会被记录在服务器后台和双方客户端的日志之中。【来自：原版】</li>
+<li><code>/me &lt;~text&gt;</code>: 用一种戏剧化的方式发言或表达自己的状态到聊天区。</li>
+<li><code>/welcome_newbee</code>: 在新玩家进入服务器的时候，聊天区出现的“点我”实际上执行这个命令，将会发送一条有历史渊源的欢迎词。</li>
+<li><code>/tps</code>: 查询当前服务器的TPS（刻每秒，用于参考服务器运行压力，越高越好，一般20为上限）</li>
+<li><code>/ping</code>: 查询当前到服务器的真实延迟【来自：paper】</li>
+<li><code>/gsit</code>: 随地坐下【来自：GSit】</li>
+<li><code>/</code>: 未完待续（上次更新：2026年1月27日）</li>
+</ul>
+<h2 id="注释">注释</h2>
+<h3 id="符号含义">符号含义</h3>
+<ul>
+<li><code>&lt;blablabla&gt;</code>：命令参数。这意味着这里必须填入<code>blablabla</code>，否则无法达成命令介绍的效果。</li>
+<li><code>&lt;? | blabla&gt;</code>：命令参数可为空或blabla。</li>
+<li><code>&lt;~player&gt;</code>：输入任意一个玩家名称作为参数。</li>
+<li><code>&lt;...text&gt;</code>：输入任意文本，或多个参数都是文本。</li>
+<li><code>/cmd1 &amp; /cmd2</code>：两个命令相同或差别很小。</li>
+</ul>
+<h3 id="命令来源">命令来源</h3>
+<p>此处列举的命令有多个来源。它可能来自原版游戏，可能来自服务端，或者来自哪个插件或脚本。本页标注的所有非自定义命令（使用脚本或定制插件实现的）都标注了来源。<code>i</code></p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhCN/CMFS/help/guide-pure/survival-commands.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

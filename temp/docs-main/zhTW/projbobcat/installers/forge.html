@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Forge 安裝器 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Forge 安裝器 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhTW/projbobcat/installers/forge.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="forge-安裝器">Forge 安裝器</h1>
+
+<p>在 ProjBobcat 中, 我們支援了幾乎所有主流 MineCraft 版本的 Forge 自動化安裝.</p>
+<p>[[toc]]</p>
+<p>::: tip</p>
+<p>請注意, ProjBobcat 僅實現了 Forge 自動化安裝流程, 您仍然需要自己實現 Forge 安裝包的搜尋、下載、儲存流程.</p>
+<p>:::</p>
+<h2 id="判斷應該使用哪一種-forge-安裝器">判斷應該使用哪一種 Forge 安裝器</h2>
+<p>由於 Forge 團隊在後續的版本中修改了 Forge 的打包規範以及安裝流程. 因此, 您需要手動判斷應該使用哪一種安裝器.
+在 ProjBobcat 中, 我們已經為您實現了相關的判斷邏輯. 您只需要簡單地呼叫下面的方法：</p>
+<pre><code class="lang-c#">
+var mcVersion = &quot;[MC_VERSION]&quot;;
+var forgeJarPath = &quot;[PATH_TO_YOUR_FORGE_INSTALLER]&quot;;
+var forgeVersion = ForgeInstallerFactory.GetForgeArtifactVersion(mcVersion, &quot;[FORGE_VERSION]&quot;);
+
+var isLegacy = ForgeInstallerFactory.IsLegacyForgeInstaller(forgeJarPath, forgeVersion);  // [!code focus]
+
+</code></pre>
+<p>在上述程式碼塊中, 請將這些引數按照您的實際情況替換：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">專案</th>
+<th style="text-align: center;">說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">[MC_VERSION]</td>
+<td style="text-align: center;">將 Forge 安裝到的 MineCraft 版本, 例如：1.19.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">[PATH_TO_YOUR_FORGE_INSTALLER]</td>
+<td style="text-align: center;">Forge 安裝器 .jar 檔案所在的路徑</td>
+</tr>
+<tr>
+<td style="text-align: center;">[FORGE_VERSION]</td>
+<td style="text-align: center;">Forge 的具體版本, 通常為 XX.X.X, 例如：43.2.0</td>
+</tr>
+</tbody>
+</table>
+<p>在您完成替換併成功執行上述的程式碼片段之後, <strong>isLegacy</strong> 會指示當前 Forge 安裝器應當使用哪一種 Forge 安裝器.</p>
+<h2 id="初始化舊版安裝器">初始化舊版安裝器</h2>
+<p>如果在上面的流程中, <strong>isLegacy</strong> 的值為 <strong>true</strong>, 這意味著您需要使用舊版安裝器來完成 Forge 的安裝.
+要初始化舊版安裝器, 只需例項化 <strong>LegacyForgeInstaller</strong> 並提供相應的引數：</p>
+<pre><code class="lang-c#">
+IForgeInstaller forgeInstaller =
+    new LegacyForgeInstaller
+            {
+                ForgeExecutablePath = &quot;[PATH_TO_YOUR_FORGE_INSTALLER]&quot;,
+                RootPath = &quot;[GAME_ROOT_PATH]&quot;,
+                CustomId = &quot;[CUSTOM_INSTALL_GAME_ID]&quot;,
+                ForgeVersion = &quot;[FORGE_VERSION]&quot;,
+                InheritsFrom = &quot;[MC_VERSION_OR_GAME_ID]&quot;
+            };
+
+</code></pre>
+<p>在上述程式碼塊中, 請將這些引數按照您的實際情況替換：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">專案</th>
+<th style="text-align: center;">說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">[GAME_ROOT_PATH]</td>
+<td style="text-align: center;">遊戲根目錄, 通常為 .minecraft 資料夾的路徑</td>
+</tr>
+<tr>
+<td style="text-align: center;">[CUSTOM_INSTALL_GAME_ID]</td>
+<td style="text-align: center;">可選項, 自定義即將要安裝的遊戲的名稱</td>
+</tr>
+<tr>
+<td style="text-align: center;">[MC_VERSION_OR_GAME_ID]</td>
+<td style="text-align: center;">Forge 繼承的 MineCraft 原版遊戲版本, 通常為遊戲版本. 例如：1.19.2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="初始化新版安裝器">初始化新版安裝器</h2>
+<pre><code class="lang-c#">
+IForgeInstaller forgeInstaller =
+    new HighVersionForgeInstaller
+            {
+                ForgeExecutablePath = &quot;[PATH_TO_YOUR_FORGE_INSTALLER]&quot;,
+                JavaExecutablePath = &quot;[PATH_TO_YOUR_JAVA_RUNTIME]&quot;,
+                RootPath = &quot;[GAME_ROOT_PATH]&quot;,
+                VersionLocator = [VERSION_LOCATOR_INST],
+                DownloadUrlRoot = “[LIBRARIES_URL_ROOT]”,
+                CustomId = &quot;[CUSTOM_INSTALL_GAME_ID]&quot;,
+                MineCraftVersion = &quot;[MC_VERSION]&quot;,
+                MineCraftVersionId = &quot;[ACTUAL_MC_GAME_ID]&quot;,
+                InheritsFrom = &quot;[MC_VERSION_OR_GAME_ID]&quot;
+            };
+
+</code></pre>
+<p>在上述程式碼塊中, 請將這些引數按照您的實際情況替換：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">專案</th>
+<th style="text-align: center;">說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">[PATH_TO_YOUR_JAVA_RUNTIME]</td>
+<td style="text-align: center;">Java （javaw.exe） 執行時所在的路徑</td>
+</tr>
+<tr>
+<td style="text-align: center;">[LIBRARIES_URL_ROOT]</td>
+<td style="text-align: center;">下載源的根 URL, 例如：&quot;https://bmclapi2.bangbang93.com/&quot;</td>
+</tr>
+<tr>
+<td style="text-align: center;">[VERSION_LOCATOR_INST]</td>
+<td style="text-align: center;">遊戲版本定位器例項, 即初始化遊戲核心時的 <strong>VersionLocator</strong> 屬性</td>
+</tr>
+<tr>
+<td style="text-align: center;">[ACTUAL_MC_GAME_ID]</td>
+<td style="text-align: center;">實際的 MineCraft 遊戲名稱, 即原版遊戲在 <strong>version</strong> 資料夾下的名稱. 一般情況下, 這個值和 <strong>[MC_VERSION]</strong> 一致.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="根據-islegacy-值進行統一初始化">根據 <strong>isLegacy</strong> 值進行統一初始化</h2>
+<p>由於 <strong>LegacyForgeInstaller</strong> 和 <strong>HighVersionForgeInstaller</strong> 同時實現了 <strong>IForgeInstaller</strong> 介面.
+因此, 您可以很方便的使用一個三元運算子來選擇性的初始化對應的安裝器：</p>
+<pre><code class="lang-c#{4-100}">
+var isLegacy = ForgeInstallerFactory.IsLegacyForgeInstaller(forgeJarPath, forgeVersion);
+
+IForgeInstaller forgeInstaller = isLegacy
+            ? new LegacyForgeInstaller
+            {
+                ForgeExecutablePath = &quot;[PATH_TO_YOUR_FORGE_INSTALLER]&quot;,
+                RootPath = &quot;[GAME_ROOT_PATH]&quot;,
+                CustomId = &quot;[CUSTOM_INSTALL_GAME_ID]&quot;,
+                ForgeVersion = &quot;[FORGE_VERSION]&quot;,
+                InheritsFrom = &quot;[MC_VERSION_OR_GAME_ID]&quot;
+            }
+            : new HighVersionForgeInstaller
+            {
+                ForgeExecutablePath = &quot;[PATH_TO_YOUR_FORGE_INSTALLER]&quot;,
+                JavaExecutablePath = &quot;[PATH_TO_YOUR_JAVA_RUNTIME]&quot;,
+                RootPath = &quot;[GAME_ROOT_PATH]&quot;,
+                VersionLocator = [VERSION_LOCATOR_INST],
+                DownloadUrlRoot = “[LIBRARIES_URL_ROOT]”,
+                CustomId = &quot;[CUSTOM_INSTALL_GAME_ID]&quot;,
+                MineCraftVersion = &quot;[MC_VERSION]&quot;,
+                MineCraftVersionId = &quot;[ACTUAL_MC_GAME_ID]&quot;,
+                InheritsFrom = &quot;[MC_VERSION_OR_GAME_ID]&quot;
+            };
+
+</code></pre>
+<h2 id="開始安裝">開始安裝</h2>
+<p>在您完成安裝器的初始化後, 您只需要呼叫 Forge 安裝器的安裝方法來完成安裝.</p>
+<p>在非同步上下文中, 使用 <strong>InstallForgeTaskAsync</strong> 來完成安裝：</p>
+<pre><code class="lang-c#">
+await forgeInstaller.InstallForgeTaskAsync();
+
+</code></pre>
+<p>在同步上下文中, 使用 <strong>InstallForge</strong> 來完成安裝：</p>
+<pre><code class="lang-c#">
+forgeInstaller.InstallForge();
+
+</code></pre>
+<h2 id="報告安裝進度">報告安裝進度</h2>
+<p>在某些情況下, Forge 安裝器可能會需要數分鐘的時間來完成安裝.
+因此, 您可能需要實時向用戶彙報安裝器目前的進度.
+為此, Forge 安裝器提供了 <strong>StageChangedEventDelegate</strong> 事件來幫助您實現任務彙報.
+您只需要簡單地在 <strong>開始安裝之前</strong> 註冊下面的事件：</p>
+<pre><code class="lang-c#">
+((InstallerBase)forgeInstaller).StageChangedEventDelegate += (_, args) =&gt;
+{
+    ReportProgress(args.Progress * 100, args.CurrentStage);
+};
+
+</code></pre>
+<p>其中,  <strong>args.Progress</strong> 指示了安裝器當前的百分比進度. <strong>args.CurrentStage</strong> 則是安裝器當前進度的文字描述.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/temp/docs-main/zhTW/projbobcat/installers/forge.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
