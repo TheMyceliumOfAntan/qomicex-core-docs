@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>统一通行证登录 | Qomicex.Core API文档 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="统一通行证登录 | Qomicex.Core API文档 ">
+      
+      
+      <link rel="icon" href="../../../favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/UnifiedPassport/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../logo.svg" alt="Qomicex.Core">
+            Qomicex.Core
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="统一通行证登录">统一通行证登录</h1>
+
+<h2 id="概述">概述</h2>
+<p>Qomicex.Core 提供了统一通行证登录系统，允许用户使用多种账号系统登录 Minecraft，包括 Microsoft 账号、Yggdrasil 账号和离线模式。统一通行证系统简化了登录流程，提供了一致的 API 接口。</p>
+<h2 id="核心组件">核心组件</h2>
+<h3 id="1-iauthenticator-接口">1. IAuthenticator 接口</h3>
+<p>所有验证器都实现了 <code>IAuthenticator</code> 接口，提供了统一的认证方法。</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+
+public interface IAuthenticator
+{
+    Task&lt;AuthenticationResult&gt; AuthenticateAsync();
+}
+</code></pre>
+<h3 id="2-authenticationresult-类">2. AuthenticationResult 类</h3>
+<p><code>AuthenticationResult</code> 类包含认证结果信息。</p>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+
+public class AuthenticationResult
+{
+    public bool IsSuccess { get; set; }
+    public string PlayerName { get; set; }
+    public string UUID { get; set; }
+    public string AccessToken { get; set; }
+    public string ClientToken { get; set; }
+    public string RefreshToken { get; set; }
+    public int ExpiresIn { get; set; }
+    public string ErrorMessage { get; set; }
+}
+</code></pre>
+<h2 id="使用统一通行证登录">使用统一通行证登录</h2>
+<h3 id="1-离线模式登录">1. 离线模式登录</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Offline;
+
+// 创建离线验证器
+var authenticator = new OfflineAuthenticator
+{
+    Username = &quot;Player&quot; // 自定义玩家名称
+};
+
+// 执行验证
+var result = await authenticator.AuthenticateAsync();
+
+if (result.IsSuccess)
+{
+    Console.WriteLine($&quot;登录成功！玩家名称: {result.PlayerName}&quot;);
+    Console.WriteLine($&quot;UUID: {result.UUID}&quot;);
+}
+else
+{
+    Console.WriteLine($&quot;登录失败: {result.ErrorMessage}&quot;);
+}
+</code></pre>
+<h3 id="2-yggdrasil-认证mojang-账号">2. Yggdrasil 认证（Mojang 账号）</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Yggdrasil;
+
+// 创建 Yggdrasil 验证器
+var authenticator = new YggdrasilAuthenticator
+{
+    Username = &quot;your-email@example.com&quot;, // 您的邮箱或用户名
+    Password = &quot;your-password&quot; // 您的密码
+};
+
+// 执行验证
+var result = await authenticator.AuthenticateAsync();
+
+if (result.IsSuccess)
+{
+    Console.WriteLine($&quot;登录成功！玩家名称: {result.PlayerName}&quot;);
+    Console.WriteLine($&quot;UUID: {result.UUID}&quot;);
+    Console.WriteLine($&quot;访问令牌: {result.AccessToken}&quot;);
+}
+else
+{
+    Console.WriteLine($&quot;登录失败: {result.ErrorMessage}&quot;);
+}
+</code></pre>
+<h3 id="3-microsoft-账号认证">3. Microsoft 账号认证</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+// 创建 Microsoft 验证器
+var authenticator = new MicrosoftAuthenticator();
+
+// 执行验证
+var result = await authenticator.AuthenticateAsync();
+
+if (result.IsSuccess)
+{
+    Console.WriteLine($&quot;登录成功！玩家名称: {result.PlayerName}&quot;);
+    Console.WriteLine($&quot;UUID: {result.UUID}&quot;);
+    Console.WriteLine($&quot;访问令牌: {result.AccessToken}&quot;);
+}
+else
+{
+    Console.WriteLine($&quot;登录失败: {result.ErrorMessage}&quot;);
+}
+</code></pre>
+<h2 id="高级功能">高级功能</h2>
+<h3 id="1-自动选择验证器">1. 自动选择验证器</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+
+public async Task&lt;AuthenticationResult&gt; AutoAuthenticateAsync()
+{
+    // 尝试使用 Microsoft 账号登录
+    try
+    {
+        var authenticator = new MicrosoftAuthenticator();
+        var result = await authenticator.AuthenticateAsync();
+
+        if (result.IsSuccess)
+            return result;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($&quot;Microsoft 账号登录失败: {ex.Message}&quot;);
+    }
+
+    // 尝试使用 Yggdrasil 认证
+    try
+    {
+        var authenticator = new YggdrasilAuthenticator
+        {
+            Username = &quot;your-email@example.com&quot;,
+            Password = &quot;your-password&quot;
+        };
+        var result = await authenticator.AuthenticateAsync();
+
+        if (result.IsSuccess)
+            return result;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($&quot;Yggdrasil 认证失败: {ex.Message}&quot;);
+    }
+
+    // 使用离线模式登录
+    var offlineAuthenticator = new OfflineAuthenticator
+    {
+        Username = &quot;Player&quot;
+    };
+    return await offlineAuthenticator.AuthenticateAsync();
+}
+</code></pre>
+<h3 id="2-令牌刷新">2. 令牌刷新</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+// 刷新 Microsoft 访问令牌
+var authenticator = new MicrosoftAuthenticator();
+var refreshResult = await authenticator.RefreshTokenAsync(
+    &quot;old-access-token&quot;,
+    &quot;client-token&quot;,
+    &quot;refresh-token&quot;
+);
+
+if (refreshResult.IsSuccess)
+{
+    Console.WriteLine($&quot;令牌刷新成功！新访问令牌: {refreshResult.AccessToken}&quot;);
+}
+else
+{
+    Console.WriteLine($&quot;令牌刷新失败: {refreshResult.ErrorMessage}&quot;);
+}
+</code></pre>
+<h3 id="3-令牌验证">3. 令牌验证</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+// 验证 Microsoft 访问令牌
+var authenticator = new MicrosoftAuthenticator();
+var validateResult = await authenticator.ValidateTokenAsync(&quot;access-token&quot;);
+
+if (validateResult.IsSuccess)
+{
+    Console.WriteLine(&quot;令牌有效！&quot;);
+}
+else
+{
+    Console.WriteLine($&quot;令牌无效: {validateResult.ErrorMessage}&quot;);
+}
+</code></pre>
+<h3 id="4-登出">4. 登出</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+var authenticator = new MicrosoftAuthenticator();
+var logoutResult = await authenticator.LogoutAsync(&quot;access-token&quot;, &quot;client-token&quot;);
+
+if (logoutResult.IsSuccess)
+{
+    Console.WriteLine(&quot;登出成功！&quot;);
+}
+else
+{
+    Console.WriteLine($&quot;登出失败: {logoutResult.ErrorMessage}&quot;);
+}
+</code></pre>
+<h2 id="统一通行证管理">统一通行证管理</h2>
+<h3 id="1-存储和加载用户凭证">1. 存储和加载用户凭证</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+// 存储用户凭证
+public void SaveCredentials(AuthenticationResult result)
+{
+    var credentials = new
+    {
+        PlayerName = result.PlayerName,
+        UUID = result.UUID,
+        AccessToken = result.AccessToken,
+        ClientToken = result.ClientToken,
+        RefreshToken = result.RefreshToken,
+        ExpiresAt = DateTime.Now.AddSeconds(result.ExpiresIn)
+    };
+
+    var json = JsonConvert.SerializeObject(credentials);
+    File.WriteAllText(&quot;credentials.json&quot;, json);
+}
+
+// 加载用户凭证
+public AuthenticationResult LoadCredentials()
+{
+    if (!File.Exists(&quot;credentials.json&quot;))
+        return null;
+
+    var json = File.ReadAllText(&quot;credentials.json&quot;);
+    dynamic credentials = JsonConvert.DeserializeObject(json);
+
+    return new AuthenticationResult
+    {
+        IsSuccess = true,
+        PlayerName = credentials.PlayerName,
+        UUID = credentials.UUID,
+        AccessToken = credentials.AccessToken,
+        ClientToken = credentials.ClientToken,
+        RefreshToken = credentials.RefreshToken,
+        ExpiresIn = (int)(DateTime.Parse(credentials.ExpiresAt.ToString()) - DateTime.Now).TotalSeconds
+    };
+}
+</code></pre>
+<h3 id="2-凭证自动刷新">2. 凭证自动刷新</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+public async Task&lt;AuthenticationResult&gt; AutoRefreshCredentialsAsync()
+{
+    var credentials = LoadCredentials();
+
+    if (credentials == null)
+    {
+        return await new OfflineAuthenticator { Username = &quot;Player&quot; }.AuthenticateAsync();
+    }
+
+    // 检查凭证是否已过期或即将过期
+    if (credentials.ExpiresIn &lt; 300) // 少于 5 分钟
+    {
+        try
+        {
+            var authenticator = new MicrosoftAuthenticator();
+            var refreshResult = await authenticator.RefreshTokenAsync(
+                credentials.AccessToken,
+                credentials.ClientToken,
+                credentials.RefreshToken
+            );
+
+            if (refreshResult.IsSuccess)
+            {
+                SaveCredentials(refreshResult);
+                return refreshResult;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($&quot;凭证刷新失败: {ex.Message}&quot;);
+        }
+    }
+
+    return credentials;
+}
+</code></pre>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="1-microsoft-认证失败">1. Microsoft 认证失败</h3>
+<p><strong>问题描述</strong>：Microsoft 账号认证时失败。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>检查网络连接：</li>
+</ol>
+<pre><code class="lang-csharp">using System.Net.NetworkInformation;
+
+if (!NetworkInterface.GetIsNetworkAvailable())
+{
+    Console.WriteLine(&quot;网络不可用，请检查网络连接！&quot;);
+}
+</code></pre>
+<ol start="2">
+<li>检查防火墙设置：</li>
+</ol>
+<pre><code class="lang-csharp">using System.Diagnostics;
+
+var firewallStatus = await CheckFirewallStatusAsync();
+if (!firewallStatus)
+{
+    Console.WriteLine(&quot;防火墙可能阻止了连接，请检查防火墙设置！&quot;);
+}
+</code></pre>
+<h3 id="2-yggdrasil-认证失败">2. Yggdrasil 认证失败</h3>
+<p><strong>问题描述</strong>：Yggdrasil (Mojang) 账号认证失败。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>验证账号密码：</li>
+</ol>
+<pre><code class="lang-csharp">var authenticator = new YggdrasilAuthenticator
+{
+    Username = &quot;your-email@example.com&quot;,
+    Password = &quot;your-password&quot;
+};
+
+var result = await authenticator.AuthenticateAsync();
+
+if (!result.IsSuccess)
+{
+    Console.WriteLine($&quot;认证失败: {result.ErrorMessage}&quot;);
+}
+</code></pre>
+<ol start="2">
+<li>重置密码：</li>
+</ol>
+<pre><code class="lang-csharp">var authenticator = new YggdrasilAuthenticator();
+var resetResult = await authenticator.ResetPasswordAsync(&quot;your-email@example.com&quot;);
+
+if (resetResult.IsSuccess)
+{
+    Console.WriteLine(&quot;密码重置链接已发送到您的邮箱！&quot;);
+}
+</code></pre>
+<h3 id="3-凭证存储安全">3. 凭证存储安全</h3>
+<p><strong>问题描述</strong>：凭证存储可能存在安全风险。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>使用加密存储：</li>
+</ol>
+<pre><code class="lang-csharp">using System.Security.Cryptography;
+using System.Text;
+
+public string EncryptString(string text, string key)
+{
+    var aes = Aes.Create();
+    aes.Key = Encoding.UTF8.GetBytes(key.PadRight(32).Substring(0, 32));
+    aes.IV = Encoding.UTF8.GetBytes(key.PadRight(16).Substring(0, 16));
+
+    var encryptor = aes.CreateEncryptor();
+    var bytes = Encoding.UTF8.GetBytes(text);
+    var encrypted = encryptor.TransformFinalBlock(bytes, 0, bytes.Length);
+
+    return Convert.ToBase64String(encrypted);
+}
+
+public string DecryptString(string encryptedText, string key)
+{
+    var aes = Aes.Create();
+    aes.Key = Encoding.UTF8.GetBytes(key.PadRight(32).Substring(0, 32));
+    aes.IV = Encoding.UTF8.GetBytes(key.PadRight(16).Substring(0, 16));
+
+    var decryptor = aes.CreateDecryptor();
+    var bytes = Convert.FromBase64String(encryptedText);
+    var decrypted = decryptor.TransformFinalBlock(bytes, 0, bytes.Length);
+
+    return Encoding.UTF8.GetString(decrypted);
+}
+
+// 使用示例
+var encryptedToken = EncryptString(&quot;your-token&quot;, &quot;your-secret-key&quot;);
+var decryptedToken = DecryptString(encryptedToken, &quot;your-secret-key&quot;);
+</code></pre>
+<h3 id="4-多账号管理">4. 多账号管理</h3>
+<p><strong>问题描述</strong>：需要管理多个 Minecraft 账号。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>使用账号管理器：</li>
+</ol>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+public class AccountManager
+{
+    private List&lt;AccountProfile&gt; _accounts;
+
+    public AccountManager()
+    {
+        _accounts = LoadAccounts();
+    }
+
+    public async Task&lt;AuthenticationResult&gt; SwitchAccountAsync(int index)
+    {
+        if (index &lt; 0 || index &gt;= _accounts.Count)
+            throw new ArgumentOutOfRangeException(nameof(index));
+
+        var account = _accounts[index];
+
+        switch (account.Type)
+        {
+            case AccountType.Microsoft:
+                var microsoftAuth = new MicrosoftAuthenticator();
+                // 使用账号数据初始化验证器
+                return await microsoftAuth.AuthenticateAsync();
+
+            case AccountType.Yggdrasil:
+                var yggdrasilAuth = new YggdrasilAuthenticator
+                {
+                    Username = account.Username,
+                    Password = account.Password // 应存储加密后的密码
+                };
+                return await yggdrasilAuth.AuthenticateAsync();
+
+            case AccountType.Offline:
+                var offlineAuth = new OfflineAuthenticator
+                {
+                    Username = account.Username
+                };
+                return await offlineAuth.AuthenticateAsync();
+
+            default:
+                throw new NotSupportedException($&quot;不支持的账号类型: {account.Type}&quot;);
+        }
+    }
+
+    public void AddAccount(AccountProfile account)
+    {
+        _accounts.Add(account);
+        SaveAccounts(_accounts);
+    }
+
+    public void RemoveAccount(int index)
+    {
+        _accounts.RemoveAt(index);
+        SaveAccounts(_accounts);
+    }
+
+    // 其他账号管理方法...
+}
+
+public class AccountProfile
+{
+    public string Username { get; set; }
+    public string UUID { get; set; }
+    public AccountType Type { get; set; }
+    public string Email { get; set; }
+    // 其他账号信息...
+}
+
+public enum AccountType
+{
+    Microsoft,
+    Yggdrasil,
+    Offline
+}
+</code></pre>
+<h2 id="最佳实践">最佳实践</h2>
+<h3 id="1-错误处理">1. 错误处理</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+try
+{
+    var authenticator = new MicrosoftAuthenticator();
+    var result = await authenticator.AuthenticateAsync();
+
+    if (result.IsSuccess)
+    {
+        Console.WriteLine($&quot;登录成功！玩家名称: {result.PlayerName}&quot;);
+        SaveCredentials(result);
+    }
+    else
+    {
+        Console.WriteLine($&quot;登录失败: {result.ErrorMessage}&quot;);
+    }
+}
+catch (AuthenticationException ex)
+{
+    Console.WriteLine($&quot;认证错误: {ex.Message}&quot;);
+}
+catch (NetworkException ex)
+{
+    Console.WriteLine($&quot;网络错误: {ex.Message}&quot;);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;未知错误: {ex.Message}&quot;);
+}
+</code></pre>
+<h3 id="2-用户体验优化">2. 用户体验优化</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+var authenticator = new MicrosoftAuthenticator();
+
+// 显示加载状态
+Console.WriteLine(&quot;正在进行 Microsoft 账号认证...&quot;);
+
+// 启动认证任务
+var authTask = authenticator.AuthenticateAsync();
+
+// 显示进度指示器
+while (!authTask.IsCompleted)
+{
+    Console.Write(&quot;.&quot;);
+    await Task.Delay(500);
+}
+
+// 获取认证结果
+var result = await authTask;
+
+if (result.IsSuccess)
+{
+    Console.WriteLine(&quot;\\n登录成功！&quot;);
+    Console.WriteLine($&quot;玩家名称: {result.PlayerName}&quot;);
+}
+else
+{
+    Console.WriteLine($&quot;\\n登录失败: {result.ErrorMessage}&quot;);
+}
+</code></pre>
+<h3 id="3-日志记录">3. 日志记录</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+using Qomicex.Core.Modules.Helpers.Account.Microsoft;
+
+var authenticator = new MicrosoftAuthenticator();
+
+// 记录认证过程
+authenticator.OnAuthenticationStateChanged += (state) =&gt;
+{
+    Console.WriteLine($&quot;认证状态: {state}&quot;);
+};
+
+authenticator.OnAuthenticationProgressChanged += (progress, message) =&gt;
+{
+    Console.WriteLine($&quot;认证进度: {progress}% - {message}&quot;);
+};
+
+var result = await authenticator.AuthenticateAsync();
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Development/UnifiedPassport/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Qomicex.Avalonia
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
