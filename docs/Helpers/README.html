@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>辅助工具 (Helpers) </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="辅助工具 (Helpers) ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Helpers/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="辅助工具-helpers">辅助工具 (Helpers)</h1>
+
+<blockquote>
+<p>提供各种实用工具类，简化常见开发任务。</p>
+</blockquote>
+<hr>
+<h2 id="概述">概述</h2>
+<p>Helpers 模块包含了一系列实用工具类，帮助开发者更高效地完成常见任务。这些工具类涵盖了 Java 管理、文件操作、系统信息获取等多个方面。</p>
+<pre><code>Helpers
+├── GeneralHelper        # 通用工具
+├── JavaHelper           # Java 管理
+├── SystemInfoHelper     # 系统信息
+├── Account              # 账户相关助手
+├── Installers           # 安装器基类
+├── Resources            # 资源管理助手
+├── LogAnalysis          # 日志分析
+└── MultiPlatforms       # 跨平台支持
+</code></pre>
+<hr>
+<h2 id="generalhelper-类">GeneralHelper 类</h2>
+<p>通用工具类，提供字符串处理、文件操作、压缩解压等常用功能。</p>
+<h3 id="命名空间">命名空间</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers;
+</code></pre>
+<h3 id="方法">方法</h3>
+<h4 id="getmodloadertype">GetModLoaderType</h4>
+<p>获取指定版本使用的 Mod 加载器类型。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>Version</code> | <code>string</code> | Minecraft 版本号 |
+| <code>GameDir</code> | <code>string</code> | 游戏目录路径 |</p>
+<p><strong>返回值：</strong> <code>string[]</code> - Mod 加载器类型数组</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var modLoaders = new GeneralHelper().GetModLoaderType(&quot;1.20.1-forge-47.0.0&quot;, @&quot;C:\Minecraft\.minecraft&quot;);
+foreach (var loader in modLoaders)
+{
+    Console.WriteLine($&quot;检测到 Mod 加载器: {loader}&quot;);
+}
+</code></pre>
+<hr>
+<h4 id="checkversionavailablity">CheckVersionAvailablity</h4>
+<p>检查指定版本是否可用。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>GameDir</code> | <code>string</code> | 游戏目录路径 |
+| <code>Version</code> | <code>string</code> | 版本号 |</p>
+<p><strong>返回值：</strong> <code>State</code> - 状态结构体，包含可用性信息</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var state = new GeneralHelper().CheckVersionAvailablity(@&quot;C:\Minecraft\.minecraft&quot;, &quot;1.20.1&quot;);
+Console.WriteLine($&quot;版本状态: {state.Name}&quot;);
+Console.WriteLine($&quot;描述: {state.Describe}&quot;);
+Console.WriteLine($&quot;状态码: {state.Code}&quot;);
+</code></pre>
+<hr>
+<h4 id="searchversions">SearchVersions</h4>
+<p>搜索游戏目录中的所有版本。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>GameDir</code> | <code>string</code> | 游戏目录路径 |</p>
+<p><strong>返回值：</strong> <code>List&lt;DataDetails.Version&gt;</code> - 版本信息列表</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var versions = new GeneralHelper().SearchVersions(@&quot;C:\Minecraft\.minecraft&quot;);
+foreach (var version in versions)
+{
+    Console.WriteLine($&quot;版本: {version.Name}&quot;);
+    Console.WriteLine($&quot;  类型: {string.Join(&quot;, &quot;, version.Type)}&quot;);
+    Console.WriteLine($&quot;  游戏版本: {version.GameVersion}&quot;);
+    Console.WriteLine($&quot;  状态: {version.State}&quot;);
+}
+</code></pre>
+<hr>
+<h4 id="searchversionsfast">SearchVersionsFast</h4>
+<p>快速搜索游戏目录中的所有版本（仅返回版本名称）。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>GameDir</code> | <code>string</code> | 游戏目录路径 |</p>
+<p><strong>返回值：</strong> <code>List&lt;string&gt;</code> - 版本名称列表</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var versionNames = new GeneralHelper().SearchVersionsFast(@&quot;C:\Minecraft\.minecraft&quot;);
+Console.WriteLine($&quot;找到 {versionNames.Count} 个版本:&quot;);
+foreach (var name in versionNames)
+{
+    Console.WriteLine($&quot;  - {name}&quot;);
+}
+</code></pre>
+<hr>
+<h4 id="unzip">Unzip</h4>
+<p>解压 ZIP 文件到指定目录。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>zipFilePath</code> | <code>string</code> | ZIP 文件路径 |
+| <code>targetDir</code> | <code>string</code> | 解压目标目录 |</p>
+<p><strong>返回值：</strong> <code>bool</code> - 解压是否成功</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">bool success = GeneralHelper.Unzip(
+    @&quot;C:\Downloads\modpack.zip&quot;,
+    @&quot;C:\Minecraft\modpacks\MyPack&quot;
+);
+
+if (success)
+{
+    Console.WriteLine(&quot;✓ 解压成功&quot;);
+}
+else
+{
+    Console.WriteLine(&quot;✗ 解压失败&quot;);
+}
+</code></pre>
+<hr>
+<h4 id="verifyfilesha1">VerifyFileSha1</h4>
+<p>验证文件的 SHA1 校验和。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>filePath</code> | <code>string</code> | 文件路径 |
+| <code>expectedHash</code> | <code>string</code> | 预期的 SHA1 哈希值 |</p>
+<p><strong>返回值：</strong> <code>bool</code> - 校验是否通过</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">bool isValid = GeneralHelper.VerifyFileSha1(
+    @&quot;C:\Minecraft\libraries\library.jar&quot;,
+    &quot;a1b2c3d4e5f6...&quot;
+);
+
+if (isValid)
+{
+    Console.WriteLine(&quot;✓ 文件校验通过&quot;);
+}
+else
+{
+    Console.WriteLine(&quot;✗ 文件校验失败，可能需要重新下载&quot;);
+}
+</code></pre>
+<hr>
+<h4 id="deleteexcept">DeleteExcept</h4>
+<p>删除目录中除指定后缀外的所有文件。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>folderPath</code> | <code>string</code> | 目录路径 |
+| <code>keepSuffix</code> | <code>string</code> | 保留的文件后缀（如 &quot;.json&quot;） |</p>
+<p><strong>返回值：</strong> <code>bool</code> - 操作是否成功</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">// 删除 logs 目录中除 .json 外的所有文件
+bool success = GeneralHelper.DeleteExcept(
+    @&quot;C:\Minecraft\.minecraft\logs&quot;,
+    &quot;.json&quot;
+);
+
+if (success)
+{
+    Console.WriteLine(&quot;✓ 清理完成&quot;);
+}
+</code></pre>
+<hr>
+<h2 id="javahelper-类">JavaHelper 类</h2>
+<p>Java 管理工具类，提供 Java 搜索、验证和选择功能。</p>
+<h3 id="命名空间-1">命名空间</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers;
+</code></pre>
+<h3 id="枚举">枚举</h3>
+<h4 id="javasearchmode">JavaSearchMode</h4>
+<p>Java 搜索模式。</p>
+<pre><code class="lang-csharp">public enum JavaSearchMode
+{
+    Quick,   // 快速搜索（搜索常用路径）
+    Deep,    // 深度搜索（全面扫描系统）
+    Custom   // 自定义搜索
+}
+</code></pre>
+<h4 id="javastate">JavaState</h4>
+<p>Java 状态。</p>
+<pre><code class="lang-csharp">public enum JavaState
+{
+    Valid,                  // 有效
+    InvalidPath,           // 路径无效
+    MissingReleaseFile,    // 缺少 release 文件
+    CorruptedReleaseFile,  // release 文件损坏
+    UnknownError           // 未知错误
+}
+</code></pre>
+<h3 id="类">类</h3>
+<h4 id="javasearchoptions">JavaSearchOptions</h4>
+<p>Java 搜索选项。</p>
+<pre><code class="lang-csharp">public class JavaSearchOptions
+{
+    /// &lt;summary&gt;
+    /// 搜索模式
+    /// &lt;/summary&gt;
+    public JavaSearchMode Mode { get; set; } = JavaSearchMode.Quick;
+
+    /// &lt;summary&gt;
+    /// 游戏目录（可选）
+    /// &lt;/summary&gt;
+    public string? GameDir { get; set; }
+
+    /// &lt;summary&gt;
+    /// 是否包含 JRE
+    /// &lt;/summary&gt;
+    public bool IncludeJRE { get; set; } = true;
+
+    /// &lt;summary&gt;
+    /// 是否包含 JDK
+    /// &lt;/summary&gt;
+    public bool IncludeJDK { get; set; } = true;
+
+    /// &lt;summary&gt;
+    /// 最大搜索深度
+    /// &lt;/summary&gt;
+    public int MaxDepth { get; set; } = 5;
+
+    /// &lt;summary&gt;
+    /// 最大结果数
+    /// &lt;/summary&gt;
+    public int MaxResults { get; set; } = 100;
+
+    /// &lt;summary&gt;
+    /// 是否扫描隐藏文件夹
+    /// &lt;/summary&gt;
+    public bool ScanHiddenFolders { get; set; } = false;
+
+    /// &lt;summary&gt;
+    /// 是否包含网络驱动器
+    /// &lt;/summary&gt;
+    public bool IncludeNetworkDrives { get; set; } = false;
+
+    /// &lt;summary&gt;
+    /// 自定义根路径
+    /// &lt;/summary&gt;
+    public string? CustomRootPath { get; set; }
+
+    /// &lt;summary&gt;
+    /// 自定义排除路径列表
+    /// &lt;/summary&gt;
+    public List&lt;string&gt; CustomExcludePaths { get; set; } = new();
+}
+</code></pre>
+<h4 id="javainfoextended">JavaInfoExtended</h4>
+<p>Java 信息扩展类，继承自 <code>DataModules.DataDetails.Java</code>。</p>
+<pre><code class="lang-csharp">public class JavaInfoExtended : DataModules.DataDetails.Java
+{
+    /// &lt;summary&gt;
+    /// Java 状态
+    /// &lt;/summary&gt;
+    public JavaState State { get; set; } = JavaState.UnknownError;
+
+    /// &lt;summary&gt;
+    /// 状态消息
+    /// &lt;/summary&gt;
+    public string StateMessage { get; set; } = string.Empty;
+
+    /// &lt;summary&gt;
+    /// 发现方式
+    /// &lt;/summary&gt;
+    public string DiscoveredBy { get; set; } = string.Empty;
+}
+</code></pre>
+<h3 id="静态方法">静态方法</h3>
+<h4 id="searchjava">SearchJava</h4>
+<p>搜索系统中的 Java 安装。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>options</code> | <code>JavaSearchOptions?</code> | 搜索选项（可选） |</p>
+<p><strong>返回值：</strong> <code>List&lt;JavaInfoExtended&gt;</code> - Java 信息列表</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">// 快速搜索
+var quickOptions = new JavaHelper.JavaSearchOptions
+{
+    Mode = JavaHelper.JavaSearchMode.Fast,
+    IncludeJRE = true,
+    IncludeJDK = true
+};
+var quickResults = JavaHelper.SearchJava(quickOptions);
+Console.WriteLine($&quot;快速搜索找到 {quickResults.Count} 个 Java&quot;);
+
+// 深度搜索
+var deepOptions = new JavaHelper.JavaSearchOptions
+{
+    Mode = JavaHelper.JavaSearchMode.Deep,
+    MaxDepth = 10,
+    ScanHiddenFolders = true
+};
+var deepResults = JavaHelper.SearchJava(deepOptions);
+Console.WriteLine($&quot;深度搜索找到 {deepResults.Count} 个 Java&quot;);
+
+// 显示结果
+foreach (var java in deepResults)
+{
+    Console.WriteLine($&quot;Java 路径: {java.Path}&quot;);
+    Console.WriteLine($&quot;  版本: {java.Version} (ID: {java.VersionID})&quot;);
+    Console.WriteLine($&quot;  类型: {java.Type}&quot;);
+    Console.WriteLine($&quot;  架构: {java.Arch}&quot;);
+    Console.WriteLine($&quot;  状态: {java.State}&quot;);
+    Console.WriteLine();
+}
+</code></pre>
+<hr>
+<h4 id="checkjavacompatibility">CheckJavaCompatibility</h4>
+<p>检查 Java 是否与指定的 Minecraft 版本兼容。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>java</code> | <code>JavaInfoExtended</code> | Java 信息 |
+| <code>minecraftVersion</code> | <code>string</code> | Minecraft 版本 |
+| <code>gameDir</code> | <code>string</code> | 游戏目录 |</p>
+<p><strong>返回值：</strong> <code>bool</code> - 是否兼容</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var java = JavaHelper.SearchJava().First();
+bool isCompatible = JavaHelper.CheckJavaCompatibility(java, &quot;1.20.1&quot;, @&quot;C:\Minecraft\.minecraft&quot;);
+
+if (isCompatible)
+{
+    Console.WriteLine($&quot;✓ Java {java.Version} 与 Minecraft 1.20.1 兼容&quot;);
+}
+else
+{
+    Console.WriteLine($&quot;✗ Java {java.Version} 与 Minecraft 1.20.1 不兼容&quot;);
+}
+</code></pre>
+<hr>
+<h4 id="getrecommendedjava">GetRecommendedJava</h4>
+<p>从 Java 列表中获取推荐用于指定 Minecraft 版本的 Java。</p>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>javaList</code> | <code>List&lt;JavaInfoExtended&gt;</code> | Java 列表 |
+| <code>minecraftVersion</code> | <code>string</code> | Minecraft 版本 |
+| <code>gameDir</code> | <code>string</code> | 游戏目录 |</p>
+<p><strong>返回值：</strong> <code>List&lt;JavaInfoExtended&gt;</code> - 按推荐程度排序的 Java 列表</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var allJava = JavaHelper.SearchJava();
+var recommended = JavaHelper.GetRecommendedJava(allJava, &quot;1.20.1&quot;, @&quot;C:\Minecraft\.minecraft&quot;);
+
+Console.WriteLine(&quot;推荐的 Java 排序:&quot;);
+foreach (var java in recommended.Take(3))
+{
+    Console.WriteLine($&quot;  {java.Version} - {java.Path}&quot;);
+}
+</code></pre>
+<hr>
+<h2 id="systeminfohelper-类">SystemInfoHelper 类</h2>
+<p>系统信息帮助类，提供操作系统、硬件信息获取功能。</p>
+<h3 id="命名空间-2">命名空间</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers;
+</code></pre>
+<h3 id="静态属性">静态属性</h3>
+<h4 id="osname">OsName</h4>
+<p>操作系统名称。</p>
+<p><strong>类型：</strong> <code>string</code></p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">Console.WriteLine($&quot;操作系统: {SystemInfoHelper.OsName}&quot;);
+// 输出: Windows 10 或 macOS 或 Ubuntu
+</code></pre>
+<hr>
+<h4 id="osarch">OsArch</h4>
+<p>操作系统架构。</p>
+<p><strong>类型：</strong> <code>string</code></p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">Console.WriteLine($&quot;系统架构: {SystemInfoHelper.OsArch}&quot;);
+// 输出: x64 或 ARM64
+</code></pre>
+<hr>
+<h4 id="separator">Separator</h4>
+<p>系统路径分隔符。</p>
+<p><strong>类型：</strong> <code>string</code></p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">Console.WriteLine($&quot;路径分隔符: {SystemInfoHelper.Separator}&quot;);
+// Windows 输出: \
+// Linux/macOS 输出: /
+</code></pre>
+<h3 id="静态方法-1">静态方法</h3>
+<h4 id="getsysteminfo">GetSystemInfo</h4>
+<p>获取完整的系统信息。</p>
+<p><strong>返回值：</strong> <code>DataModules.SystemInfo</code> - 系统信息结构体</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var sysInfo = SystemInfoHelper.GetSystemInfo();
+
+Console.WriteLine(&quot;系统信息:&quot;);
+Console.WriteLine($&quot;  操作系统: {sysInfo.OS}&quot;);
+Console.WriteLine($&quot;  OS 版本: {sysInfo.OSVersion}&quot;);
+Console.WriteLine($&quot;  OS 名称: {sysInfo.OSName}&quot;);
+Console.WriteLine($&quot;  架构: {sysInfo.Architecture}&quot;);
+Console.WriteLine($&quot;  OS 版本ID: {sysInfo.OSVersionID}&quot;);
+</code></pre>
+<hr>
+<h2 id="总结">总结</h2>
+<p>Helpers 模块提供了以下类别的工具方法：</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>类</th>
+<th>主要功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>通用工具</td>
+<td><code>GeneralHelper</code></td>
+<td>获取 Mod 加载器类型、检查版本可用性、搜索版本、解压 ZIP、验证 SHA1、删除文件</td>
+</tr>
+<tr>
+<td>Java 管理</td>
+<td><code>JavaHelper</code></td>
+<td>搜索 Java、检查兼容性、获取推荐 Java</td>
+</tr>
+<tr>
+<td>系统信息</td>
+<td><code>SystemInfoHelper</code></td>
+<td>获取操作系统、架构、系统信息</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="下一步">下一步</h2>
+<ul>
+<li><a href="JavaHelper.html">JavaHelper 详解</a> - 学习 Java 管理工具</li>
+<li><a href="../Installers/README.html">安装器详解</a> - 了解 Mod 加载器安装</li>
+<li><a href="../DataModules/README.html">数据模块详解</a> - 了解核心数据模型</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Helpers/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Qomicex.Core API文档 | Qomicex.Core API文档 </title>
+      <title>Qomicex.Core </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Qomicex.Core API文档 | Qomicex.Core API文档 ">
+      <meta name="title" content="Qomicex.Core ">
       
       
       <link rel="icon" href="favicon.ico">
@@ -13,7 +13,7 @@
       <meta name="docfx:navrel" content="toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="">
+      
       
       
       <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/index.md/#L1">
@@ -39,23 +39,19 @@
 
   </head>
 
-  <body class="tex2jax_ignore" data-layout="landing" data-yaml-mime="">
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="index.html">
-            <img id="logo" class="svg" src="logo.svg" alt="Qomicex.Core">
-            Qomicex.Core
+            <img id="logo" class="svg" src="logo.svg" alt="">
+            
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
             <i class="bi bi-three-dots"></i>
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
-              </form>
             </div>
           </div>
         </div>
@@ -71,25 +67,115 @@
         </div>
 
         <article data-uid="">
-<h1 id="qomicexcore-api文档">Qomicex.Core API文档</h1>
+<h1 id="qomicexcore">Qomicex.Core</h1>
 
-<p>Qomicex.Core 是 Qomicex.Avalonia 项目的核心库，提供了 Minecraft 游戏管理、下载器、安装器、配置管理等关键功能。</p>
-<h2 id="主要功能模块">主要功能模块</h2>
-<ul>
-<li><strong>游戏管理</strong>：游戏版本检测、下载、安装和管理</li>
-<li><strong>模组加载器</strong>：Fabric、Forge、Quilt、LiteLoader、OptiFine 等安装器</li>
-<li><strong>下载器</strong>：多线程断点续传下载器</li>
-<li><strong>配置管理</strong>：游戏设置和配置文件处理</li>
-<li><strong>日志分析</strong>：游戏日志分析和错误诊断</li>
-<li><strong>系统信息</strong>：系统环境信息获取</li>
-</ul>
+<h2 id="net-10-开发的-minecraft-游戏启动核心">.NET 10 开发的 Minecraft 游戏启动核心</h2>
+<p><a href="https://dotnet.microsoft.com/"><img src="https://img.shields.io/badge/.NET-10.0-purple" alt=".NET"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License"></a></p>
+<hr>
+<h2 id="什么是-qomicexcore">什么是 Qomicex.Core？</h2>
+<p><strong>Qomicex.Core</strong> 是一个为 Minecraft 游戏启动器开发的高性能 .NET 核心库。无论你是想开发自己的启动器，还是扩展现有功能，Qomicex.Core 都能为你提供坚实的基础。</p>
+<h3 id="核心特性">核心特性</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>多版本支持</strong></td>
+<td>支持 Minecraft 从旧版到最新版的所有版本</td>
+</tr>
+<tr>
+<td><strong>Mod 加载器</strong></td>
+<td>完整支持 Forge、Fabric、NeoForge、Quilt、LiteLoader、OptiFine 等</td>
+</tr>
+<tr>
+<td><strong>账户认证</strong></td>
+<td>支持 Microsoft 账户、离线账户、Yggdrasil 第三方认证</td>
+</tr>
+<tr>
+<td><strong>资源管理</strong></td>
+<td>智能下载和管理游戏资源、库文件、Mod 等资源</td>
+</tr>
+<tr>
+<td><strong>日志分析</strong></td>
+<td>智能分析崩溃日志，自动诊断问题和提供解决方案</td>
+</tr>
+<tr>
+<td><strong>跨平台</strong></td>
+<td>支持 Windows、Linux、macOS</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h2 id="快速开始">快速开始</h2>
-<p>请查看左侧导航菜单中的 API 文档，了解详细的类和方法说明。</p>
-<h2 id="项目信息">项目信息</h2>
+<h3 id="安装">安装</h3>
+<pre><code class="lang-bash"># 通过 NuGet 安装
+dotnet add package Qomicex.Core
+</code></pre>
+<h3 id="第一个示例">第一个示例</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers;
+using Qomicex.Core.Modules.Helpers.Resources;
+
+// 创建 Java 助手
+var javaHelper = new JavaHelper();
+
+// 搜索系统中的 Java
+var javaList = await javaHelper.SearchJavaAsync(new JavaSearchOptions
+{
+    SearchMode = JavaSearchMode.Fast,
+    CheckVersion = true
+});
+
+Console.WriteLine($&quot;找到 {javaList.Count} 个 Java 安装&quot;);
+</code></pre>
+<hr>
+<h2 id="文档导航">文档导航</h2>
+<h3 id="入门指南">入门指南</h3>
 <ul>
-<li><strong>项目地址</strong>：https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia</li>
-<li><strong>许可证</strong>：MIT License</li>
+<li><a href="docs/getting-started.html">快速开始</a> - 环境配置和第一个项目</li>
+<li><a href="docs/introduction.html">项目介绍</a> - 架构设计和核心概念</li>
 </ul>
+<h3 id="核心模块">核心模块</h3>
+<ul>
+<li><a href="docs/DataModules/">数据模块</a> - 核心数据模型</li>
+<li><a href="docs/Helpers/">辅助工具</a> - 通用工具类</li>
+<li><a href="docs/Account/">账户认证</a> - 认证系统</li>
+<li><a href="docs/Installers/">安装器</a> - Mod 加载器安装</li>
+<li><a href="docs/Resources/">资源管理</a> - 资源管理</li>
+<li><a href="docs/Expansion/">扩展资源</a> - CurseForge/Modrinth API</li>
+<li><a href="docs/LogAnalysis/">日志分析</a> - 崩溃日志分析</li>
+<li><a href="docs/Launcher/">游戏启动</a> - 游戏启动器</li>
+</ul>
+<h3 id="api-参考">API 参考</h3>
+<ul>
+<li><a href="api/">完整 API 文档</a> - 自动生成的 API 文档</li>
+</ul>
+<hr>
+<h2 id="示例项目">示例项目</h2>
+<p>查看我们的示例项目，了解如何在实际项目中使用 Qomicex.Core：</p>
+<ul>
+<li><a href="https://github.com/example/basic-launcher">基础启动器</a></li>
+<li><a href="https://github.com/example/modded-launcher">带 Mod 支持的启动器</a></li>
+</ul>
+<hr>
+<h2 id="贡献">贡献</h2>
+<p>我们欢迎社区贡献！请查看 <a href="CONTRIBUTING.md">贡献指南</a> 了解如何参与项目。</p>
+<hr>
+<h2 id="许可证">许可证</h2>
+<p>Qomicex.Core 使用 <a href="LICENSE">MIT 许可证</a> 开源。</p>
+<hr>
+<h2 id="支持">支持</h2>
+<ul>
+<li>📧 邮箱: support@qomicex.io</li>
+<li>💬 Discord: <a href="https://discord.gg/qomicex">加入我们的 Discord</a></li>
+<li>🐛 问题反馈: <a href="https://github.com/yourusername/qomicex/issues">GitHub Issues</a></li>
+</ul>
+<hr>
+<p align="center">Made with ❤️ for Minecraft players</p>
 
 </article>
 
@@ -106,12 +192,11 @@
       </div>
     </main>
 
-    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Qomicex.Avalonia
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
         </div>
       </div>
     </footer>

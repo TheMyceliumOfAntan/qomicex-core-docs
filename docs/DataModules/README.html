@@ -2,18 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>数据模块 | Qomicex.Core API文档 </title>
+      <title>数据模块 (DataModules) </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="数据模块 | Qomicex.Core API文档 ">
+      <meta name="title" content="数据模块 (DataModules) ">
       
       
       <link rel="icon" href="../../favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
       <meta name="docfx:navrel" content="../../toc.html">
-      <meta name="docfx:tocrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="../../">
+      
       
       
       <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/DataModules/README.md/#L1">
@@ -44,18 +44,14 @@
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="../../index.html">
-            <img id="logo" class="svg" src="../../logo.svg" alt="Qomicex.Core">
-            Qomicex.Core
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
             <i class="bi bi-three-dots"></i>
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
-              </form>
             </div>
           </div>
         </div>
@@ -85,44 +81,505 @@
         </div>
 
         <article data-uid="">
-<h1 id="数据模块">数据模块</h1>
+<h1 id="数据模块-datamodules">数据模块 (DataModules)</h1>
 
-<h2 id="功能概述">功能概述</h2>
-<p>DataModules 提供了 Qomicex 项目的数据结构定义，包括游戏配置、系统信息、版本信息等。</p>
-<h2 id="使用示例">使用示例</h2>
-<pre><code class="lang-csharp">using Qomicex.Core.DataModules;
+<blockquote>
+<p>定义 Qomicex.Core 使用的核心数据结构和模型。</p>
+</blockquote>
+<hr>
+<h2 id="概述">概述</h2>
+<p>数据模块是 Qomicex.Core 的基础，它定义了所有业务对象的数据结构。理解这些模型对于使用 Qomicex.Core 至关重要。</p>
+<pre><code>DataModules
+├── DataDetails     # 各种详情数据类
+│   ├── Account     # 账户信息
+│   ├── Java        # Java 信息
+│   ├── Launcher    # 启动器配置
+│   └── Version     # 版本信息
+├── State           # 状态码和枚举
+└── SystemInfo      # 系统信息
+</code></pre>
+<hr>
+<h2 id="命名空间">命名空间</h2>
+<pre><code class="lang-csharp">using Qomicex.Core;
+</code></pre>
+<hr>
+<h2 id="datadetails-命名空间">DataDetails 命名空间</h2>
+<h3 id="account-类">Account 类</h3>
+<p>表示 Minecraft 账户信息。</p>
+<h4 id="属性">属性</h4>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Name</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>玩家名称</td>
+</tr>
+<tr>
+<td><code>Uuid</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>玩家的 UUID（唯一标识符）</td>
+</tr>
+<tr>
+<td><code>Token</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>访问令牌（用于登录验证）</td>
+</tr>
+<tr>
+<td><code>AccessToken</code></td>
+<td><code>string</code></td>
+<td><code>&quot;0&quot;</code></td>
+<td>访问令牌（备用字段）</td>
+</tr>
+<tr>
+<td><code>RefreshToken</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>刷新令牌（用于续期访问令牌）</td>
+</tr>
+<tr>
+<td><code>LoginMethod</code></td>
+<td><code>string</code></td>
+<td><code>&quot;Legacy&quot;</code></td>
+<td>登录方式（Legacy、Microsoft、Yggdrasil 等）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="示例">示例</h4>
+<pre><code class="lang-csharp">// 创建一个离线账户
+var offlineAccount = new DataModules.DataDetails.Account
+{
+    Name = &quot;Steve&quot;,
+    Uuid = Guid.NewGuid().ToString(&quot;N&quot;),
+    Token = &quot;&quot;,
+    LoginMethod = &quot;Offline&quot;
+};
 
-// 游戏配置
+Console.WriteLine($&quot;创建账户: {offlineAccount.Name}&quot;);
+Console.WriteLine($&quot;UUID: {offlineAccount.Uuid}&quot;);
+</code></pre>
+<hr>
+<h3 id="java-类">Java 类</h3>
+<p>表示 Java 运行时信息。</p>
+<h4 id="属性-1">属性</h4>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Name</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>Java 名称</td>
+</tr>
+<tr>
+<td><code>Path</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>Java 可执行文件的完整路径</td>
+</tr>
+<tr>
+<td><code>Version</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>Java 版本号（如 &quot;17.0.2&quot;）</td>
+</tr>
+<tr>
+<td><code>VersionID</code></td>
+<td><code>int</code></td>
+<td><code>0</code></td>
+<td>版本数字标识</td>
+</tr>
+<tr>
+<td><code>Type</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>Java 类型（JDK、JRE 等）</td>
+</tr>
+<tr>
+<td><code>Arch</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>架构（x64, x86, arm64 等）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="示例-1">示例</h4>
+<pre><code class="lang-csharp">// 创建 Java 信息对象
+var javaInfo = new DataModules.DataDetails.Java
+{
+    Name = &quot;Java 17&quot;,
+    Path = @&quot;C:\Program Files\Java\jdk-17\bin\java.exe&quot;,
+    Version = &quot;17.0.2&quot;,
+    VersionID = 17,
+    Type = &quot;JDK&quot;,
+    Arch = &quot;x64&quot;
+};
+
+Console.WriteLine($&quot;Java: {javaInfo.Name}&quot;);
+Console.WriteLine($&quot;路径: {javaInfo.Path}&quot;);
+Console.WriteLine($&quot;版本: {javaInfo.Version}&quot;);
+</code></pre>
+<hr>
+<h3 id="launcher-类">Launcher 类</h3>
+<p>表示启动器配置。</p>
+<h4 id="属性-2">属性</h4>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Account</code></td>
+<td><code>DataDetails.Account</code></td>
+<td><code>new DataDetails.Account()</code></td>
+<td>账户信息</td>
+</tr>
+<tr>
+<td><code>Java</code></td>
+<td><code>DataDetails.Java</code></td>
+<td><code>new DataDetails.Java()</code></td>
+<td>Java 信息</td>
+</tr>
+<tr>
+<td><code>WindowSize</code></td>
+<td><code>Launcher.WindowSize</code></td>
+<td><code>new Launcher.WindowSize()</code></td>
+<td>游戏窗口尺寸配置</td>
+</tr>
+<tr>
+<td><code>DevideVersion</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>是否分离版本</td>
+</tr>
+<tr>
+<td><code>AdditionalParam</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>额外参数</td>
+</tr>
+<tr>
+<td><code>Version</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>版本号</td>
+</tr>
+<tr>
+<td><code>MaxMemory</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>最大内存分配</td>
+</tr>
+</tbody>
+</table>
+<h4 id="嵌套类-windowsize">嵌套类 WindowSize</h4>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Width</code></td>
+<td><code>string</code></td>
+<td><code>&quot;854&quot;</code></td>
+<td>窗口宽度</td>
+</tr>
+<tr>
+<td><code>Height</code></td>
+<td><code>string</code></td>
+<td><code>&quot;480&quot;</code></td>
+<td>窗口高度</td>
+</tr>
+</tbody>
+</table>
+<h4 id="示例-2">示例</h4>
+<pre><code class="lang-csharp">// 创建启动器配置
 var launcherConfig = new DataModules.DataDetails.Launcher
 {
-    MemoryLimit = 4096, // MB
+    // 窗口设置
     WindowSize = new DataModules.DataDetails.Launcher.WindowSize
     {
-        Width = 854,
-        Height = 480
+        Width = &quot;1920&quot;,
+        Height = &quot;1080&quot;
     },
-    JavaPath = @&quot;C:\Program Files\Java\jre1.8.0_311\bin\javaw.exe&quot;,
-    GameDir = @&quot;C:\Game\.minecraft&quot;
+
+    // 内存设置
+    MaxMemory = &quot;4096&quot;,
+
+    // 版本设置
+    Version = &quot;1.20.1&quot;,
+    DevideVersion = false,
+
+    // 账户信息
+    Account = new DataModules.DataDetails.Account
+    {
+        Name = &quot;Steve&quot;,
+        Uuid = Guid.NewGuid().ToString(&quot;N&quot;),
+        LoginMethod = &quot;Offline&quot;
+    },
+
+    // Java 信息
+    Java = new DataModules.DataDetails.Java
+    {
+        Path = @&quot;C:\Program Files\Java\jdk-17\bin\java.exe&quot;,
+        Version = &quot;17.0.2&quot;
+    },
+
+    // 额外参数
+    AdditionalParam = &quot;-Djava.net.preferIPv4Stack=true&quot;
 };
 
-// 系统信息
-var systemInfo = new DataModules.SystemInfo
-{
-    OsName = SystemInfoHelper.OsName,
-    OsArch = SystemInfoHelper.OsArch,
-    TotalMemory = SystemInfoHelper.GetTotalMemory(),
-    AvailableMemory = SystemInfoHelper.GetAvailableMemory()
-};
-
-// 账户信息
-var account = new DataModules.DataDetails.Account
-{
-    Username = &quot;PlayerName&quot;,
-    AccessToken = &quot;your-access-token&quot;,
-    ClientToken = &quot;your-client-token&quot;,
-    Selected = true
-};
+// 序列化为 JSON
+var json = Newtonsoft.Json.JsonConvert.SerializeObject(launcherConfig, Newtonsoft.Json.Formatting.Indented);
+Console.WriteLine(json);
 </code></pre>
+<hr>
+<h3 id="version-类">Version 类</h3>
+<p>表示 Minecraft 版本信息。</p>
+<h4 id="属性-3">属性</h4>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Name</code></td>
+<td><code>string</code></td>
+<td>版本名称（如 &quot;1.20.1-forge-47.0.0&quot;）</td>
+</tr>
+<tr>
+<td><code>Type</code></td>
+<td><code>string[]</code></td>
+<td>版本类型数组（如 [&quot;release&quot;, &quot;forge&quot;]）</td>
+</tr>
+<tr>
+<td><code>GameVersion</code></td>
+<td><code>string</code></td>
+<td>基础游戏版本（如 &quot;1.20.1&quot;）</td>
+</tr>
+<tr>
+<td><code>VersionDir</code></td>
+<td><code>string</code></td>
+<td>版本目录路径</td>
+</tr>
+<tr>
+<td><code>State</code></td>
+<td><code>string</code></td>
+<td>版本状态（如 &quot;Available&quot;）</td>
+</tr>
+<tr>
+<td><code>StateDescribe</code></td>
+<td><code>string</code></td>
+<td>状态描述（如 &quot;Everything is OK&quot;）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="构造函数">构造函数</h4>
+<pre><code class="lang-csharp">public Version(string gameDir = &quot;&quot;)
+</code></pre>
+<h4 id="示例-3">示例</h4>
+<pre><code class="lang-csharp">// 创建版本信息对象
+var version = new DataModules.DataDetails.Version(@&quot;C:&quot;)
+{
+    Name = &quot;1.20.1-forge-47.0.0&quot;,
+    Type = new[] { &quot;release&quot;, &quot;forge&quot; },
+    GameVersion = &quot;1.20.1&quot;,
+    VersionDir = @&quot;C:\Minecraft\.minecraft\versions\1.20.1-forge-47.0.0&quot;,
+    State = &quot;Available&quot;,
+    StateDescribe = &quot;Everything is OK&quot;
+};
+
+Console.WriteLine($&quot;版本: {version.Name}&quot;);
+Console.WriteLine($&quot;类型: {string.Join(&quot;, &quot;, version.Type)}&quot;);
+Console.WriteLine($&quot;游戏版本: {version.GameVersion}&quot;);
+Console.WriteLine($&quot;状态: {version.State}&quot;);
+</code></pre>
+<hr>
+<h2 id="state-结构体">State 结构体</h2>
+<p>表示状态信息。</p>
+<h3 id="属性-4">属性</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Name</code></td>
+<td><code>string</code></td>
+<td><code>&quot;Available&quot;</code></td>
+<td>状态名称</td>
+</tr>
+<tr>
+<td><code>Describe</code></td>
+<td><code>string</code></td>
+<td><code>&quot;Everything is OK&quot;</code></td>
+<td>状态描述</td>
+</tr>
+<tr>
+<td><code>Code</code></td>
+<td><code>int</code></td>
+<td><code>0</code></td>
+<td>状态代码</td>
+</tr>
+</tbody>
+</table>
+<h3 id="statecode-枚举">StateCode 枚举</h3>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Available</code></td>
+<td>可用（0）</td>
+</tr>
+<tr>
+<td><code>MissingFiles</code></td>
+<td>缺失文件（1）</td>
+</tr>
+<tr>
+<td><code>WrongId</code></td>
+<td>错误 ID（2）</td>
+</tr>
+<tr>
+<td><code>Unknown</code></td>
+<td>未知（3）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="示例-4">示例</h3>
+<pre><code class="lang-csharp">// 创建状态对象
+var state = new DataModules.State
+{
+    Name = &quot;Available&quot;,
+    Describe = &quot;Everything is OK&quot;,
+    Code = (int)DataModules.StateCode.Available
+};
+
+Console.WriteLine($&quot;状态: {state.Name}&quot;);
+Console.WriteLine($&quot;描述: {state.Describe}&quot;);
+Console.WriteLine($&quot;代码: {state.Code}&quot;);
+
+// 检查状态
+if (state.Code == (int)DataModules.StateCode.Available)
+{
+    Console.WriteLine(&quot;✓ 一切正常&quot;);
+}
+</code></pre>
+<hr>
+<h2 id="systeminfo-结构体">SystemInfo 结构体</h2>
+<p>表示系统信息。</p>
+<h3 id="属性-5">属性</h3>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OS</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>操作系统</td>
+</tr>
+<tr>
+<td><code>OSVersion</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>操作系统版本</td>
+</tr>
+<tr>
+<td><code>OSName</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>操作系统名称</td>
+</tr>
+<tr>
+<td><code>Architecture</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>架构</td>
+</tr>
+<tr>
+<td><code>OSVersionID</code></td>
+<td><code>string</code></td>
+<td><code>string.Empty</code></td>
+<td>操作系统版本 ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="示例-5">示例</h3>
+<pre><code class="lang-csharp">// 获取系统信息
+var sysInfo = SystemInfoHelper.GetSystemInfo();
+
+Console.WriteLine(&quot;系统信息:&quot;);
+Console.WriteLine($&quot;  操作系统: {sysInfo.OS}&quot;);
+Console.WriteLine($&quot;  OS 版本: {sysInfo.OSVersion}&quot;);
+Console.WriteLine($&quot;  OS 名称: {sysInfo.OSName}&quot;);
+Console.WriteLine($&quot;  架构: {sysInfo.Architecture}&quot;);
+Console.WriteLine($&quot;  OS 版本ID: {sysInfo.OSVersionID}&quot;);
+</code></pre>
+<hr>
+<h2 id="总结">总结</h2>
+<p>数据模块是 Qomicex.Core 的基石，它定义了：</p>
+<ol>
+<li><strong>Account</strong> - 账户信息的统一表示</li>
+<li><strong>Java</strong> - Java 运行时的详细信息</li>
+<li><strong>Launcher</strong> - 启动器配置的完整定义</li>
+<li><strong>Version</strong> - Minecraft 版本的元数据</li>
+<li><strong>State</strong> - 操作结果的状态信息</li>
+<li><strong>SystemInfo</strong> - 系统硬件和软件信息</li>
+</ol>
+<p>这些模型类都采用简单的属性设计，支持 JSON 序列化，便于存储和传输。</p>
+<hr>
+<h2 id="下一步">下一步</h2>
+<ul>
+<li><a href="../Helpers/README.html">辅助工具详解</a> - 学习各种工具类的用法</li>
+<li><a href="../Installers/README.html">安装器详解</a> - 了解 Mod 加载器安装</li>
+</ul>
 
 </article>
 
@@ -139,12 +596,11 @@ var account = new DataModules.DataDetails.Account
       </div>
     </main>
 
-    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Qomicex.Avalonia
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
         </div>
       </div>
     </footer>

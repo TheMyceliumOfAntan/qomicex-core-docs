@@ -2,18 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>安装器 | Qomicex.Core API文档 </title>
+      <title>安装器模块 (Installers) </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="安装器 | Qomicex.Core API文档 ">
+      <meta name="title" content="安装器模块 (Installers) ">
       
       
       <link rel="icon" href="../../favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
       <meta name="docfx:navrel" content="../../toc.html">
-      <meta name="docfx:tocrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="../../">
+      
       
       
       <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Installers/README.md/#L1">
@@ -44,18 +44,14 @@
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="../../index.html">
-            <img id="logo" class="svg" src="../../logo.svg" alt="Qomicex.Core">
-            Qomicex.Core
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
             <i class="bi bi-three-dots"></i>
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
-              </form>
             </div>
           </div>
         </div>
@@ -85,75 +81,243 @@
         </div>
 
         <article data-uid="">
-<h1 id="安装器">安装器</h1>
+<h1 id="安装器模块-installers">安装器模块 (Installers)</h1>
 
-<h2 id="功能概述">功能概述</h2>
-<p>Qomicex.Core 提供了多种 Minecraft 模组加载器的安装器，包括 Forge、Fabric、Quilt、LiteLoader 和 OptiFine。所有安装器都实现了 IInstaller 接口。</p>
+<blockquote>
+<p>用于安装各种 Minecraft Mod 加载器的模块。</p>
+</blockquote>
+<hr>
+<h2 id="概述">概述</h2>
+<p>安装器模块是 Qomicex.Core 的核心功能之一，它提供了统一的接口来安装各种 Minecraft Mod 加载器。无论你是需要安装 Forge、Fabric 还是其他加载器，都可以使用相同的模式来完成。</p>
+<h3 id="支持的-mod-加载器">支持的 Mod 加载器</h3>
+<table>
+<thead>
+<tr>
+<th>加载器</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Forge</strong></td>
+<td>最成熟、Mod 最多的加载器</td>
+<td>大型 Mod 包、复杂 Mod 环境</td>
+</tr>
+<tr>
+<td><strong>Fabric</strong></td>
+<td>轻量级、更新快的加载器</td>
+<td>新版本、轻量 Mod 环境</td>
+</tr>
+<tr>
+<td><strong>NeoForge</strong></td>
+<td>Forge 的继任者</td>
+<td>未来 Forge 的替代品</td>
+</tr>
+<tr>
+<td><strong>Quilt</strong></td>
+<td>Fabric 的替代品</td>
+<td>追求更轻量的 Mod 环境</td>
+</tr>
+<tr>
+<td><strong>LiteLoader</strong></td>
+<td>轻量级客户端 Mod 加载器</td>
+<td>客户端辅助 Mod</td>
+</tr>
+<tr>
+<td><strong>OptiFine</strong></td>
+<td>高清修复和优化</td>
+<td>光影、性能优化</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="架构设计">架构设计</h2>
+<h3 id="统一接口设计">统一接口设计</h3>
+<p>所有安装器都实现了统一的 <code>IInstaller</code> 接口：</p>
+<pre><code class="lang-csharp">public interface IInstaller
+{
+    /// &lt;summary&gt;
+    /// 异步安装 Mod 加载器
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;versionId&quot;&gt;生成的版本ID（如 &quot;1.20.1-forge-47.0.0&quot;）&lt;/param&gt;
+    /// &lt;param name=&quot;inheritsFromJson&quot;&gt;继承自版本的JSON内容（可为空）&lt;/param&gt;
+    /// &lt;param name=&quot;para1&quot;&gt;参数1（根据安装器类型不同）&lt;/param&gt;
+    /// &lt;param name=&quot;para2&quot;&gt;参数2（根据安装器类型不同）&lt;/param&gt;
+    /// &lt;param name=&quot;para3&quot;&gt;参数3（可选）&lt;/param&gt;
+    /// &lt;param name=&quot;para4&quot;&gt;参数4（可选）&lt;/param&gt;
+    void InstallAsync(
+        string versionId,
+        string inheritsFromJson,
+        string? para1,
+        string? para2,
+        string? para3,
+        string? para4
+    );
+}
+</code></pre>
+<h3 id="安装器继承链">安装器继承链</h3>
+<pre><code>                    IInstaller (接口)
+                         │
+                         ▼
+              ┌──────────────────────┐
+              │    InstallerBase     │  ← 基类，提供通用功能
+              │      (抽象类)        │
+              └──────────┬───────────┘
+                         │
+         ┌───────────────┼───────────────┐
+         ▼               ▼               ▼
+┌────────────────┐ ┌────────┐ ┌────────────────┐
+│ ForgeInstaller │ │Fabric  │ │NeoForge        │
+│   (复杂安装)    │ │Installer│ │Installer       │
+└───────┬────────┘ └────────┘ └────────┬───────┘
+        │                              │
+        ▼                              ▼
+┌────────────────┐          ┌────────────────┐
+│ForgeInstaller  │          │ForgeInstaller  │
+│Base            │          │Base            │
+└────────────────┘          └────────────────┘
+</code></pre>
+<hr>
+<h2 id="核心数据结构">核心数据结构</h2>
+<h3 id="下载源枚举">下载源枚举</h3>
+<pre><code class="lang-csharp">public enum DownloadSource
+{
+    Official = 0,    // 官方源
+    Bmclapi = 1      // BMCLAPI 源（中国加速）
+}
+</code></pre>
+<h3 id="installtype-枚举">InstallType 枚举</h3>
+<pre><code class="lang-csharp">public enum InstallType
+{
+    Forge,
+    Fabric,
+    NeoForge,
+    Quilt,
+    LiteLoader,
+    OptiFine
+}
+</code></pre>
+<hr>
 <h2 id="使用示例">使用示例</h2>
-<h3 id="安装-fabric">安装 Fabric</h3>
+<h3 id="基本安装示例">基本安装示例</h3>
 <pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
 
-// 创建 Fabric 安装器实例
-var fabricInstaller = new FabricInstaller((int)InstallerBase.DownloadSource.Official, @&quot;C:\Game\.minecraft&quot;);
+// 创建 Forge 安装器
+var forgeInstaller = new ForgeInstaller(
+    downloadSource: 1,           // 1 = BMCLAPI
+    gameDir: @&quot;C:\Minecraft\.minecraft&quot;,
+    gameVersion: &quot;1.20.1&quot;
+);
 
-// 安装 Fabric 到指定版本
-string versionId = &quot;1.20.1-fabric-0.14.24&quot;;
-string fabricVersion = &quot;0.14.24&quot;;
-string gameVersion = &quot;1.20.1&quot;;
+// 执行安装
+forgeInstaller.InstallAsync(
+    versionId: &quot;1.20.1-forge-47.0.0&quot;,
+    inheritsFromJson: &quot;{ ... }&quot;,  // 原版版本 JSON 内容
+    para1: @&quot;C:\Program Files\Java\jdk-17\bin\java.exe&quot;,  // Java 路径
+    para2: @&quot;C:\Downloads\forge-1.20.1-47.0.0-installer.jar&quot;, // 安装器路径
+    para3: null,
+    para4: null
+);
+</code></pre>
+<h3 id="fabric-安装示例">Fabric 安装示例</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
 
+// 创建 Fabric 安装器
+var fabricInstaller = new FabricInstaller(
+    downloadSource: 1,           // 1 = BMCLAPI
+    gameDir: @&quot;C:\Minecraft\.minecraft&quot;
+);
+
+// 异步安装 Fabric
+await fabricInstaller.InstallFabricAsync(
+    versionId: &quot;1.20.1-fabric-0.14.22&quot;,
+    fabricVersion: &quot;0.14.22&quot;,
+    gameVersion: &quot;1.20.1&quot;,
+    inheritsFromJson: null  // 可选
+);
+</code></pre>
+<h3 id="带进度和取消的安装liteloader">带进度和取消的安装（LiteLoader）</h3>
+<pre><code class="lang-csharp">using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Qomicex.Core.Modules.Helpers.Installers;
+
+// 创建取消令牌源
+using var cts = new CancellationTokenSource();
+
+// 创建进度报告器
+var progress = new Progress&lt;LiteloaderInstaller.InstallProgress&gt;(p =&gt;
+{
+    if (p.IsCompleted)
+    {
+        Console.WriteLine($&quot;✓ {p.Message}&quot;);
+    }
+    else if (p.IsError)
+    {
+        Console.WriteLine($&quot;✗ 错误: {p.Message}&quot;);
+    }
+    else
+    {
+        Console.Write($&quot;\r{p.Message} - {p.Percentage}% &quot;);
+    }
+});
+
+// 创建 LiteLoader 安装器
+var liteLoaderInstaller = new LiteloaderInstaller(
+    sourceId: 1,
+    gameDir: @&quot;C:\Minecraft\.minecraft&quot;,
+    gameVersion: &quot;1.12.2&quot;
+);
+
+// 执行安装
 try
 {
-    fabricInstaller.InstallAsync(versionId, null, fabricVersion, gameVersion, null, null);
-    Console.WriteLine(&quot;Fabric 安装成功！&quot;);
+    bool success = await liteLoaderInstaller.InstallLiteLoaderAsync(
+        versionId: &quot;1.12.2-LiteLoader-1.12.2-SNAPSHOT&quot;,
+        mcVersion: &quot;1.12.2&quot;,
+        liteVersion: &quot;1.12.2-SNAPSHOT&quot;,
+        progress: progress,
+        cancellationToken: cts.Token
+    );
+
+    if (success)
+    {
+        Console.WriteLine(&quot;\n✓ LiteLoader 安装完成！&quot;);
+    }
+}
+catch (OperationCanceledException)
+{
+    Console.WriteLine(&quot;\n✗ 安装已取消&quot;);
 }
 catch (Exception ex)
 {
-    Console.WriteLine($&quot;Fabric 安装失败: {ex.Message}&quot;);
+    Console.WriteLine($&quot;\n✗ 安装失败: {ex.Message}&quot;);
 }
 </code></pre>
-<h3 id="安装-forge">安装 Forge</h3>
-<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
-
-// 创建 Forge 安装器实例
-var forgeInstaller = new ForgeInstaller((int)InstallerBase.DownloadSource.Official, @&quot;C:\Game\.minecraft&quot;);
-
-// 安装 Forge 到指定版本
-string versionId = &quot;1.20.1-forge-47.1.3&quot;;
-string forgeVersion = &quot;47.1.3&quot;;
-string gameVersion = &quot;1.20.1&quot;;
-string installerPath = @&quot;C:\Downloads\forge-1.20.1-47.1.3-installer.jar&quot;;
-
-try
-{
-    forgeInstaller.InstallAsync(versionId, null, forgeVersion, gameVersion, installerPath, null);
-    Console.WriteLine(&quot;Forge 安装成功！&quot;);
-}
-catch (Exception ex)
-{
-    Console.WriteLine($&quot;Forge 安装失败: {ex.Message}&quot;);
-}
-</code></pre>
-<h3 id="安装-quilt">安装 Quilt</h3>
-<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Installers;
-
-// 创建 Quilt 安装器实例
-var quiltInstaller = new QuiltInstaller((int)InstallerBase.DownloadSource.Official, @&quot;C:\Game\.minecraft&quot;);
-
-// 安装 Quilt 到指定版本
-string versionId = &quot;1.20.1-quilt-0.18.10&quot;;
-string quiltVersion = &quot;0.18.10&quot;;
-string gameVersion = &quot;1.20.1&quot;;
-
-try
-{
-    quiltInstaller.InstallAsync(versionId, null, quiltVersion, gameVersion, null, null);
-    Console.WriteLine(&quot;Quilt 安装成功！&quot;);
-}
-catch (Exception ex)
-{
-    Console.WriteLine($&quot;Quilt 安装失败: {ex.Message}&quot;);
-}
-</code></pre>
+<hr>
+<h2 id="各安装器详解">各安装器详解</h2>
+<ul>
+<li><a href="ForgeInstaller.html">Forge 安装器</a> - 安装 Minecraft Forge</li>
+<li><a href="FabricInstaller.md">Fabric 安装器</a> - 安装 Fabric</li>
+<li><a href="NeoForgeInstaller.md">NeoForge 安装器</a> - 安装 NeoForge</li>
+</ul>
+<hr>
+<h2 id="总结">总结</h2>
+<p>安装器模块提供了：</p>
+<ol>
+<li><strong>统一接口</strong> - 所有安装器都实现 <code>IInstaller</code> 接口</li>
+<li><strong>多种加载器支持</strong> - 支持 Forge、Fabric、NeoForge、Quilt、LiteLoader、OptiFine</li>
+<li><strong>灵活配置</strong> - 支持官方源和镜像源切换</li>
+<li><strong>异步操作</strong> - 支持异步安装和取消操作</li>
+</ol>
+<hr>
+<h2 id="下一步">下一步</h2>
+<ul>
+<li><a href="ForgeInstaller.html">Forge 安装器详解</a></li>
+<li><a href="FabricInstaller.md">Fabric 安装器详解</a></li>
+<li><a href="../Resources/README.html">资源管理详解</a></li>
+</ul>
 
 </article>
 
@@ -170,12 +334,11 @@ catch (Exception ex)
       </div>
     </main>
 
-    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Qomicex.Avalonia
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
         </div>
       </div>
     </footer>

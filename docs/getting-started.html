@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Getting Started | Qomicex.Core API文档 </title>
+      <title>快速开始 </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Getting Started | Qomicex.Core API文档 ">
+      <meta name="title" content="快速开始 ">
       
       
       <link rel="icon" href="../favicon.ico">
@@ -13,7 +13,7 @@
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="../">
+      
       
       
       <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/getting-started.md/#L1">
@@ -44,18 +44,14 @@
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="Qomicex.Core">
-            Qomicex.Core
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
             <i class="bi bi-three-dots"></i>
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
-              </form>
             </div>
           </div>
         </div>
@@ -85,8 +81,191 @@
         </div>
 
         <article data-uid="">
-<h1 id="getting-started">Getting Started</h1>
+<h1 id="快速开始">快速开始</h1>
 
+<p>欢迎来到 Qomicex.Core 的快速入门指南！本指南将帮助你在 15 分钟内开始使用这个强大的 Minecraft 启动核心。</p>
+<hr>
+<h2 id="环境要求">环境要求</h2>
+<p>在开始之前，请确保你的开发环境满足以下条件：</p>
+<h3 id="必需条件">必需条件</h3>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>版本</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.NET SDK</td>
+<td>10.0 或更高</td>
+<td><a href="https://dotnet.microsoft.com/download/dotnet/10.0">下载 .NET 10</a></td>
+</tr>
+<tr>
+<td>IDE</td>
+<td>任意</td>
+<td>推荐使用 Visual Studio 2022 或 VS Code</td>
+</tr>
+<tr>
+<td>操作系统</td>
+<td>Windows/Linux/macOS</td>
+<td>全平台支持</td>
+</tr>
+</tbody>
+</table>
+<h3 id="验证环境">验证环境</h3>
+<p>打开终端，运行以下命令验证环境：</p>
+<pre><code class="lang-bash"># 检查 .NET 版本
+dotnet --version
+
+# 应该输出类似 10.0.x 的版本号
+</code></pre>
+<hr>
+<h2 id="创建第一个项目">创建第一个项目</h2>
+<h3 id="步骤-1-创建新项目">步骤 1: 创建新项目</h3>
+<pre><code class="lang-bash"># 创建新的控制台应用
+dotnet new console -n MyFirstLauncher
+cd MyFirstLauncher
+</code></pre>
+<h3 id="步骤-2-添加-qomicexcore-包">步骤 2: 添加 Qomicex.Core 包</h3>
+<pre><code class="lang-bash"># 添加 Qomicex.Core 包引用
+dotnet add package Qomicex.Core
+
+# 同时添加 Newtonsoft.Json（Qomicex.Core 的依赖）
+dotnet add package Newtonsoft.Json
+</code></pre>
+<h3 id="步骤-3-编写代码">步骤 3: 编写代码</h3>
+<p>打开 <code>Program.cs</code>，替换为以下代码：</p>
+<pre><code class="lang-csharp">using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Qomicex.Core.Modules.Helpers;
+using Qomicex.Core.Modules.Helpers.Resources;
+using Qomicex.Core.DataModules;
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        Console.WriteLine(&quot;=== Qomicex.Core 快速入门示例 ===\n&quot;);
+
+        // 1. 搜索系统中的 Java
+        Console.WriteLine(&quot;[步骤 1] 搜索系统中的 Java...&quot;);
+        var javaOptions = new JavaHelper.JavaSearchOptions
+        {
+            Mode = JavaHelper.JavaSearchMode.Fast,
+            IncludeJRE = true,
+            IncludeJDK = true
+        };
+        var javaList = JavaHelper.SearchJava(javaOptions);
+
+        Console.WriteLine($&quot;✓ 找到 {javaList.Count} 个 Java 安装&quot;);
+        foreach (var java in javaList.Take(3))
+        {
+            Console.WriteLine($&quot;  - {java.Path} (版本: {java.Version})&quot;);
+        }
+
+        // 2. 获取可用的 Minecraft 版本列表
+        Console.WriteLine(&quot;\n[步骤 2] 获取 Minecraft 版本列表...&quot;);
+        var gameResourceHelper = new GameResourceHelper();
+        var versionList = await gameResourceHelper.GetMinecraftListAsync(1);
+
+        Console.WriteLine($&quot;✓ 获取到 {versionList.Count} 个版本&quot;);
+        var latestRelease = versionList.FirstOrDefault(v =&gt; v.Type == &quot;release&quot;);
+        var latestSnapshot = versionList.FirstOrDefault(v =&gt; v.Type == &quot;snapshot&quot;);
+        if (latestRelease != null)
+            Console.WriteLine($&quot;  最新正式版: {latestRelease.Id}&quot;);
+        if (latestSnapshot != null)
+            Console.WriteLine($&quot;  最新快照版: {latestSnapshot.Id}&quot;);
+
+        // 显示最近的 5 个版本
+        Console.WriteLine(&quot;\n  最近的 5 个版本:&quot;);
+        foreach (var version in versionList.Take(5))
+        {
+            Console.WriteLine($&quot;    - {version.Id} ({version.Type})&quot;);
+        }
+
+        // 3. 获取 Mod 加载器版本信息
+        Console.WriteLine(&quot;\n[步骤 3] 获取 Mod 加载器版本信息...&quot;);
+        var modLoaderHelper = new ModLoaderResourceHelper();
+
+        // 获取 Forge 版本列表
+        var forgeVersions = await modLoaderHelper.GetForgeVersions(&quot;1.20.1&quot;);
+        Console.WriteLine($&quot;✓ Forge (1.20.1): {forgeVersions.Count} 个版本&quot;);
+        if (forgeVersions.Any())
+        {
+            var latestForge = forgeVersions.FirstOrDefault(v =&gt; v.IsRecommended) ?? forgeVersions.First();
+            Console.WriteLine($&quot;  推荐版本: {latestForge.Version}&quot;);
+        }
+
+        // 获取 Fabric 版本列表
+        var fabricVersions = await modLoaderHelper.GetFabricVersions(&quot;1.20.1&quot;);
+        Console.WriteLine($&quot;✓ Fabric (1.20.1): {fabricVersions.Count} 个版本&quot;);
+        if (fabricVersions.Any())
+        {
+            Console.WriteLine($&quot;  最新版本: {fabricVersions.First().Version}&quot;);
+        }
+
+        Console.WriteLine(&quot;\n=== 示例运行完成 ===&quot;);
+        Console.WriteLine(&quot;\n接下来你可以:&quot;);
+        Console.WriteLine(&quot;1. 查看完整文档: docs/DataModules/README.md&quot;);
+        Console.WriteLine(&quot;2. 探索更多示例: docs/Installers/README.md&quot;);
+        Console.WriteLine(&quot;3. 加入社区讨论: GitHub Issues&quot;);
+    }
+}
+</code></pre>
+<h3 id="步骤-4-运行项目">步骤 4: 运行项目</h3>
+<pre><code class="lang-bash">dotnet run
+</code></pre>
+<p>你应该会看到类似以下的输出：</p>
+<pre><code>=== Qomicex.Core 快速入门示例 ===
+
+[步骤 1] 搜索系统中的 Java...
+✓ 找到 3 个 Java 安装
+  - C:\Program Files\Java\jdk-17\bin\java.exe (版本: 17.0.2)
+  - C:\Program Files\Java\jdk-21\bin\java.exe (版本: 21.0.1)
+  - C:\Users\YourName\.jdks\openjdk-17.0.2\bin\java.exe (版本: 17.0.2)
+
+[步骤 2] 获取 Minecraft 版本列表...
+✓ 获取到 800+ 个版本
+  最新正式版: 1.21.4
+  最新快照版: 25w03a
+...
+</code></pre>
+<hr>
+<h2 id="下一步">下一步</h2>
+<p>恭喜！你已经成功运行了第一个 Qomicex.Core 示例。现在你可以：</p>
+<h3 id="1-深入学习核心模块">1. 深入学习核心模块</h3>
+<ul>
+<li><a href="DataModules/README.html">数据模块详解</a> - 了解核心数据模型</li>
+<li><a href="Helpers/README.html">辅助工具详解</a> - 掌握各种工具类</li>
+<li><a href="Installers/README.html">安装器详解</a> - 学习 Mod 加载器安装</li>
+</ul>
+<h3 id="2-探索高级功能">2. 探索高级功能</h3>
+<ul>
+<li><a href="LogAnalysis/README.html">日志分析系统</a> - 智能分析崩溃日志</li>
+<li><a href="Expansion/README.html">资源扩展 API</a> - 集成 CurseForge/Modrinth</li>
+<li><a href="Account/README.html">账户认证</a> - 多类型账户支持</li>
+</ul>
+<hr>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="q1-运行示例时出现-找不到-java">Q1: 运行示例时出现 &quot;找不到 Java&quot;？</h3>
+<p>确保你的系统已安装 Java，并且 <code>java</code> 命令在 PATH 环境变量中。你可以在终端运行 <code>java -version</code> 验证。</p>
+<h3 id="q2-如何获取最新版本">Q2: 如何获取最新版本？</h3>
+<pre><code class="lang-bash"># 更新到最新版本
+dotnet add package Qomicex.Core --version latest
+</code></pre>
+<h3 id="q3-支持哪些操作系统">Q3: 支持哪些操作系统？</h3>
+<p>Qomicex.Core 支持 Windows 7+、Linux (主要发行版)、macOS 10.14+。</p>
+<hr>
+<h2 id="获取帮助">获取帮助</h2>
+<ul>
+<li>📖 <a href="https://docs.qomicex.io">完整文档</a></li>
+<li>🐛 <a href="https://github.com/qomicex/core/issues">GitHub Issues</a></li>
+</ul>
+<hr>
+<p><strong>准备好开始了吗？</strong> 选择左侧导航栏的任意模块，开始你的 Qomicex.Core 之旅！</p>
 
 </article>
 
@@ -103,12 +282,11 @@
       </div>
     </main>
 
-    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Qomicex.Avalonia
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
         </div>
       </div>
     </footer>

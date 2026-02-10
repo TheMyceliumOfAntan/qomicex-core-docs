@@ -2,18 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>日志分析 | Qomicex.Core API文档 </title>
+      <title>日志分析模块 (LogAnalysis) </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="日志分析 | Qomicex.Core API文档 ">
+      <meta name="title" content="日志分析模块 (LogAnalysis) ">
       
       
       <link rel="icon" href="../../favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
       <meta name="docfx:navrel" content="../../toc.html">
-      <meta name="docfx:tocrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="../../">
+      
       
       
       <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/LogAnalysis/README.md/#L1">
@@ -44,18 +44,14 @@
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="../../index.html">
-            <img id="logo" class="svg" src="../../logo.svg" alt="Qomicex.Core">
-            Qomicex.Core
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
             <i class="bi bi-three-dots"></i>
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
-              </form>
             </div>
           </div>
         </div>
@@ -85,48 +81,305 @@
         </div>
 
         <article data-uid="">
-<h1 id="日志分析">日志分析</h1>
+<h1 id="日志分析模块-loganalysis">日志分析模块 (LogAnalysis)</h1>
 
-<h2 id="功能概述">功能概述</h2>
-<p>LogAnalysis 模块提供了 Minecraft 游戏日志和崩溃报告的分析功能，帮助开发者快速定位和诊断问题。</p>
-<h2 id="使用示例">使用示例</h2>
+<blockquote>
+<p>智能分析 Minecraft 崩溃日志和错误报告，自动识别问题并提供解决方案。</p>
+</blockquote>
+<hr>
+<h2 id="概述">概述</h2>
+<p>日志分析模块是 Qomicex.Core 的智能诊断系统，能够自动分析 Minecraft 的崩溃报告和游戏日志，识别各种问题（如 Mod 冲突、内存不足、Java 异常等），并提供针对性的解决方案建议。</p>
+<pre><code>LogAnalysis
+├── ILogAnalyzer              # 日志分析器接口
+├── MinecraftLogAnalyzer    # 主分析器类
+├── Analyzers               # 专项分析器
+│   ├── CrashReportAnalyzer # 崩溃报告分析器
+│   ├── JavaExceptionAnalyzer # Java 异常分析器
+│   ├── ModConflictAnalyzer   # Mod 冲突分析器
+│   └── MemoryIssueAnalyzer   # 内存问题分析器
+├── Models                  # 数据模型
+│   ├── LogAnalysisResult   # 分析结果
+│   ├── DetectedIssue       # 检测到的问题
+│   ├── ModInfo             # Mod 信息
+│   └── ...                 # 其他模型
+└── Patterns                # 模式数据库
+    ├── LogPatternDatabase  # 日志模式数据库
+    └── ErrorPattern        # 错误模式
+</code></pre>
+<hr>
+<h2 id="命名空间">命名空间</h2>
 <pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.LogAnalysis;
 using Qomicex.Core.Modules.Helpers.LogAnalysis.Models;
+</code></pre>
+<hr>
+<h2 id="iloganalyzer-接口">ILogAnalyzer 接口</h2>
+<p>日志分析器的统一接口。</p>
+<h3 id="方法">方法</h3>
+<h4 id="analyzeasync">AnalyzeAsync</h4>
+<p>分析崩溃报告文件。</p>
+<pre><code class="lang-csharp">Task&lt;LogAnalysisResult&gt; AnalyzeAsync(string filePath)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>filePath</code> | <code>string</code> | 崩溃报告文件路径 |</p>
+<p><strong>返回值：</strong> <code>LogAnalysisResult</code> - 分析结果</p>
+<hr>
+<h4 id="analyzecontentasync">AnalyzeContentAsync</h4>
+<p>分析日志内容字符串。</p>
+<pre><code class="lang-csharp">Task&lt;LogAnalysisResult&gt; AnalyzeContentAsync(string content, string fileName = &quot;&quot;)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>content</code> | <code>string</code> | 日志内容 |
+| <code>fileName</code> | <code>string</code> | 原始文件名（可选） |</p>
+<p><strong>返回值：</strong> <code>LogAnalysisResult</code> - 分析结果</p>
+<hr>
+<h2 id="minecraftloganalyzer-类">MinecraftLogAnalyzer 类</h2>
+<p>Minecraft 日志分析器主类，实现 <code>ILogAnalyzer</code> 接口。</p>
+<h3 id="构造函数">构造函数</h3>
+<pre><code class="lang-csharp">public MinecraftLogAnalyzer(string externalConfigPath = &quot;&quot;)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 默认值 | 说明 |
+|--------|------|--------|------|
+| <code>externalConfigPath</code> | <code>string</code> | <code>string.Empty</code> | 外部配置文件路径（可选） |</p>
+<hr>
+<h3 id="方法-1">方法</h3>
+<h4 id="analyzeasync-1">AnalyzeAsync</h4>
+<p>分析崩溃报告文件。</p>
+<pre><code class="lang-csharp">public async Task&lt;LogAnalysisResult&gt; AnalyzeAsync(string filePath)
+</code></pre>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var analyzer = new MinecraftLogAnalyzer();
+var result = await analyzer.AnalyzeAsync(@&quot;C:\Minecraft\.minecraft\crash-reports\crash-2024-01-01.txt&quot;);
 
-// 创建日志分析器实例
-var analyzer = new MinecraftLogAnalyzer();
+Console.WriteLine($&quot;分析成功: {result.IsSuccess}&quot;);
+Console.WriteLine($&quot;Minecraft 版本: {result.MinecraftVersion}&quot;);
+Console.WriteLine($&quot;检测到 {result.Issues.Count} 个问题&quot;);
 
-// 分析崩溃报告
-string crashReportPath = @&quot;C:\Game\.minecraft\crash-reports\crash-2026-02-08.txt&quot;;
-LogAnalysisResult result = await analyzer.AnalyzeAsync(crashReportPath);
-
-if (result.IsSuccess &amp;&amp; result.IsGameCrashed)
+foreach (var issue in result.Issues)
 {
-    Console.WriteLine($&quot;Minecraft 版本: {result.MinecraftVersion}&quot;);
-    Console.WriteLine($&quot;Mod 加载器: {result.ModLoader}&quot;);
-    Console.WriteLine($&quot;检测到问题: {result.Issues.Count} 个&quot;);
-
-    foreach (var issue in result.Issues)
-    {
-        Console.WriteLine($&quot;[{issue.Severity}] {issue.Name}&quot;);
-        Console.WriteLine($&quot;  位置: 第{issue.LineNumber}行&quot;);
-        Console.WriteLine($&quot;  匹配: {issue.MatchedText}&quot;);
-
-        foreach (var solution in issue.Solutions.OrderBy(s =&gt; s.Priority))
-        {
-            Console.WriteLine($&quot;  → {solution.Description}&quot;);
-        }
-    }
+    Console.WriteLine($&quot;  [{issue.Severity}] {issue.Name}: {issue.Description}&quot;);
 }
-else
+</code></pre>
+<hr>
+<h4 id="analyzecontentasync-1">AnalyzeContentAsync</h4>
+<p>分析日志内容字符串。</p>
+<pre><code class="lang-csharp">public Task&lt;LogAnalysisResult&gt; AnalyzeContentAsync(string content, string fileName = &quot;&quot;)
+</code></pre>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var analyzer = new MinecraftLogAnalyzer();
+string logContent = @&quot;
+---- Minecraft Crash Report ----
+// You're mean.
+
+Time: 2024-01-01 12:00:00
+Description: Exception in server tick loop
+
+java.lang.OutOfMemoryError: Java heap space
+    at java.base/java.util.Arrays.copyOf(Arrays.java:3537)
+    ...
+&quot;;
+
+var result = await analyzer.AnalyzeContentAsync(logContent, &quot;crash-report.txt&quot;);
+
+// 检查是否检测到内存问题
+var memoryIssues = result.Issues.Where(i =&gt; i.Category == IssueCategory.Memory).ToList();
+if (memoryIssues.Any())
 {
-    Console.WriteLine(&quot;分析失败或未检测到游戏崩溃&quot;);
-    if (!string.IsNullOrEmpty(result.ErrorMessage))
+    Console.WriteLine(&quot;检测到内存问题！&quot;);
+    Console.WriteLine($&quot;建议: {memoryIssues.First().Solutions.First().Description}&quot;);
+}
+</code></pre>
+<hr>
+<h4 id="generatesummary">GenerateSummary</h4>
+<p>生成分析报告摘要。</p>
+<pre><code class="lang-csharp">public static string GenerateSummary(LogAnalysisResult result)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>result</code> | <code>LogAnalysisResult</code> | 分析结果 |</p>
+<p><strong>返回值：</strong> <code>string</code> - 摘要文本</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var analyzer = new MinecraftLogAnalyzer();
+var result = await analyzer.AnalyzeAsync(@&quot;path\to\crash-report.txt&quot;);
+
+string summary = MinecraftLogAnalyzer.GenerateSummary(result);
+Console.WriteLine(summary);
+
+// 输出示例：
+// Minecraft版本: 1.20.1
+// Mod加载器: Forge
+// 加载Mod数: 47
+// 检测到问题: 3个
+//   - 严重问题: 1个
+//   - 错误: 1个
+//   - 警告: 1个
+//   - 问题类型: 内存(1), Mod冲突(1), Java相关(1)
+</code></pre>
+<hr>
+<h4 id="getprimarysolution">GetPrimarySolution</h4>
+<p>获取首要解决方案（优先级最高的第一个解决方案）。</p>
+<pre><code class="lang-csharp">public static SuggestedSolution? GetPrimarySolution(LogAnalysisResult result)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>result</code> | <code>LogAnalysisResult</code> | 分析结果 |</p>
+<p><strong>返回值：</strong> <code>SuggestedSolution?</code> - 首要解决方案，如果没有则为 null</p>
+<hr>
+<h4 id="getallsolutions">GetAllSolutions</h4>
+<p>获取所有建议的解决方案（按优先级排序）。</p>
+<pre><code class="lang-csharp">public static List&lt;SuggestedSolution&gt; GetAllSolutions(LogAnalysisResult result)
+</code></pre>
+<hr>
+<h4 id="getissuesbycategory">GetIssuesByCategory</h4>
+<p>获取指定类别的所有问题。</p>
+<pre><code class="lang-csharp">public static List&lt;DetectedIssue&gt; GetIssuesByCategory(
+    LogAnalysisResult result,
+    IssueCategory category
+)
+</code></pre>
+<hr>
+<h4 id="getissuesbyseverity">GetIssuesBySeverity</h4>
+<p>获取指定严重级别的所有问题。</p>
+<pre><code class="lang-csharp">public static List&lt;DetectedIssue&gt; GetIssuesBySeverity(
+    LogAnalysisResult result,
+    IssueSeverity severity
+)
+</code></pre>
+<hr>
+<h2 id="完整使用示例">完整使用示例</h2>
+<pre><code class="lang-csharp">using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Qomicex.Core.Modules.Helpers.LogAnalysis;
+using Qomicex.Core.Modules.Helpers.LogAnalysis.Models;
+
+class Program
+{
+    static async Task Main(string[] args)
     {
-        Console.WriteLine($&quot;错误信息: {result.ErrorMessage}&quot;);
+        // 创建分析器实例
+        var analyzer = new MinecraftLogAnalyzer();
+
+        // 获取崩溃报告目录
+        string gameDir = @&quot;C:\Minecraft\.minecraft&quot;;
+        var crashFiles = MinecraftLogAnalyzer.GetCrashReportFiles(gameDir);
+
+        if (crashFiles.Count == 0)
+        {
+            Console.WriteLine(&quot;没有找到崩溃报告文件&quot;);
+            return;
+        }
+
+        Console.WriteLine($&quot;找到 {crashFiles.Count} 个崩溃报告文件\n&quot;);
+
+        // 分析最新的崩溃报告
+        string latestCrashFile = crashFiles.First();
+        Console.WriteLine($&quot;正在分析: {Path.GetFileName(latestCrashFile)}\n&quot;);
+
+        var result = await analyzer.AnalyzeAsync(latestCrashFile);
+
+        if (!result.IsSuccess)
+        {
+            Console.WriteLine($&quot;分析失败: {result.ErrorMessage}&quot;);
+            return;
+        }
+
+        // 显示分析结果摘要
+        Console.WriteLine(&quot;=== 分析结果 ===\n&quot;);
+        Console.WriteLine(MinecraftLogAnalyzer.GenerateSummary(result));
+
+        // 显示详细信息
+        Console.WriteLine(&quot;\n=== 详细信息 ===&quot;);
+        Console.WriteLine($&quot;Minecraft 版本: {result.MinecraftVersion}&quot;);
+        Console.WriteLine($&quot;Mod 加载器: {result.ModLoader}&quot;);
+        Console.WriteLine($&quot;加载的 Mod 数: {result.LoadedMods.Count}&quot;);
+        Console.WriteLine($&quot;崩溃时间: {result.CrashTime}&quot;);
+
+        // 显示检测到的问题
+        if (result.Issues.Count &gt; 0)
+        {
+            Console.WriteLine(&quot;\n=== 检测到的问题 ===&quot;);
+
+            foreach (var issue in result.Issues)
+            {
+                string severityEmoji = issue.Severity switch
+                {
+                    IssueSeverity.Critical =&gt; &quot;🔴&quot;,
+                    IssueSeverity.Error =&gt; &quot;🟠&quot;,
+                    IssueSeverity.Warning =&gt; &quot;🟡&quot;,
+                    _ =&gt; &quot;🔵&quot;
+                };
+
+                Console.WriteLine($&quot;\n{severityEmoji} [{issue.Severity}] {issue.Name}&quot;);
+                Console.WriteLine($&quot;   类别: {issue.Category}&quot;);
+                Console.WriteLine($&quot;   描述: {issue.Description}&quot;);
+                Console.WriteLine($&quot;   位置: 第 {issue.LineNumber} 行&quot;);
+
+                if (issue.Solutions.Count &gt; 0)
+                {
+                    Console.WriteLine($&quot;   解决方案:&quot;);
+                    foreach (var solution in issue.Solutions.OrderBy(s =&gt; s.Priority))
+                    {
+                        Console.WriteLine($&quot;      {solution.Priority}. {solution.Description}&quot;);
+                    }
+                }
+            }
+        }
+
+        // 显示首要解决方案
+        var primarySolution = MinecraftLogAnalyzer.GetPrimarySolution(result);
+        if (primarySolution != null)
+        {
+            Console.WriteLine(&quot;\n=== 推荐解决方案 ===&quot;);
+            Console.WriteLine($&quot;优先级: {primarySolution.Priority}&quot;);
+            Console.WriteLine($&quot;操作类型: {primarySolution.ActionType}&quot;);
+            Console.WriteLine($&quot;描述: {primarySolution.Description}&quot;);
+
+            if (primarySolution.Parameters.Count &gt; 0)
+            {
+                Console.WriteLine(&quot;参数:&quot;);
+                foreach (var param in primarySolution.Parameters)
+                {
+                    Console.WriteLine($&quot;  {param.Key}: {param.Value}&quot;);
+                }
+            }
+        }
+
+        // 获取所有解决方案
+        var allSolutions = MinecraftLogAnalyzer.GetAllSolutions(result);
+        if (allSolutions.Count &gt; 0)
+        {
+            Console.WriteLine($&quot;\n共找到 {allSolutions.Count} 个解决方案&quot;);
+        }
+
+        Console.WriteLine(&quot;\n=== 分析完成 ===&quot;);
     }
 }
 </code></pre>
+<hr>
+<h2 id="总结">总结</h2>
+<p>LogAnalysis 模块提供了强大的 Minecraft 崩溃日志分析功能：</p>
+<ol>
+<li><strong>MinecraftLogAnalyzer</strong> - 主分析器类，整合所有专项分析器</li>
+<li><strong>专项分析器</strong> - 针对不同类型的崩溃原因提供专门的分析</li>
+<li><strong>模式数据库</strong> - 维护常见崩溃模式的识别和解决方案</li>
+<li><strong>丰富的模型类</strong> - 提供结构化的分析结果和解决方案</li>
+</ol>
+<p>通过这些组件，开发者可以轻松实现 Minecraft 崩溃的自动诊断和问题修复建议。</p>
+<hr>
+<h2 id="下一步">下一步</h2>
+<ul>
+<li><a href="../Launcher/README.html">启动器详解</a> - 了解游戏启动管理</li>
+<li><a href="../Resources/README.html">资源管理详解</a> - 学习资源管理</li>
+<li><a href="../Installers/README.html">安装器详解</a> - 掌握 Mod 加载器安装</li>
+</ul>
 
 </article>
 
@@ -143,12 +396,11 @@ else
       </div>
     </main>
 
-    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Qomicex.Avalonia
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
         </div>
       </div>
     </footer>

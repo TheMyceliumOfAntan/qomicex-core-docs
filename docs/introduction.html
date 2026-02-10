@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Introduction | Qomicex.Core API文档 </title>
+      <title>Qomicex.Core 项目介绍 </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Introduction | Qomicex.Core API文档 ">
+      <meta name="title" content="Qomicex.Core 项目介绍 ">
       
       
       <link rel="icon" href="../favicon.ico">
@@ -13,7 +13,7 @@
       <meta name="docfx:navrel" content="../toc.html">
       <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="../">
+      
       
       
       <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/introduction.md/#L1">
@@ -44,18 +44,14 @@
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="Qomicex.Core">
-            Qomicex.Core
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
             <i class="bi bi-three-dots"></i>
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
-              </form>
             </div>
           </div>
         </div>
@@ -85,8 +81,207 @@
         </div>
 
         <article data-uid="">
-<h1 id="introduction">Introduction</h1>
+<h1 id="qomicexcore-项目介绍">Qomicex.Core 项目介绍</h1>
 
+<blockquote>
+<p>深入了解 Qomicex.Core 的设计理念、架构设计和核心概念。</p>
+</blockquote>
+<hr>
+<h2 id="项目背景">项目背景</h2>
+<h3 id="为什么创建-qomicexcore">为什么创建 Qomicex.Core？</h3>
+<p>Minecraft 启动器的开发一直面临以下挑战：</p>
+<ol>
+<li><strong>技术门槛高</strong> - 需要理解 Minecraft 的复杂启动流程</li>
+<li><strong>版本兼容性</strong> - 不同版本的游戏使用不同的资源格式</li>
+<li><strong>Mod 生态复杂</strong> - 各种 Mod 加载器的安装逻辑各不相同</li>
+<li><strong>跨平台需求</strong> - 需要在多个操作系统上稳定运行</li>
+</ol>
+<p><strong>Qomicex.Core</strong> 应运而生，它是一个基于 .NET 10 开发的高性能、模块化、易于扩展的 Minecraft 启动核心。</p>
+<hr>
+<h2 id="设计理念">设计理念</h2>
+<h3 id="1-简单至上-simplicity-first">1. 简单至上 (Simplicity First)</h3>
+<blockquote>
+<p>&quot;复杂的系统应该建立在简单的抽象之上&quot;</p>
+</blockquote>
+<p>Qomicex.Core 的设计目标是让开发者能够在几分钟内开始编写代码，而不是需要阅读大量文档。</p>
+<pre><code class="lang-csharp">// 搜索 Java - 只需要 3 行代码
+var javaHelper = new JavaHelper();
+var javaList = await javaHelper.SearchJavaAsync(new JavaSearchOptions());
+</code></pre>
+<h3 id="2-模块化设计-modular-design">2. 模块化设计 (Modular Design)</h3>
+<p>每个功能都被封装在独立的模块中，你可以：</p>
+<ul>
+<li>只使用你需要的模块</li>
+<li>轻松替换或扩展特定功能</li>
+<li>独立测试每个组件</li>
+</ul>
+<pre><code>Qomicex.Core
+├── DataModules          # 数据模型
+├── Helpers              # 辅助工具
+│   ├── JavaHelper       # Java 管理
+│   ├── Installers       # Mod 加载器安装
+│   ├── Resources        # 资源管理
+│   └── LogAnalysis      # 日志分析
+├── Launcher             # 游戏启动
+└── ...
+</code></pre>
+<h3 id="3-类型安全-type-safety">3. 类型安全 (Type Safety)</h3>
+<p>充分利用 .NET 10 的强类型系统，提供编译时检查，减少运行时错误。</p>
+<pre><code class="lang-csharp">// 枚举类型确保参数安全
+public enum JavaSearchMode
+{
+    Fast,       // 快速模式
+    Thorough    // 彻底模式
+}
+
+// 不可变配置对象
+public class JavaSearchOptions
+{
+    public JavaSearchMode SearchMode { get; set; }
+    public bool CheckVersion { get; set; }
+    public int TimeoutSeconds { get; set; }
+}
+</code></pre>
+<h3 id="4-异步优先-async-first">4. 异步优先 (Async-First)</h3>
+<p>所有 I/O 操作都采用异步设计，避免阻塞主线程，提升应用响应性。</p>
+<pre><code class="lang-csharp">// 异步方法命名约定
+public async Task&lt;List&lt;JavaInfo&gt;&gt; SearchJavaAsync(JavaSearchOptions options)
+public async Task&lt;bool&gt; DownloadFileAsync(string url, string destination)
+public async Task&lt;VersionManifest&gt; GetVersionManifestAsync()
+</code></pre>
+<hr>
+<h2 id="架构设计">架构设计</h2>
+<h3 id="整体架构">整体架构</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                     你的应用程序                                 │
+│         (WPF / Avalonia / WinForms / Console)                  │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     Qomicex.Core                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
+│   │ DataModules │  │   Helpers   │  │  Launcher   │             │
+│   │  (数据模型)  │  │  (工具类)   │  │  (启动器)   │             │
+│   └─────────────┘  └──────┬──────┘  └─────────────┘             │
+│                           │                                      │
+│              ┌────────────┼────────────┐                        │
+│              ▼            ▼            ▼                        │
+│   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
+│   │ JavaHelper  │  │ Installers  │  │ Resources   │         │
+│   │ (Java管理)  │  │ (Mod加载器)  │  │ (资源管理)   │         │
+│   └─────────────┘  └─────────────┘  └─────────────┘         │
+│                                                         │
+│   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
+│   │   Account   │  │ LogAnalysis │  │  Expansion  │         │
+│   │  (账户认证)  │  │  (日志分析)  │  │  (API扩展)   │         │
+│   └─────────────┘  └─────────────┘  └─────────────┘         │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     外部服务/API                                 │
+│  Minecraft API │ Microsoft API │ CurseForge │ Modrinth │ ...  │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="模块依赖关系">模块依赖关系</h3>
+<pre><code>                    ┌──────────────────┐
+                    │   Launcher       │
+                    │   (游戏启动器)    │
+                    └────────┬─────────┘
+                             │ 依赖
+         ┌───────────────────┼───────────────────┐
+         ▼                   ▼                   ▼
+┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+│  DataModules     │ │  Installers      │ │  Account         │
+│  (数据模型)       │ │  (Mod 加载器)     │ │  (账户认证)       │
+└────────┬─────────┘ └────────┬─────────┘ └────────┬─────────┘
+         │                    │                    │
+         └────────────────────┼────────────────────┘
+                            ▼
+                   ┌──────────────────┐
+                   │  Helpers         │
+                   │  (辅助工具)       │
+                   └────────┬─────────┘
+                            │
+         ┌──────────────────┼──────────────────┐
+         ▼                  ▼                  ▼
+┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+│  JavaHelper      │ │  Resources       │ │  LogAnalysis     │
+│  (Java 管理)      │ │  (资源管理)       │ │  (日志分析)       │
+└──────────────────┘ └──────────────────┘ └──────────────────┘
+</code></pre>
+<hr>
+<h2 id="核心概念">核心概念</h2>
+<h3 id="1-资源-resources">1. 资源 (Resources)</h3>
+<p>Minecraft 的运行需要各种资源文件：</p>
+<ul>
+<li><strong>游戏资源</strong> - 游戏本体、版本 JSON 文件</li>
+<li><strong>库文件</strong> - Java 库、Native 库</li>
+<li><strong>资源文件</strong> - 语言文件、纹理、声音</li>
+<li><strong>Mod 文件</strong> - 各种 Mod 加载器和 Mod</li>
+</ul>
+<p>Qomicex.Core 提供了完整的资源管理功能，自动处理下载、验证和缓存。</p>
+<h3 id="2-安装器-installers">2. 安装器 (Installers)</h3>
+<p>Mod 加载器的安装逻辑复杂且各不相同。Qomicex.Core 提供了统一的安装器接口：</p>
+<pre><code class="lang-csharp">// 所有安装器都实现 IInstaller 接口
+public interface IInstaller
+{
+    Task&lt;InstallResult&gt; InstallAsync(InstallOptions options);
+    Task&lt;bool&gt; IsInstalledAsync(string versionId);
+    Task&lt;bool&gt; UninstallAsync(string versionId);
+}
+</code></pre>
+<p>支持的 Mod 加载器：</p>
+<ul>
+<li><strong>Forge</strong> - 最成熟的 Mod 加载器</li>
+<li><strong>Fabric</strong> - 轻量级 Mod 加载器</li>
+<li><strong>NeoForge</strong> - Forge 的继任者</li>
+<li><strong>Quilt</strong> - Fabric 的替代品</li>
+<li><strong>LiteLoader</strong> - 轻量级客户端 Mod 加载器</li>
+<li><strong>OptiFine</strong> - 高清修复和优化</li>
+</ul>
+<h3 id="3-认证系统-account">3. 认证系统 (Account)</h3>
+<p>Minecraft 支持多种账户类型：</p>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│                   账户类型                               │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│  ┌─────────────────┐    ┌─────────────────┐            │
+│  │ Microsoft 账户  │    │  离线账户        │            │
+│  │ (正版账户)      │    │  (无需登录)      │            │
+│  └────────┬────────┘    └────────┬────────┘            │
+│           │                       │                    │
+│           │              ┌────────┴────────┐            │
+│           │              │  Yggdrasil      │            │
+│           │              │  (第三方认证)    │            │
+│           │              └─────────────────┘            │
+│           │                                             │
+│           ▼                                             │
+│    Microsoft API ──► 获取 Token ──► 获取 Minecraft 档案 │
+│                                                          │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="4-日志分析-loganalysis">4. 日志分析 (LogAnalysis)</h3>
+<p>游戏崩溃时，分析日志是定位问题的关键。Qomicex.Core 的智能日志分析系统可以：</p>
+<ul>
+<li>自动解析崩溃报告</li>
+<li>识别常见问题（内存不足、Mod 冲突、Java 版本不兼容等）</li>
+<li>提供针对性的解决方案</li>
+<li>支持自定义分析规则</li>
+</ul>
+<hr>
+<h2 id="下一步">下一步</h2>
+<p>现在你已经了解了 Qomicex.Core 的基本概念，可以继续学习：</p>
+<ol>
+<li><a href="DataModules/README.html">数据模块详解</a> - 了解核心数据模型</li>
+<li><a href="Helpers/README.html">辅助工具详解</a> - 掌握各种工具类的用法</li>
+<li><a href="Installers/README.html">安装器详解</a> - 学习如何安装 Mod 加载器</li>
+</ol>
+<p>准备好开始构建你的启动器了吗？让我们一起开始吧！</p>
 
 </article>
 
@@ -103,12 +298,11 @@
       </div>
     </main>
 
-    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Qomicex.Avalonia
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
         </div>
       </div>
     </footer>

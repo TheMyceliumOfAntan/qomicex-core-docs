@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Microsoft 账户认证流程详解 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Microsoft 账户认证流程详解 ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Account/Microsoft-Auth-Flow.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="microsoft-账户认证流程详解">Microsoft 账户认证流程详解</h1>
+
+<blockquote>
+<p>详细说明微软正版登录的 OAuth 2.0 设备流认证流程。</p>
+</blockquote>
+<hr>
+<h2 id="概述">概述</h2>
+<p>Microsoft 类实现了完整的微软 Xbox Live 认证流程，采用 OAuth 2.0 设备流（Device Flow）方式。由于 Minecraft 正版账户需要通过微软 Xbox Live 进行身份验证，整个流程包含多个步骤。</p>
+<hr>
+<h2 id="认证流程图">认证流程图</h2>
+<pre><code>┌─────────────┐     1. OAuthLogin()     ┌─────────────────┐
+│   应用程序   │ ───────────────────────→ │   微软登录服务    │
+│  (启动器)   │                          │  (设备流端点)    │
+└─────────────┘                          └─────────────────┘
+       ↑                                         │
+       │                                         │ 2. 返回 device_code
+       │                                         │    user_code
+       │                                         │    verification_uri
+       │                                         ↓
+       │                                ┌─────────────────┐
+       │                                │   用户浏览器     │
+       │                                │  (访问验证URI   │
+       │                                │   输入用户代码)  │
+       │                                └─────────────────┘
+       │                                         │
+       │                                         │ 3. 用户授权完成
+       │                                         │
+       │     4. 轮询 GetUserAuthorizationState() │
+       │ ←────────────────────────────────────────
+       │           (带间隔轮询直到授权完成)
+       │
+       │ 5. 返回 access_token, refresh_token
+       │
+       ↓
+┌─────────────┐
+│  获取令牌   │ ──→ 6. GetUserInfo() ──→ 返回账户信息
+│  (后续API)  │       (Xbox Live + XSTS
+└─────────────┘        + Minecraft API)
+</code></pre>
+<hr>
+<h2 id="核心方法说明">核心方法说明</h2>
+<h3 id="1-oauthlogin---获取设备代码">1. OAuthLogin - 获取设备代码</h3>
+<p><strong>作用：</strong> 向微软 OAuth 服务注册设备，获取设备代码和用户代码。</p>
+<p><strong>返回值：</strong> <code>OAuthResponse</code></p>
+<ul>
+<li><code>DeviceCode</code>：设备代码（用于后续轮询）</li>
+<li><code>UserCode</code>：用户代码（用户需要在浏览器中输入）</li>
+<li><code>VerificationUri</code>：验证地址（用户需要访问的 URL）</li>
+<li><code>ExpiresIn</code>：过期时间（秒）</li>
+<li><code>Interval</code>：轮询间隔（秒）</li>
+</ul>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var microsoft = new Microsoft(&quot;your-client-id&quot;);
+var oauth = await microsoft.OAuthLogin();
+
+Console.WriteLine($&quot;请访问: {oauth.VerificationUri}&quot;);
+Console.WriteLine($&quot;输入代码: {oauth.UserCode}&quot;);
+Console.WriteLine($&quot;代码将在 {oauth.ExpiresIn} 秒后过期&quot;);
+</code></pre>
+<hr>
+<h3 id="2-getuserauthorizationstate---轮询授权状态-重要">2. GetUserAuthorizationState - 轮询授权状态 ⭐重要</h3>
+<p><strong>作用：</strong> 轮询检查用户是否已完成授权。<strong>这是一个阻塞方法，需要在外部套循环进行轮询。</strong></p>
+<p><strong>重要说明：</strong></p>
+<ul>
+<li>这个方法<strong>单次调用</strong>只会发起一次 HTTP 请求</li>
+<li>如果用户尚未完成授权，会返回包含 <code>error</code> 的响应（通常是 <code>authorization_pending</code>）</li>
+<li><strong>必须在外部使用循环</strong>，按照 <code>OAuthResponse.Interval</code> 指定的时间间隔进行轮询</li>
+<li>直到用户完成授权或超时</li>
+</ul>
+<p><strong>正确用法示例：</strong></p>
+<pre><code class="lang-csharp">var oauth = await microsoft.OAuthLogin();
+
+Console.WriteLine(&quot;请在浏览器中完成授权...&quot;);
+Console.WriteLine($&quot;访问: {oauth.VerificationUri}&quot;);
+Console.WriteLine($&quot;输入代码: {oauth.UserCode}&quot;);
+
+// ⭐ 关键：使用循环进行轮询，直到授权完成
+Dictionary&lt;string, string&gt;? authState = null;
+int maxAttempts = oauth.ExpiresIn / oauth.Interval; // 根据过期时间计算最大尝试次数
+
+for (int attempt = 0; attempt &lt; maxAttempts; attempt++)
+{
+    // 等待指定的间隔时间
+    await Task.Delay(TimeSpan.FromSeconds(oauth.Interval));
+
+    // 检查授权状态
+    authState = await microsoft.GetUserAuthorizationState(oauth);
+
+    // 检查是否授权成功
+    if (authState.ContainsKey(&quot;access_token&quot;))
+    {
+        Console.WriteLine(&quot;✓ 授权成功！&quot;);
+        break;
+    }
+
+    // 检查错误类型
+    if (authState.ContainsKey(&quot;error&quot;))
+    {
+        string error = authState[&quot;error&quot;];
+
+        if (error == &quot;authorization_pending&quot;)
+        {
+            // 用户还未完成授权，继续轮询
+            Console.WriteLine($&quot;等待授权... ({attempt + 1}/{maxAttempts})&quot;);
+            continue;
+        }
+        else if (error == &quot;slow_down&quot;)
+        {
+            // 请求过快，增加等待时间
+            Console.WriteLine(&quot;请求过快，减慢速度...&quot;);
+            await Task.Delay(TimeSpan.FromSeconds(5));
+        }
+        else if (error == &quot;expired_token&quot;)
+        {
+            // 设备代码已过期
+            Console.WriteLine(&quot;✗ 设备代码已过期，请重新开始登录流程&quot;);
+            throw new Exception(&quot;Device code expired&quot;);
+        }
+        else
+        {
+            // 其他错误
+            Console.WriteLine($&quot;✗ 授权错误: {error}&quot;);
+            throw new Exception($&quot;Authorization failed: {error}&quot;);
+        }
+    }
+}
+
+if (authState == null || !authState.ContainsKey(&quot;access_token&quot;))
+{
+    throw new Exception(&quot;授权超时或失败&quot;);
+}
+
+// 使用 access_token 获取用户信息
+var account = await microsoft.GetUserInfo(
+    authState[&quot;access_token&quot;],
+    authState[&quot;refresh_token&quot;]
+);
+
+Console.WriteLine($&quot;欢迎, {account.Name}!&quot;);
+</code></pre>
+<hr>
+<h3 id="3-getuserinfo---获取用户信息">3. GetUserInfo - 获取用户信息</h3>
+<p><strong>作用：</strong> 使用访问令牌获取用户的 Minecraft 账户信息。</p>
+<p><strong>流程：</strong></p>
+<ol>
+<li>Xbox Live 身份验证</li>
+<li>XSTS 令牌获取</li>
+<li>Minecraft 服务认证</li>
+<li>游戏所有权验证</li>
+<li>用户信息获取</li>
+</ol>
+<p><strong>返回值：</strong> <code>DataModules.DataDetails.Account</code></p>
+<hr>
+<h2 id="完整示例代码">完整示例代码</h2>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+
+public class MicrosoftAuthExample
+{
+    public async Task&lt;DataModules.DataDetails.Account&gt; LoginAsync(string clientId)
+    {
+        var microsoft = new Microsoft(clientId);
+
+        // 步骤 1: 获取设备代码
+        var oauth = await microsoft.OAuthLogin();
+
+        Console.WriteLine(&quot;=== Microsoft 正版登录 ===&quot;);
+        Console.WriteLine($&quot;请访问: {oauth.VerificationUri}&quot;);
+        Console.WriteLine($&quot;输入代码: {oauth.UserCode}&quot;);
+        Console.WriteLine(&quot;等待授权中...&quot;);
+
+        // 步骤 2: 轮询授权状态
+        Dictionary&lt;string, string&gt; authState = null;
+        int maxAttempts = oauth.ExpiresIn / oauth.Interval;
+
+        for (int i = 0; i &lt; maxAttempts; i++)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(oauth.Interval));
+
+            authState = await microsoft.GetUserAuthorizationState(oauth);
+
+            if (authState.ContainsKey(&quot;access_token&quot;))
+            {
+                Console.WriteLine(&quot;✓ 授权成功！&quot;);
+                break;
+            }
+
+            if (authState.TryGetValue(&quot;error&quot;, out var error))
+            {
+                if (error == &quot;authorization_pending&quot;)
+                {
+                    Console.WriteLine($&quot;等待授权... ({i + 1}/{maxAttempts})&quot;);
+                    continue;
+                }
+
+                throw new Exception($&quot;授权失败: {error}&quot;);
+            }
+        }
+
+        if (authState?.ContainsKey(&quot;access_token&quot;) != true)
+        {
+            throw new Exception(&quot;授权超时&quot;);
+        }
+
+        // 步骤 3: 获取用户信息
+        var account = await microsoft.GetUserInfo(
+            authState[&quot;access_token&quot;],
+            authState[&quot;refresh_token&quot;]
+        );
+
+        Console.WriteLine($&quot;\n登录成功！&quot;);
+        Console.WriteLine($&quot;用户名: {account.Name}&quot;);
+        Console.WriteLine($&quot;UUID: {account.Uuid}&quot;);
+
+        return account;
+    }
+}
+</code></pre>
+<hr>
+<h2 id="常见错误及解决方案">常见错误及解决方案</h2>
+<table>
+<thead>
+<tr>
+<th>错误代码</th>
+<th>说明</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authorization_pending</code></td>
+<td>用户尚未完成授权</td>
+<td>继续轮询，等待用户完成授权</td>
+</tr>
+<tr>
+<td><code>slow_down</code></td>
+<td>请求过快</td>
+<td>增加轮询间隔时间</td>
+</tr>
+<tr>
+<td><code>expired_token</code></td>
+<td>设备代码已过期</td>
+<td>重新开始登录流程</td>
+</tr>
+<tr>
+<td><code>access_denied</code></td>
+<td>用户拒绝授权</td>
+<td>提示用户需要同意授权才能继续</td>
+</tr>
+<tr>
+<td><code>invalid_grant</code></td>
+<td>授权无效</td>
+<td>检查客户端 ID 是否正确</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="下一步">下一步</h2>
+<ul>
+<li><a href="README.html">账户模块概述</a> - 了解所有账户认证方式</li>
+<li><a href="./Yggdrasil-Auth.md">Yggdrasil 外置登录</a> - 了解外置登录认证</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Account/Microsoft-Auth-Flow.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

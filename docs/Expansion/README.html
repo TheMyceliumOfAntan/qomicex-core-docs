@@ -2,18 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>扩展资源管理 | Qomicex.Core API文档 </title>
+      <title>扩展模块 (Expansion) </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="扩展资源管理 | Qomicex.Core API文档 ">
+      <meta name="title" content="扩展模块 (Expansion) ">
       
       
       <link rel="icon" href="../../favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
       <meta name="docfx:navrel" content="../../toc.html">
-      <meta name="docfx:tocrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="../../">
+      
       
       
       <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Expansion/README.md/#L1">
@@ -44,18 +44,14 @@
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="../../index.html">
-            <img id="logo" class="svg" src="../../logo.svg" alt="Qomicex.Core">
-            Qomicex.Core
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
             <i class="bi bi-three-dots"></i>
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
-              </form>
             </div>
           </div>
         </div>
@@ -85,78 +81,445 @@
         </div>
 
         <article data-uid="">
-<h1 id="扩展资源管理">扩展资源管理</h1>
+<h1 id="扩展模块-expansion">扩展模块 (Expansion)</h1>
 
-<h2 id="功能概述">功能概述</h2>
-<p>Expansion 模块提供了对第三方资源平台的集成支持，目前包括两个主要平台：</p>
-<ol>
-<li><strong>CurseForge</strong> - 最大的 Minecraft 资源分享平台，提供 Mod、纹理包、地图等资源</li>
-<li><strong>Modrinth</strong> - 开源的 Minecraft 资源平台，专注于现代 Mod 生态系统</li>
-</ol>
-<p>这些模块允许应用程序直接从这些平台搜索、获取和管理 Minecraft 相关资源。</p>
-<h2 id="平台支持">平台支持</h2>
-<h3 id="curseforge">CurseForge</h3>
-<ul>
-<li><strong>资源类型</strong>：Mod、Modpack、纹理包、数据包、光影包、地图</li>
-<li><strong>API支持</strong>：完整的搜索、获取和下载功能</li>
-<li><strong>认证方式</strong>：API Key 认证</li>
-<li><strong>使用场景</strong>：需要访问大量资源的启动器或管理工具</li>
-</ul>
-<h3 id="modrinth">Modrinth</h3>
-<ul>
-<li><strong>资源类型</strong>：Mod、Modpack、纹理包、数据包、光影包、地图</li>
-<li><strong>API支持</strong>：搜索、获取和下载功能</li>
-<li><strong>认证方式</strong>：无密钥认证（公开API）</li>
-<li><strong>使用场景</strong>：需要开源和现代资源的应用程序</li>
-</ul>
-<h2 id="基本架构">基本架构</h2>
-<p>Expansion 模块采用抽象设计，允许轻松添加新的资源平台支持。每个平台实现都继承自统一的接口，提供一致的访问方式。</p>
+<blockquote>
+<p>提供与 CurseForge 和 Modrinth 两大 Minecraft 资源平台的集成支持。</p>
+</blockquote>
+<hr>
+<h2 id="概述">概述</h2>
+<p>扩展模块为 Qomicex.Core 提供了与主流 Minecraft 资源平台的 API 对接能力，支持搜索、浏览和下载各种资源类型（Mod、整合包、资源包等）。</p>
+<pre><code>Expansion
+├── CurseForge          # CurseForge 平台集成
+│   ├── CurseForgeBase  # 基础类
+│   ├── Mods            # Mod 资源
+│   ├── Modpacks        # 整合包
+│   ├── ResourcePacks   # 资源包
+│   └── ...           # 其他资源类型
+└── Modrinth            # Modrinth 平台集成
+    ├── ModrinthBase    # 基础类
+    ├── Mods            # Mod 资源
+    ├── ModPacks        # 整合包
+    └── ...           # 其他资源类型
+</code></pre>
+<hr>
+<h2 id="命名空间">命名空间</h2>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Resources.Expansion.CurseForge;
+using Qomicex.Core.Modules.Helpers.Resources.Expansion.Modrinth;
+</code></pre>
+<hr>
+<h2 id="curseforge-模块">CurseForge 模块</h2>
+<p>CurseForge 是全球最大的 Minecraft 资源平台之一，提供海量的 Mod、整合包、资源包等资源。</p>
+<h3 id="curseforgebase-类">CurseForgeBase 类</h3>
+<p>CurseForge 功能的基础类，提供 API 调用和数据获取的核心功能。</p>
+<h4 id="构造函数">构造函数</h4>
+<pre><code class="lang-csharp">public CurseForgeBase(string apiKey, string searchUrl, string modUrl)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>apiKey</code> | <code>string</code> | CurseForge API 密钥 |
+| <code>searchUrl</code> | <code>string</code> | 搜索 API 端点 URL |
+| <code>modUrl</code> | <code>string</code> | 获取 Mod 详情的 API 端点 URL |</p>
+<h4 id="sortfield-枚举">SortField 枚举</h4>
+<p>排序字段选项。</p>
+<pre><code class="lang-csharp">public enum SortField
+{
+    Featured = 1,           // 推荐
+    Popularity = 2,         // 人气
+    LastUpdated = 3,        // 最近更新
+    Name = 4,               // 名称
+    Author = 5,             // 作者
+    TotalDownloads = 6,     // 总下载量
+    Category = 7,           // 分类
+    GameVersion = 8,        // 游戏版本
+    EarlyAccess = 9,        // 抢先体验
+    FeaturedReleased = 10,  // 推荐发布
+    ReleasedDate = 11,      // 发布日期
+    Rating = 12             // 评分
+}
+</code></pre>
+<h4 id="modloadertype-静态类">ModLoaderType 静态类</h4>
+<p>Mod 加载器类型常量。</p>
+<pre><code class="lang-csharp">public static class ModLoaderType
+{
+    public const string Any = &quot;Any&quot;;               // 任意
+    public const string Forge = &quot;Forge&quot;;           // Forge
+    public const string LiteLoader = &quot;LiteLoader&quot;; // LiteLoader
+    public const string Fabric = &quot;Fabric&quot;;         // Fabric
+    public const string Quilt = &quot;Quilt&quot;;           // Quilt
+    public const string NeoForge = &quot;NeoForge&quot;;     // NeoForge
+
+    public static readonly List&lt;string&gt; All = new()
+    {
+        Forge, LiteLoader, Fabric, Quilt, NeoForge
+    };
+}
+</code></pre>
+<h4 id="数据模型类">数据模型类</h4>
+<h5 id="curseforgesearchresult">CurseForgeSearchResult</h5>
+<p>搜索结果项。</p>
+<pre><code class="lang-csharp">public class CurseForgeSearchResult
+{
+    public string Id { get; set; } = string.Empty;                    // 资源 ID
+    public string Name { get; set; } = string.Empty;                  // 资源名称
+    public string Slug { get; set; } = string.Empty;                  // URL 友好标识
+    public string Summary { get; set; } = string.Empty;                // 简介
+    public string Status { get; set; } = string.Empty;                 // 状态
+    public string GameVersion { get; set; } = string.Empty;            // 游戏版本
+    public string DownloadCount { get; set; } = string.Empty;          // 下载次数
+    public bool IsFeatured { get; set; } = false;                       // 是否推荐
+    public List&lt;CategoryMeta&gt; Categories { get; set; } = new();     // 分类列表
+    public string IconUrl { get; set; } = string.Empty;                // 图标 URL
+    public List&lt;AuthorMeta&gt; Authors { get; set; } = new();            // 作者列表
+    public List&lt;ScreenshotsMeta&gt; Screenshots { get; set; } = new();   // 截图列表
+}
+</code></pre>
+<h5 id="curseforgeinfo">CurseForgeInfo</h5>
+<p>资源详细信息。</p>
+<pre><code class="lang-csharp">public class CurseForgeInfo
+{
+    public string Id { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
+    public string Summary { get; set; } = string.Empty;
+    public int Status { get; set; }
+    public int DownloadCount { get; set; }
+    public bool IsFeatured { get; set; }
+    public List&lt;CategoryMeta&gt; Categories { get; set; } = new();
+    public string IconUrl { get; set; } = string.Empty;
+    public List&lt;AuthorMeta&gt; Authors { get; set; } = new();
+    public List&lt;ScreenshotsMeta&gt; Screenshots { get; set; } = new();
+    public List&lt;CurseForgeFilesMeta&gt; Files { get; set; } = new();
+    public List&lt;CurseForgeDependenciesMeta&gt; Dependencies { get; set; } = new();
+}
+</code></pre>
+<h5 id="其他元数据类">其他元数据类</h5>
+<pre><code class="lang-csharp">public class CategoryMeta
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
+    public string Url { get; set; } = string.Empty;
+}
+
+public class AuthorMeta
+{
+    public string Id { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Url { get; set; } = string.Empty;
+}
+
+public class ScreenshotsMeta
+{
+    public int Id { get; set; }
+    public int ModId { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string ThumbnailUrl { get; set; } = string.Empty;
+    public string Url { get; set; } = string.Empty;
+}
+
+public class CurseForgeFilesMeta
+{
+    public string FileId { get; set; } = string.Empty;
+    public string FileName { get; set; } = string.Empty;
+    public int ReleaseType { get; set; }
+    public string GameVersion { get; set; } = string.Empty;
+    public int ModLoader { get; set; }
+}
+
+public class CurseForgeDependenciesMeta
+{
+    public int Id { get; set; }
+    public int Type { get; set; }
+}
+</code></pre>
+<h3 id="curseforge-资源类型类">CurseForge 资源类型类</h3>
+<p>CurseForge 为不同类型的资源提供了专门的类：</p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>资源类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Mods</code></td>
+<td>Mod</td>
+<td>Minecraft 模组</td>
+</tr>
+<tr>
+<td><code>Modpacks</code></td>
+<td>整合包</td>
+<td>预配置的 Mod 集合</td>
+</tr>
+<tr>
+<td><code>ResourcePacks</code></td>
+<td>资源包</td>
+<td>纹理、音效等资源</td>
+</tr>
+<tr>
+<td><code>DataPacks</code></td>
+<td>数据包</td>
+<td>游戏数据修改</td>
+</tr>
+<tr>
+<td><code>Shaders</code></td>
+<td>着色器</td>
+<td>光影效果</td>
+</tr>
+<tr>
+<td><code>Worlds</code></td>
+<td>世界存档</td>
+<td>地图存档</td>
+</tr>
+</tbody>
+</table>
+<p>所有资源类型类都继承自 <code>CurseForgeBase</code>，具有相同的基础功能。</p>
+<hr>
+<h2 id="modrinth-模块">Modrinth 模块</h2>
+<p>Modrinth 是一个现代化的 Minecraft 资源平台，以其简洁的界面和快速的搜索体验著称。</p>
+<h3 id="modrinthbase-类">ModrinthBase 类</h3>
+<p>Modrinth 功能的基础类。</p>
+<h4 id="构造函数-1">构造函数</h4>
+<pre><code class="lang-csharp">public ModrinthBase()
+</code></pre>
+<h4 id="常量">常量</h4>
+<pre><code class="lang-csharp">internal string BASEURL = &quot;https://api.modrinth.com/&quot;;
+internal string StagingURL = &quot;https://staging-api.modrinth.com/&quot;;
+</code></pre>
+<h4 id="索引常量">索引常量</h4>
+<pre><code class="lang-csharp">public static class Index
+{
+    public const string Relevance = &quot;relevance&quot;;       // 相关度
+    public const string Downloads = &quot;downloads&quot;;       // 下载量
+    public const string Follows = &quot;follows&quot;;            // 关注数
+    public const string Newest = &quot;newest&quot;;             // 最新发布
+    public const string Updated = &quot;updated&quot;;           // 最近更新
+}
+</code></pre>
+<h4 id="数据模型类-1">数据模型类</h4>
+<h5 id="projectinfo">ProjectInfo</h5>
+<p>项目（资源）详细信息。</p>
+<pre><code class="lang-csharp">public class ProjectInfo
+{
+    public string ProjectId { get; set; } = string.Empty;          // 项目ID
+    public string Title { get; set; } = string.Empty;              // 标题
+    public string Description { get; set; } = string.Empty;      // 描述
+    public List&lt;string&gt; Categories { get; set; } = new();          // 分类列表
+    public List&lt;ModrinthTag&gt; Tags { get; set; } = new();           // 标签列表
+    public string IconUrl { get; set; } = string.Empty;            // 图标URL
+    public string Author { get; set; } = string.Empty;             // 作者
+    public string Slug { get; set; } = string.Empty;               // 别名
+    public string WebsiteUrl { get; set; } = string.Empty;         // 网站URL
+    public int DownloadCount { get; set; }                           // 下载次数
+    public int FollowerCount { get; set; }                           // 关注者数量
+    public DateTime PublishedAt { get; set; }                        // 发布时间
+    public DateTime UpdatedAt { get; set; }                        // 更新时间
+    public bool IsFeatured { get; set; }                           // 是否推荐
+    public List&lt;GalleryItem&gt; Gallery { get; set; } = new();         // 画廊图片列表
+    public string License { get; set; } = string.Empty;             // 许可证
+    public string ProjectType { get; set; } = string.Empty;         // 项目类型
+    public string Body { get; set; } = string.Empty;                // 项目详情（Markdown）
+}
+</code></pre>
+<h5 id="其他重要模型类">其他重要模型类</h5>
+<pre><code class="lang-csharp">public class ProjectVersionInfo
+{
+    public string Name { get; set; } = string.Empty;               // 版本名称
+    public string VersionNumber { get; set; } = string.Empty;      // 版本号
+    public string Changelog { get; set; } = string.Empty;         // 更新日志
+    public DateTime PublishedAt { get; set; }                    // 发布时间
+    public bool Featured { get; set; }                            // 是否推荐
+    public List&lt;string&gt; GameVersions { get; set; } = new();        // 支持的游戏版本
+    public List&lt;string&gt; Loaders { get; set; } = new();             // 支持的Mod加载器
+    public string DownloadUrl { get; set; } = string.Empty;        // 下载URL
+    public int Downloads { get; set; }                               // 下载次数
+    public string FileName { get; set; } = string.Empty;           // 文件名
+    public string FileSize { get; set; } = string.Empty;           // 文件大小
+    public List&lt;DependenciesInfo&gt; Dependencies { get; set; } = new(); // 依赖列表
+    public FileHashes Hashes { get; set; } = new();                // 文件哈希值
+}
+
+public class SearchResult
+{
+    public int Hits { get; set; }                                   // 搜索结果数量
+    public int Offset { get; set; }                                 // 偏移量
+    public int Limit { get; set; }                                  // 限制数量
+    public List&lt;SearchResultInfo&gt; Results { get; set; } = new();   // 搜索结果列表
+}
+
+public class SearchResultInfo
+{
+    public string ProjectId { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public List&lt;string&gt; Categories { get; set; } = new();
+    public List&lt;string&gt; Tags { get; set; } = new();
+    public string IconUrl { get; set; } = string.Empty;
+    public string Author { get; set; } = string.Empty;
+    public int DownloadCount { get; set; }
+    public DateTime PublishedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public bool IsFeatured { get; set; }
+    public string ProjectType { get; set; } = string.Empty;
+}
+
+public class GalleryItem
+{
+    public string Url { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public int Width { get; set; }
+    public int Height { get; set; }
+}
+
+public class DependenciesInfo
+{
+    public string ModId { get; set; } = string.Empty;
+    public string VersionId { get; set; } = string.Empty;
+    public string FileName { get; set; } = string.Empty;
+    public string DependencyType { get; set; } = string.Empty;  // required, optional, incompatible, embedded
+}
+
+public class FileHashes
+{
+    public string Sha1 { get; set; } = string.Empty;
+    public string Sha512 { get; set; } = string.Empty;
+    public string Md5 { get; set; } = string.Empty;
+}
+
+public class ModrinthTag
+{
+    public string Icon { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Color { get; set; } = string.Empty;
+}
+</code></pre>
+<h3 id="modrinth-资源类型类">Modrinth 资源类型类</h3>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>资源类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Mods</code></td>
+<td>Mod</td>
+<td>Minecraft 模组</td>
+</tr>
+<tr>
+<td><code>ModPacks</code></td>
+<td>整合包</td>
+<td>预配置的 Mod 集合</td>
+</tr>
+<tr>
+<td><code>ResourcePacks</code></td>
+<td>资源包</td>
+<td>纹理、音效等资源</td>
+</tr>
+<tr>
+<td><code>DataPacks</code></td>
+<td>数据包</td>
+<td>游戏数据修改</td>
+</tr>
+<tr>
+<td><code>Shaders</code></td>
+<td>着色器</td>
+<td>光影效果</td>
+</tr>
+<tr>
+<td><code>Worlds</code></td>
+<td>世界存档</td>
+<td>地图存档</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h2 id="使用示例">使用示例</h2>
-<h3 id="初始化-curseforge-平台">初始化 CurseForge 平台</h3>
+<h3 id="curseforge-搜索示例">CurseForge 搜索示例</h3>
 <pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Resources.Expansion.CurseForge;
 
-string apiKey = &quot;your-curseforge-api-key&quot;;
-var curseForge = new Mods(apiKey);
+// 创建 CurseForge Mods 实例
+var mods = new Mods(
+    apiKey: &quot;your-api-key&quot;,
+    searchUrl: &quot;https://api.curseforge.com/v1/mods/search&quot;,
+    modUrl: &quot;https://api.curseforge.com/v1/mods&quot;
+);
 
-// 或者直接使用特定资源类型
-var modpacks = new Modpacks(apiKey);
-var resourcePacks = new ResourcePacks(apiKey);
+// 搜索 Mod
+var results = await mods.SearchAsync(
+    searchFilter: &quot;jei&quot;,
+    gameVersions: new[] { &quot;1.20.1&quot; },
+    categories: null,
+    modLoaderTypes: new[] { &quot;Forge&quot; },
+    sortField: SortField.Popularity,
+    page: 1,
+    pageSize: 20
+);
+
+Console.WriteLine($&quot;找到 {results.Count} 个结果&quot;);
+foreach (var mod in results)
+{
+    Console.WriteLine($&quot;- {mod.Name} ({mod.DownloadCount} 下载)&quot;);
+}
 </code></pre>
-<h3 id="初始化-modrinth-平台">初始化 Modrinth 平台</h3>
+<h3 id="modrinth-搜索示例">Modrinth 搜索示例</h3>
 <pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Resources.Expansion.Modrinth;
 
-var modrinth = new Mods();
+// 创建 Modrinth Mods 实例
+var mods = new Mods();
 
-// 或者直接使用特定资源类型
-var modpacks = new ModPacks();
-var resourcePacks = new ResourcePacks();
+// 搜索 Mod
+var results = await mods.SearchAsync(
+    query: &quot;sodium&quot;,
+    projectType: &quot;mod&quot;,
+    gameVersion: &quot;1.20.1&quot;,
+    categories: null,
+    loaders: new[] { &quot;fabric&quot; },
+    index: Index.Downloads,
+    page: 0,
+    pageSize: 20
+);
+
+Console.WriteLine($&quot;找到 {results.Hits} 个结果&quot;);
+foreach (var mod in results.Results)
+{
+    Console.WriteLine($&quot;- {mod.Title} ({mod.DownloadCount} 下载)&quot;);
+}
+
+// 获取项目详情
+var projectInfo = await mods.GetProjectAsync(&quot;sodium&quot;);
+Console.WriteLine($&quot;项目: {projectInfo.Title}&quot;);
+Console.WriteLine($&quot;描述: {projectInfo.Description}&quot;);
+Console.WriteLine($&quot;作者: {projectInfo.Author}&quot;);
 </code></pre>
-<h2 id="资源类型说明">资源类型说明</h2>
-<p>所有资源平台支持以下资源类型：</p>
+<hr>
+<h2 id="总结">总结</h2>
+<p>Expansion 模块提供了完整的第三方资源平台集成能力：</p>
 <ol>
-<li><strong>Mods</strong> - 游戏模组，增强或修改 Minecraft 的功能</li>
-<li><strong>Modpacks</strong> - 预配置的模组组合，提供完整的游戏体验</li>
-<li><strong>ResourcePacks</strong> - 纹理包，改变游戏的视觉效果</li>
-<li><strong>DataPacks</strong> - 数据包，改变游戏规则和行为</li>
-<li><strong>Shaders</strong> - 光影包，增强游戏的图形效果</li>
-<li><strong>Worlds</strong> - 存档地图，提供自定义游戏世界</li>
+<li><strong>CurseForge</strong> - 支持全类型资源搜索和获取</li>
+<li><strong>Modrinth</strong> - 现代化的资源平台，API 设计简洁</li>
 </ol>
-<h2 id="通用功能">通用功能</h2>
-<p>每个资源平台都提供以下通用功能：</p>
-<ol>
-<li><strong>搜索</strong> - 根据关键词、分类、版本等条件搜索资源</li>
-<li><strong>详情获取</strong> - 获取资源的详细信息、作者、版本等</li>
-<li><strong>下载</strong> - 下载资源文件</li>
-<li><strong>版本管理</strong> - 获取资源的不同版本信息</li>
-<li><strong>依赖处理</strong> - 解析和获取资源的依赖项</li>
-</ol>
-<h2 id="最佳实践">最佳实践</h2>
-<ol>
-<li><strong>API密钥管理</strong>：对于 CurseForge，确保妥善管理 API 密钥，避免硬编码</li>
-<li><strong>错误处理</strong>：实现适当的错误处理和重试机制</li>
-<li><strong>缓存策略</strong>：对搜索结果和资源信息实现缓存，减少 API 调用</li>
-<li><strong>并发控制</strong>：对大量下载和搜索操作实现适当的并发控制</li>
-</ol>
+<p>两个平台都支持：</p>
+<ul>
+<li>多类型资源（Mod、整合包、资源包等）</li>
+<li>高级搜索（按版本、加载器、分类过滤）</li>
+<li>排序和分页</li>
+<li>详细信息获取</li>
+</ul>
+<hr>
+<h2 id="下一步">下一步</h2>
+<ul>
+<li><a href="../Resources/README.html">资源管理详解</a> - 学习资源下载和管理</li>
+<li><a href="../Installers/README.html">安装器详解</a> - 了解 Mod 加载器安装</li>
+</ul>
 
 </article>
 
@@ -173,12 +536,11 @@ var resourcePacks = new ResourcePacks();
       </div>
     </main>
 
-    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Qomicex.Avalonia
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
         </div>
       </div>
     </footer>

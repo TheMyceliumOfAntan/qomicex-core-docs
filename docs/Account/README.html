@@ -2,18 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>账户管理 | Qomicex.Core API文档 </title>
+      <title>账户模块 (Account) </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="账户管理 | Qomicex.Core API文档 ">
+      <meta name="title" content="账户模块 (Account) ">
       
       
       <link rel="icon" href="../../favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
       <meta name="docfx:navrel" content="../../toc.html">
-      <meta name="docfx:tocrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="../../">
+      
       
       
       <meta name="docfx:docurl" content="https://github.com/TheMyceliumOfAntan/Qomicex.Avalonia/blob/main/Qomicex.Docs/docs/Account/README.md/#L1">
@@ -44,18 +44,14 @@
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
           <a class="navbar-brand" href="../../index.html">
-            <img id="logo" class="svg" src="../../logo.svg" alt="Qomicex.Core">
-            Qomicex.Core
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
             <i class="bi bi-three-dots"></i>
           </button>
           <div class="collapse navbar-collapse" id="navpanel">
             <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
-              </form>
             </div>
           </div>
         </div>
@@ -85,68 +81,432 @@
         </div>
 
         <article data-uid="">
-<h1 id="账户管理">账户管理</h1>
+<h1 id="账户模块-account">账户模块 (Account)</h1>
 
-<h2 id="功能概述">功能概述</h2>
-<p>Account 模块提供了 Minecraft 账户管理功能，包括 Microsoft 账户登录、Yggdrasil 认证和 Tongyi 账户支持。</p>
-<h2 id="使用示例">使用示例</h2>
-<h3 id="microsoft-账户登录">Microsoft 账户登录</h3>
-<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Microsoft;
-
-// 创建 Microsoft 账户实例
-var microsoftAccount = new Microsoft();
-
-// 获取授权 URL
-string authUrl = microsoftAccount.GetAuthorizationUrl();
-Console.WriteLine(&quot;请在浏览器中打开以下 URL 进行授权:&quot;);
-Console.WriteLine(authUrl);
-Console.WriteLine(&quot;授权完成后，请输入返回的代码:&quot;);
-string code = Console.ReadLine();
-
-// 完成授权
-try
+<blockquote>
+<p>提供多种 Minecraft 账户认证方式，支持微软正版、Yggdrasil 外置登录和统一通行证。</p>
+</blockquote>
+<hr>
+<h2 id="概述">概述</h2>
+<p>账户模块为 Qomicex.Core 提供了完整的 Minecraft 账户认证解决方案，支持三种主流的认证方式：</p>
+<pre><code>Account
+├── Microsoft      # 微软正版账户（Xbox Live）
+├── Yggdrasil      # Yggdrasil 外置登录
+└── Tongyi         # 统一通行证
+</code></pre>
+<hr>
+<h2 id="命名空间">命名空间</h2>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+</code></pre>
+<hr>
+<h2 id="microsoft-类">Microsoft 类</h2>
+<p>微软正版账户认证，支持 OAuth 2.0 设备流认证流程。</p>
+<h3 id="说明">说明</h3>
+<p>Microsoft 类实现了完整的微软 Xbox Live 认证流程，包括：</p>
+<ol>
+<li>获取设备代码</li>
+<li>用户授权</li>
+<li>Xbox Live 身份验证</li>
+<li>XSTS 令牌获取</li>
+<li>Minecraft 服务认证</li>
+<li>游戏所有权验证</li>
+</ol>
+<h3 id="嵌套类">嵌套类</h3>
+<h4 id="oauthresponse">OAuthResponse</h4>
+<p>OAuth 设备流响应。</p>
+<pre><code class="lang-csharp">public class OAuthResponse
 {
-    var oauthResponse = await microsoftAccount.AuthorizeAsync(code);
-    Console.WriteLine($&quot;访问令牌: {oauthResponse.AccessToken}&quot;);
-    Console.WriteLine($&quot;刷新令牌: {oauthResponse.RefreshToken}&quot;);
-    Console.WriteLine($&quot;过期时间: {oauthResponse.ExpiresIn} 秒&quot;);
+    public string DeviceCode = string.Empty;      // 设备代码
+    public string UserCode = string.Empty;        // 用户代码（用户需要输入）
+    public string VerificationUri = string.Empty; // 验证 URI
+    public int ExpiresIn { get; set; }            // 过期时间（秒）
+    public int Interval { get; set; }             // 轮询间隔（秒）
+}
+</code></pre>
+<h3 id="方法">方法</h3>
+<h4 id="oauthlogin">OAuthLogin</h4>
+<p>启动 OAuth 设备流登录，获取设备代码。</p>
+<pre><code class="lang-csharp">public async Task&lt;OAuthResponse&gt; OAuthLogin()
+</code></pre>
+<p><strong>返回值：</strong> <code>OAuthResponse</code> - 包含设备代码和用户代码的响应</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">var microsoft = new Microsoft(&quot;your-client-id&quot;);
+
+// 获取设备代码
+var oauthResponse = await microsoft.OAuthLogin();
+
+Console.WriteLine(&quot;请在浏览器中访问以下地址并输入代码：&quot;);
+Console.WriteLine($&quot;URI: {oauthResponse.VerificationUri}&quot;);
+Console.WriteLine($&quot;Code: {oauthResponse.UserCode}&quot;);
+
+// 等待用户授权
+var authState = await microsoft.GetUserAuthorizationState(oauthResponse);
+
+if (authState.ContainsKey(&quot;access_token&quot;))
+{
+    Console.WriteLine(&quot;授权成功！&quot;);
+    var accessToken = authState[&quot;access_token&quot;];
+    var refreshToken = authState[&quot;refresh_token&quot;];
 
     // 获取用户信息
-    var userInfo = await microsoftAccount.GetUserInfoAsync(oauthResponse.AccessToken);
-    Console.WriteLine($&quot;用户 ID: {userInfo.Id}&quot;);
-    Console.WriteLine($&quot;用户名: {userInfo.Gamertag}&quot;);
-}
-catch (Exception ex)
-{
-    Console.WriteLine($&quot;授权失败: {ex.Message}&quot;);
+    var account = await microsoft.GetUserInfo(accessToken, refreshToken);
+    Console.WriteLine($&quot;欢迎，{account.Name}!&quot;);
 }
 </code></pre>
-<h3 id="yggdrasil-认证">Yggdrasil 认证</h3>
-<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account.Yggdrasil;
-
-// 创建 Yggdrasil 账户实例
-var yggdrasilAccount = new Yggdrasil();
-
-// 登录账户
-string username = &quot;your-username&quot;;
-string password = &quot;your-password&quot;;
-
-try
+<hr>
+<h4 id="getuserauthorizationstate">GetUserAuthorizationState</h4>
+<p>获取用户授权状态。</p>
+<pre><code class="lang-csharp">public async Task&lt;Dictionary&lt;string, string&gt;&gt; GetUserAuthorizationState(OAuthResponse oAuthResponse)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>oAuthResponse</code> | <code>OAuthResponse</code> | OAuthLogin 返回的响应 |</p>
+<p><strong>返回值：</strong> <code>Dictionary&lt;string, string&gt;</code> - 包含 <code>access_token</code> 和 <code>refresh_token</code> 的字典</p>
+<hr>
+<h4 id="getuserinfo">GetUserInfo</h4>
+<p>使用访问令牌获取用户信息。</p>
+<pre><code class="lang-csharp">public async Task&lt;DataModules.DataDetails.Account&gt; GetUserInfo(string accessToken, string refreshToken)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>accessToken</code> | <code>string</code> | 访问令牌 |
+| <code>refreshToken</code> | <code>string</code> | 刷新令牌 |</p>
+<p><strong>返回值：</strong> <code>DataModules.DataDetails.Account</code> - 账户信息</p>
+<p><strong>完整的认证流程：</strong></p>
+<pre><code class="lang-csharp">public async Task&lt;DataModules.DataDetails.Account&gt; AuthenticateMicrosoftAsync(string clientId)
 {
-    var loginResponse = await yggdrasilAccount.LoginAsync(username, password);
-    Console.WriteLine($&quot;访问令牌: {loginResponse.AccessToken}&quot;);
-    Console.WriteLine($&quot;客户端令牌: {loginResponse.ClientToken}&quot;);
-    Console.WriteLine($&quot;用户 ID: {loginResponse.User.Id}&quot;);
+    var microsoft = new Microsoft(clientId);
 
-    // 验证访问令牌
-    bool isValid = await yggdrasilAccount.ValidateAsync(loginResponse.AccessToken);
-    Console.WriteLine($&quot;访问令牌有效: {isValid}&quot;);
-}
-catch (Exception ex)
-{
-    Console.WriteLine($&quot;登录失败: {ex.Message}&quot;);
+    // 1. 获取设备代码
+    var oauth = await microsoft.OAuthLogin();
+
+    // 2. 提示用户授权
+    Console.WriteLine($&quot;请访问 {oauth.VerificationUri} 并输入代码: {oauth.UserCode}&quot;);
+
+    // 3. 等待授权完成
+    var authState = await microsoft.GetUserAuthorizationState(oauth);
+
+    if (!authState.ContainsKey(&quot;access_token&quot;))
+    {
+        throw new Exception(&quot;授权失败&quot;);
+    }
+
+    // 4. 获取用户信息
+    var account = await microsoft.GetUserInfo(
+        authState[&quot;access_token&quot;],
+        authState[&quot;refresh_token&quot;]
+    );
+
+    return account;
 }
 </code></pre>
+<hr>
+<h2 id="yggdrasil-类">Yggdrasil 类</h2>
+<p>Yggdrasil 外置登录认证，支持自定义验证服务器（如 LittleSkin 等）。</p>
+<h3 id="说明-1">说明</h3>
+<p>Yggdrasil 是 Mojang 官方使用的账户认证协议，许多第三方验证服务器也实现了这个协议。通过外置登录，用户可以使用自定义的账户系统登录 Minecraft。</p>
+<h3 id="构造函数">构造函数</h3>
+<pre><code class="lang-csharp">public Yggdrasil(string baseUrl, string email, string password)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>baseUrl</code> | <code>string</code> | Yggdrasil 服务器基础 URL |
+| <code>email</code> | <code>string</code> | 用户邮箱 |
+| <code>password</code> | <code>string</code> | 用户密码 |</p>
+<p><strong>示例：</strong></p>
+<pre><code class="lang-csharp">// 使用 LittleSkin 外置登录
+var yggdrasil = new Yggdrasil(
+    baseUrl: &quot;https://littleskin.cn/api/yggdrasil&quot;,
+    email: &quot;user@example.com&quot;,
+    password: &quot;password123&quot;
+);
+
+// 认证
+var accounts = await yggdrasil.AuthenticateAsync();
+
+foreach (var account in accounts)
+{
+    Console.WriteLine($&quot;登录成功: {account.Name}&quot;);
+    Console.WriteLine($&quot;UUID: {account.Uuid}&quot;);
+    Console.WriteLine($&quot;AccessToken: {account.AccessToken}&quot;);
+}
+</code></pre>
+<hr>
+<h3 id="方法-1">方法</h3>
+<h4 id="authenticateasync">AuthenticateAsync</h4>
+<p>使用提供的凭据在 Yggdrasil 服务器上验证用户身份。</p>
+<pre><code class="lang-csharp">public async Task&lt;List&lt;YggdrasilAccount&gt;&gt; AuthenticateAsync(CancellationToken cancellationToken = default)
+</code></pre>
+<p><strong>返回值：</strong> <code>List&lt;YggdrasilAccount&gt;</code> - 与已验证用户关联的账户列表</p>
+<hr>
+<h4 id="refreshtokenasync">RefreshTokenAsync</h4>
+<p>为指定的 Yggdrasil 账户刷新访问令牌。</p>
+<pre><code class="lang-csharp">public async Task&lt;YggdrasilAccount&gt; RefreshTokenAsync(YggdrasilAccount account, CancellationToken cancellationToken = default)
+</code></pre>
+<hr>
+<h4 id="validatetokenasync">ValidateTokenAsync</h4>
+<p>验证 Yggdrasil 账户中的令牌是否仍然有效。</p>
+<pre><code class="lang-csharp">public async Task&lt;bool&gt; ValidateTokenAsync(YggdrasilAccount account, CancellationToken cancellationToken = default)
+</code></pre>
+<hr>
+<h4 id="invalidatetokenasync">InvalidateTokenAsync</h4>
+<p>使 Yggdrasil 账户中的令牌失效。</p>
+<pre><code class="lang-csharp">public async Task InvalidateTokenAsync(YggdrasilAccount account, CancellationToken cancellationToken = default)
+</code></pre>
+<hr>
+<h3 id="yggdrasilaccount-类">YggdrasilAccount 类</h3>
+<p>Yggdrasil 账户信息。</p>
+<pre><code class="lang-csharp">public class YggdrasilAccount
+{
+    public string? AccessToken { get; set; }      // 访问令牌
+    public string? ClientToken { get; set; }      // 客户端令牌
+    public string? Uuid { get; set; }           // 角色 UUID（不含连字符）
+    public string? Name { get; set; }             // 角色名称
+    public string? UserId { get; set; }         // 用户 ID
+    public string? UserType { get; set; }         // 用户类型
+    public bool IsExpired { get; set; }          // 令牌是否已过期
+    public DateTimeOffset IssuedAt { get; set; }  // 令牌签发时间
+
+    // 根据指定的有效期检查令牌是否过期
+    public bool CheckExpiration(TimeSpan tokenLifetime)
+}
+</code></pre>
+<hr>
+<h2 id="tongyi-类">Tongyi 类</h2>
+<p>统一通行证认证，支持第三方统一验证平台。</p>
+<h3 id="说明-2">说明</h3>
+<p>统一通行证是一种集中式的账户认证系统，允许用户使用一个账户登录多个支持该平台的服务。</p>
+<h3 id="构造函数-1">构造函数</h3>
+<pre><code class="lang-csharp">public Tongyi(string serverId, string email, string password)
+</code></pre>
+<p><strong>参数：</strong>
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| <code>serverId</code> | <code>string</code> | 统一通行证服务器 ID |
+| <code>email</code> | <code>string</code> | 用户邮箱 |
+| <code>password</code> | <code>string</code> | 用户密码 |</p>
+<hr>
+<h3 id="方法-2">方法</h3>
+<h4 id="loginasync">LoginAsync</h4>
+<p>使用提供的凭据登录统一通行证。</p>
+<pre><code class="lang-csharp">public async Task&lt;TongyiAccount&gt; LoginAsync(string username, string password)
+</code></pre>
+<p><strong>返回值：</strong> <code>TongyiAccount</code> - 统一通行证账户信息</p>
+<hr>
+<h4 id="authenticateasync-1">AuthenticateAsync</h4>
+<p>验证用户身份。</p>
+<pre><code class="lang-csharp">public async Task&lt;List&lt;TongyiAccount&gt;&gt; AuthenticateAsync(CancellationToken cancellationToken = default)
+</code></pre>
+<hr>
+<h4 id="refreshtokenasync-1">RefreshTokenAsync</h4>
+<p>刷新访问令牌。</p>
+<pre><code class="lang-csharp">public async Task&lt;TongyiAccount&gt; RefreshTokenAsync(TongyiAccount account, CancellationToken cancellationToken = default)
+</code></pre>
+<hr>
+<h4 id="validatetokenasync-1">ValidateTokenAsync</h4>
+<p>验证令牌是否有效。</p>
+<pre><code class="lang-csharp">public async Task&lt;bool&gt; ValidateTokenAsync(TongyiAccount account, CancellationToken cancellationToken = default)
+</code></pre>
+<hr>
+<h4 id="invalidatetokenasync-1">InvalidateTokenAsync</h4>
+<p>使令牌失效。</p>
+<pre><code class="lang-csharp">public async Task InvalidateTokenAsync(TongyiAccount account, CancellationToken cancellationToken = default)
+</code></pre>
+<hr>
+<h3 id="tongyiaccount-类">TongyiAccount 类</h3>
+<p>统一通行证账户信息。</p>
+<pre><code class="lang-csharp">public class TongyiAccount
+{
+    public string? AccessToken { get; set; }      // 访问令牌
+    public string? ClientToken { get; set; }      // 客户端令牌
+    public string? Uuid { get; set; }               // 角色 UUID（不含连字符）
+    public string? Name { get; set; }             // 角色名称
+    public string? UserId { get; set; }           // 用户 ID
+    public string? UserType { get; set; }          // 用户类型
+    public bool IsExpired { get; set; }           // 令牌是否已过期
+    public DateTimeOffset IssuedAt { get; set; }  // 令牌签发时间
+
+    // 根据指定的有效期检查令牌是否过期
+    public bool CheckExpiration(TimeSpan tokenLifetime)
+}
+</code></pre>
+<hr>
+<h2 id="完整使用示例">完整使用示例</h2>
+<h3 id="微软正版登录完整示例">微软正版登录完整示例</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+
+public async Task MicrosoftLoginExample()
+{
+    // 1. 创建 Microsoft 实例（需要注册 Azure AD 应用获取 ClientId）
+    var microsoft = new Microsoft(&quot;your-azure-ad-client-id&quot;);
+
+    // 2. 获取设备代码
+    var oauth = await microsoft.OAuthLogin();
+
+    // 3. 提示用户授权
+    Console.WriteLine(&quot;=== 微软正版登录 ===&quot;);
+    Console.WriteLine($&quot;请访问: {oauth.VerificationUri}&quot;);
+    Console.WriteLine($&quot;输入代码: {oauth.UserCode}&quot;);
+    Console.WriteLine(&quot;等待授权中...&quot;);
+
+    // 4. 等待授权完成
+    var authState = await microsoft.GetUserAuthorizationState(oauth);
+
+    if (!authState.ContainsKey(&quot;access_token&quot;))
+    {
+        Console.WriteLine(&quot;授权失败或超时&quot;);
+        return;
+    }
+
+    // 5. 获取用户信息
+    var account = await microsoft.GetUserInfo(
+        authState[&quot;access_token&quot;],
+        authState[&quot;refresh_token&quot;]
+    );
+
+    // 6. 保存账户信息
+    Console.WriteLine($&quot;\n登录成功！&quot;);
+    Console.WriteLine($&quot;用户名: {account.Name}&quot;);
+    Console.WriteLine($&quot;UUID: {account.Uuid}&quot;);
+    Console.WriteLine($&quot;登录方式: {account.LoginMethod}&quot;);
+
+    // 7. 刷新令牌（当 access_token 即将过期时）
+    // var refreshedAccount = await microsoft.RefreshUserInfo(account.RefreshToken);
+}
+</code></pre>
+<h3 id="外置登录示例littleskin">外置登录示例（LittleSkin）</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+
+public async Task LittleSkinLoginExample()
+{
+    // LittleSkin 的 Yggdrasil API 地址
+    const string littleskinApi = &quot;https://littleskin.cn/api/yggdrasil&quot;;
+
+    // 创建 Yggdrasil 实例
+    using var yggdrasil = new Yggdrasil(
+        baseUrl: littleskinApi,
+        email: &quot;user@example.com&quot;,
+        password: &quot;password123&quot;
+    );
+
+    try
+    {
+        // 认证
+        var accounts = await yggdrasil.AuthenticateAsync();
+
+        if (accounts.Count == 0)
+        {
+            Console.WriteLine(&quot;认证失败：没有可用的角色&quot;);
+            return;
+        }
+
+        // 选择第一个角色（或让用户选择）
+        var account = accounts.First();
+
+        Console.WriteLine(&quot;外置登录成功！&quot;);
+        Console.WriteLine($&quot;角色名: {account.Name}&quot;);
+        Console.WriteLine($&quot;UUID: {account.Uuid}&quot;);
+        Console.WriteLine($&quot;AccessToken: {account.AccessToken.Substring(0, 16)}...&quot;);
+
+        // 保存账户信息
+        var accountData = new DataModules.DataDetails.Account
+        {
+            Name = account.Name,
+            Uuid = account.Uuid,
+            Token = account.AccessToken,
+            AccessToken = account.AccessToken,
+            RefreshToken = account.AccessToken, // Yggdrasil 通常使用相同的令牌刷新
+            LoginMethod = &quot;Yggdrasil&quot;
+        };
+
+        // 验证令牌是否有效
+        bool isValid = await yggdrasil.ValidateTokenAsync(account);
+        Console.WriteLine($&quot;令牌有效性: {isValid}&quot;);
+    }
+    catch (YggdrasilException ex)
+    {
+        Console.WriteLine($&quot;外置登录失败: {ex.Message}&quot;);
+        Console.WriteLine($&quot;错误代码: {ex.ErrorCode}&quot;);
+    }
+}
+</code></pre>
+<h3 id="统一通行证示例">统一通行证示例</h3>
+<pre><code class="lang-csharp">using Qomicex.Core.Modules.Helpers.Account;
+
+public async Task TongyiLoginExample()
+{
+    // 创建统一通行证实例
+    using var tongyi = new Tongyi(
+        serverId: &quot;your-server-id&quot;,
+        email: &quot;user@example.com&quot;,
+        password: &quot;password123&quot;
+    );
+
+    try
+    {
+        // 认证
+        var accounts = await tongyi.AuthenticateAsync();
+
+        if (accounts.Count == 0)
+        {
+            Console.WriteLine(&quot;认证失败&quot;);
+            return;
+        }
+
+        var account = accounts.First();
+
+        Console.WriteLine(&quot;统一通行证登录成功！&quot;);
+        Console.WriteLine($&quot;角色名: {account.Name}&quot;);
+        Console.WriteLine($&quot;UUID: {account.Uuid}&quot;);
+
+        // 转换为标准账户格式
+        var accountData = new DataModules.DataDetails.Account
+        {
+            Name = account.Name,
+            Uuid = account.Uuid,
+            Token = account.AccessToken,
+            AccessToken = account.AccessToken,
+            RefreshToken = account.RefreshToken,
+            LoginMethod = &quot;Tongyi&quot;
+        };
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($&quot;统一通行证登录失败: {ex.Message}&quot;);
+    }
+}
+</code></pre>
+<hr>
+<h2 id="账户数据结构">账户数据结构</h2>
+<p>所有认证方式最终都转换为统一的 <code>DataModules.DataDetails.Account</code> 格式：</p>
+<pre><code class="lang-csharp">public class Account
+{
+    public string Name = string.Empty;           // 玩家名称
+    public string Uuid = string.Empty;           // 玩家 UUID
+    public string Token = string.Empty;          // 访问令牌（兼容字段）
+    public string AccessToken = &quot;0&quot;;            // OAuth 访问令牌
+    public string RefreshToken = string.Empty;   // OAuth 刷新令牌
+    public string LoginMethod = &quot;Legacy&quot;;       // 登录方式
+}
+</code></pre>
+<hr>
+<h2 id="总结">总结</h2>
+<p>账户模块为 Qomicex.Core 提供了完整的账户认证解决方案：</p>
+<ol>
+<li><strong>Microsoft</strong> - 完整的微软正版登录流程，支持 Xbox Live 和 Minecraft 服务验证</li>
+<li><strong>Yggdrasil</strong> - 支持任意 Yggdrasil 兼容服务器的外置登录</li>
+<li><strong>Tongyi</strong> - 统一通行证集成</li>
+</ol>
+<p>所有认证方式都返回统一的账户数据结构，方便上层应用处理。</p>
+<hr>
+<h2 id="下一步">下一步</h2>
+<ul>
+<li><a href="../Launcher/README.html">启动器详解</a> - 学习如何使用账户启动游戏</li>
+<li><a href="../DataModules/README.html">数据模块详解</a> - 了解账户数据结构</li>
+</ul>
 
 </article>
 
@@ -163,12 +523,11 @@ catch (Exception ex)
       </div>
     </main>
 
-    <div class="container-xxl search-results" id="search-results"></div>
 
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Qomicex.Avalonia
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
         </div>
       </div>
     </footer>
